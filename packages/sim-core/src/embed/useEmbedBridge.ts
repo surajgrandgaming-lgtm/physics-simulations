@@ -187,12 +187,9 @@ export function useEmbedBridge({
       const loadMs = Math.round(performance.now());
       if (!standalone) {
         postToNative({ type: "READY", loadMs });
-      } else {
-        // Standalone auto-starts after first frame
-        triggerStart();
       }
     }
-  }, [standalone, triggerStart]);
+  }, [standalone]);
 
   // Notify WebGL context lost
   const onWebglContextLost = useCallback(() => {
