@@ -1,0 +1,13 @@
+node_modules
+.next
+out
+build
+dist
+.turbo
+*.log
+.env*.local
+.DS_Store
+Thumbs.db
+coverage
+.playwright
+test-results

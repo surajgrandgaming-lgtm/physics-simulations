@@ -1,0 +1,15 @@
+{
+  "name": "topcoaching-sims",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r exec tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5"
+  },
+  "packageManager": "pnpm@12.4.2"
+}
