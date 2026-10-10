@@ -11,3 +11,5 @@ Thumbs.db
 coverage
 .playwright
 test-results
+*.tsbuildinfo
+

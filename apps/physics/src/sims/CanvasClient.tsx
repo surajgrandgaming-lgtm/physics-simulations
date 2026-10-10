@@ -1,0 +1,184 @@
+"use client";
+/**
+ * CanvasClient.tsx — Client Component wrapper for the Three.js canvas.
+ *
+ * ⚠️ DIRECTIVE 1 COMPLIANCE:
+ * This is a "use client" component. next/dynamic with { ssr: false } is ONLY
+ * allowed in Client Components. This ensures Three.js/R3F code NEVER executes
+ * during server-side rendering.
+ *
+ * Config is passed as a serializable prop from the Server Component (page.tsx).
+ */
+
+import dynamic from "next/dynamic";
+import type { ChallengeConfig } from "@topcoaching/sim-core";
+
+const LoadingFallback = () => (
+  <div className="w-full h-full flex items-center justify-center bg-[#070d1e]">
+    <div className="text-center">
+      <div className="w-10 h-10 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+      <p className="text-slate-400 text-sm">Loading 3D scene…</p>
+    </div>
+  </div>
+);
+
+// ── Critical: ssr: false — Three.js never runs in SSR (Directive 1) ──────
+const TableclothPullScene = dynamic(
+  () =>
+    import(
+      "@/sims/tablecloth-pull/TableclothPullScene"
+    ).then((mod) => mod.TableclothPullScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
+const EmergencyStopScene = dynamic(
+  () =>
+    import(
+      "@/sims/1d-motion-deceleration/EmergencyStopScene"
+    ).then((mod) => mod.EmergencyStopScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
+const LastHundredMetersScene = dynamic(
+  () =>
+    import(
+      "@/sims/1d-motion-deceleration/LastHundredMetersScene"
+    ).then((mod) => mod.LastHundredMetersScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
+const DeceleratingBulletScene = dynamic(
+  () =>
+    import(
+      "@/sims/1d-motion-deceleration/DeceleratingBulletScene"
+    ).then((mod) => mod.DeceleratingBulletScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
+const GhostDriverScene = dynamic(
+  () =>
+    import(
+      "@/sims/relative-motion/GhostDriverScene"
+    ).then((mod) => mod.GhostDriverScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
+const LastGapScene = dynamic(
+  () =>
+    import(
+      "@/sims/relative-motion/LastGapScene"
+    ).then((mod) => mod.LastGapScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
+const AirDropInterceptionScene = dynamic(
+  () =>
+    import(
+      "@/sims/relative-motion/AirDropInterceptionScene"
+    ).then((mod) => mod.AirDropInterceptionScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
+const EscapeArtistScene = dynamic(
+  () =>
+    import(
+      "@/sims/relative-motion/EscapeArtistScene"
+    ).then((mod) => mod.EscapeArtistScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
+interface Props {
+  config: any;
+}
+
+export function CanvasClient({ config }: Props) {
+  const sceneType = config?.sceneType;
+
+  if (sceneType === "air-drop-interception") {
+    return (
+      <div className="w-full h-full">
+        <AirDropInterceptionScene config={config} />
+      </div>
+    );
+  }
+
+  if (sceneType === "the-escape-artist") {
+    return (
+      <div className="w-full h-full">
+        <EscapeArtistScene config={config} />
+      </div>
+    );
+  }
+
+  if (sceneType === "ghost-driver") {
+    return (
+      <div className="w-full h-full">
+        <GhostDriverScene config={config} />
+      </div>
+    );
+  }
+
+  if (sceneType === "the-last-gap") {
+    return (
+      <div className="w-full h-full">
+        <LastGapScene config={config} />
+      </div>
+    );
+  }
+
+  if (sceneType === "emergency-stop") {
+    return (
+      <div className="w-full h-full">
+        <EmergencyStopScene config={config} />
+      </div>
+    );
+  }
+
+  if (sceneType === "last-hundred-meters") {
+    return (
+      <div className="w-full h-full">
+        <LastHundredMetersScene config={config} />
+      </div>
+    );
+  }
+
+  if (sceneType === "decelerating-bullet") {
+    return (
+      <div className="w-full h-full">
+        <DeceleratingBulletScene config={config} />
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full h-full">
+      <TableclothPullScene config={config} />
+    </div>
+  );
+}
+
+export default CanvasClient;
