@@ -122,6 +122,7 @@ export function EmergencyStopControls({ config }: Props) {
   );
 
   return (
+
     <GameHUDContainer
       title="Emergency Stop & Road Grip"
       topicName="1D Motion & Deceleration"
@@ -229,8 +230,8 @@ export function EmergencyStopControls({ config }: Props) {
               explanation: (brakeMarkerX + theoreticalStoppingDist) >= 55.0 && (brakeMarkerX + theoreticalStoppingDist) <= 59.8
                 ? "This stops the car safely inside the emerald safety zone (55.0m – 59.8m)!"
                 : (brakeMarkerX + theoreticalStoppingDist) < 55.0
-                ? `The car halts ${(55.0 - (brakeMarkerX + theoreticalStoppingDist)).toFixed(1)}m short of the green target zone.`
-                : `The car overshoots the 60.0m barrier by ${((brakeMarkerX + theoreticalStoppingDist) - 60.0).toFixed(1)}m!`,
+                  ? `The car halts ${(55.0 - (brakeMarkerX + theoreticalStoppingDist)).toFixed(1)}m short of the green target zone.`
+                  : `The car overshoots the 60.0m barrier by ${((brakeMarkerX + theoreticalStoppingDist) - 60.0).toFixed(1)}m!`,
             },
             {
               step: 4,
