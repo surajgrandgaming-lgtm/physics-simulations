@@ -42,11 +42,11 @@ export interface GameHUDContainerProps {
   hideRestartButton?: boolean;
   hideTopBar?: boolean;
   instructionsOverlay?:
-    | {
-        title?: string;
-        instructions: { title: string; description: string; badge?: string }[];
-      }
-    | ReactNode;
+  | {
+    title?: string;
+    instructions: { title: string; description: string; badge?: string }[];
+  }
+  | ReactNode;
   briefing: {
     target: string;
     targetImageUrl?: string;
@@ -142,21 +142,21 @@ export function GameHUDContainer({
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 pointer-events-none z-20 flex flex-col justify-between p-1 xs:p-1.5 sm:p-4 max-lg:landscape:p-1 font-sans overflow-hidden select-none"
+      className="absolute inset-0 pointer-events-none z-20 flex flex-col justify-between p-1 xs:p-1.5 sm:p-4 font-sans overflow-hidden select-none"
     >
-      
+
       {/* ── PRE-MISSION OVERLAY: blurs the canvas and shows bare text ── */}
       {!missionStarted && (
-        <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-2.5 sm:gap-5 max-lg:landscape:gap-1.5 pointer-events-auto p-2 sm:p-4">
+        <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-2.5 sm:gap-5 max-lg:landscape:gap-1.5 pointer-events-auto p-2 sm:p-4 max-lg:landscape:p-2 overflow-y-auto no-scrollbar">
           {/* Blur layer — sits behind text */}
           <div className="absolute inset-0 backdrop-blur-md bg-black/60" />
 
           {/* Bare text card */}
-          <div className="relative z-10 flex flex-col items-center gap-3 sm:gap-6 max-lg:landscape:gap-1 text-center px-4 sm:px-8 max-w-4xl w-full">
+          <div className="relative z-10 flex flex-col items-center gap-3 sm:gap-6 max-lg:landscape:gap-1.5 text-center px-4 sm:px-8 max-lg:landscape:px-3 max-w-5xl w-full my-auto">
             {instructionsOverlay && preMissionStep === "instructions" ? (
               /* Step 2: Instructions view on the same overlay */
-              <div className="flex flex-col items-center gap-4 sm:gap-6 w-full animate-in fade-in zoom-in-95 duration-200">
-                <p className="text-sm sm:text-base md:text-lg font-mono tracking-[0.25em] sm:tracking-[0.35em] uppercase text-cyan-400 drop-shadow-md font-extrabold mb-0.5 sm:mb-1">
+              <div className="flex flex-col items-center gap-2.5 sm:gap-6 max-lg:landscape:gap-2 w-full animate-in fade-in zoom-in-95 duration-200">
+                <p className="text-sm sm:text-base md:text-lg max-lg:landscape:text-sm font-mono tracking-[0.25em] sm:tracking-[0.35em] max-lg:landscape:tracking-[0.2em] uppercase text-cyan-400 drop-shadow-md font-extrabold mb-0.5 sm:mb-1 max-lg:landscape:mb-0">
                   {typeof instructionsOverlay === "object" && "title" in instructionsOverlay && instructionsOverlay.title
                     ? instructionsOverlay.title
                     : "HOW TO PLAY & INSTRUCTIONS"}
@@ -165,27 +165,27 @@ export function GameHUDContainer({
                 {React.isValidElement(instructionsOverlay) ? (
                   instructionsOverlay
                 ) : typeof instructionsOverlay === "object" && "instructions" in instructionsOverlay ? (
-                  <div className="flex flex-col gap-3 sm:gap-4 w-full text-left">
+                  <div className="flex flex-col max-lg:landscape:grid max-lg:landscape:grid-cols-3 gap-3 sm:gap-4 max-lg:landscape:gap-2.5 w-full text-left">
                     {instructionsOverlay.instructions.map((item, idx) => (
                       <div
                         key={idx}
-                        className="flex items-start gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl bg-white/95 text-slate-900 border border-white/80 shadow-[0_8px_30px_rgb(0,0,0,0.12)] backdrop-blur-xl transition-all"
+                        className="flex items-start gap-3 sm:gap-4 max-lg:landscape:gap-2.5 p-3.5 sm:p-5 max-lg:landscape:p-2.5 rounded-2xl max-lg:landscape:rounded-xl bg-white/95 text-slate-900 border border-white/80 shadow-[0_8px_30px_rgb(0,0,0,0.12)] backdrop-blur-xl transition-all"
                       >
-                        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-cyan-600 border border-cyan-500/30 flex items-center justify-center font-mono font-bold text-sm sm:text-base text-white shrink-0 mt-0.5 shadow-sm">
+                        <div className="w-7 h-7 sm:w-9 sm:h-9 max-lg:landscape:w-6 max-lg:landscape:h-6 rounded-xl max-lg:landscape:rounded-lg bg-cyan-600 border border-cyan-500/30 flex items-center justify-center font-mono font-bold text-xs sm:text-base max-lg:landscape:text-xs text-white shrink-0 mt-0.5 shadow-sm">
                           {idx + 1}
                         </div>
-                        <div className="flex flex-col gap-1 sm:gap-1.5 flex-1 min-w-0">
-                          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-                            <span className="font-mono text-sm sm:text-base md:text-lg font-bold text-slate-900 tracking-tight">
+                        <div className="flex flex-col gap-0.5 sm:gap-1.5 flex-1 min-w-0">
+                          <div className="flex items-center gap-1.5 sm:gap-3 flex-wrap">
+                            <span className="font-mono text-xs sm:text-base md:text-lg max-lg:landscape:text-xs font-bold text-slate-900 tracking-tight">
                               {item.title}
                             </span>
                             {item.badge && (
-                              <span className="text-xs sm:text-sm font-semibold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-cyan-100 text-cyan-800 border border-cyan-300">
+                              <span className="text-[10px] sm:text-sm max-lg:landscape:text-[10px] font-semibold px-2 py-0.5 sm:px-3 sm:py-1 max-lg:landscape:px-1.5 max-lg:landscape:py-0.5 rounded-full bg-cyan-100 text-cyan-800 border border-cyan-300">
                                 {item.badge}
                               </span>
                             )}
                           </div>
-                          <span className="text-sm sm:text-base text-slate-600 leading-relaxed font-sans mt-0.5">
+                          <span className="text-xs sm:text-base max-lg:landscape:text-xs text-slate-600 leading-relaxed max-lg:landscape:leading-snug font-sans mt-0.5 max-lg:landscape:mt-0">
                             {item.description}
                           </span>
                         </div>
@@ -194,12 +194,12 @@ export function GameHUDContainer({
                   </div>
                 ) : null}
 
-                <div className="flex items-center gap-4 mt-3 sm:mt-5">
+                <div className="flex items-center gap-4 max-lg:landscape:gap-3.5 mt-2 sm:mt-5 max-lg:landscape:mt-1.5">
                   <button
                     onClick={() => setPreMissionStep("target")}
-                    className="px-7 sm:px-9 py-3 sm:py-4 rounded-full bg-white/10 hover:bg-white/20 border border-white/25 text-white font-mono font-bold text-xs sm:text-sm uppercase tracking-wider transition-all active:scale-95 flex items-center gap-2 cursor-pointer backdrop-blur-md shadow-md"
+                    className="px-6 sm:px-9 max-lg:landscape:px-6 py-2.5 sm:py-4 max-lg:landscape:py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/25 text-white font-mono font-bold text-xs sm:text-sm max-lg:landscape:text-xs uppercase tracking-wider transition-all active:scale-95 flex items-center gap-2 max-lg:landscape:gap-1.5 cursor-pointer backdrop-blur-md shadow-md"
                   >
-                    <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 max-lg:landscape:w-4 max-lg:landscape:h-4" />
                     <span>Back</span>
                   </button>
 
@@ -208,30 +208,30 @@ export function GameHUDContainer({
                       setMissionStarted(true);
                       onMissionStart?.();
                     }}
-                    className="px-10 sm:px-14 py-3 sm:py-4 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 border border-cyan-300/60 hover:border-white text-white font-mono font-black text-sm sm:text-base uppercase tracking-widest transition-all active:scale-95 shadow-[0_0_25px_rgba(6,182,212,0.4)] flex items-center gap-2.5 cursor-pointer"
+                    className="px-8 sm:px-14 max-lg:landscape:px-8 py-2.5 sm:py-4 max-lg:landscape:py-2 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 border border-cyan-300/60 hover:border-white text-white font-mono font-black text-xs sm:text-base max-lg:landscape:text-sm uppercase tracking-widest transition-all active:scale-95 shadow-[0_0_25px_rgba(6,182,212,0.4)] flex items-center gap-2 max-lg:landscape:gap-2 cursor-pointer"
                   >
-                    <Play className="w-4 h-4 sm:w-5 sm:h-5 fill-white" />
+                    <Play className="w-4 h-4 sm:w-5 sm:h-5 max-lg:landscape:w-4 max-lg:landscape:h-4 fill-white" />
                     <span>PLAY</span>
                   </button>
                 </div>
               </div>
             ) : (
               /* Step 1: Target view */
-              <div className="flex flex-col items-center gap-5 sm:gap-7 max-lg:landscape:gap-1.5 w-full animate-in fade-in zoom-in-95 duration-200">
-                <p className="text-base sm:text-lg md:text-xl font-mono tracking-[0.25em] sm:tracking-[0.35em] uppercase text-cyan-400 drop-shadow-md font-extrabold mb-1">
+              <div className="flex flex-col items-center gap-3 sm:gap-7 max-lg:landscape:gap-1.5 w-full animate-in fade-in zoom-in-95 duration-200">
+                <p className="text-xs sm:text-lg md:text-xl max-lg:landscape:text-xs font-mono tracking-[0.2em] sm:tracking-[0.35em] max-lg:landscape:tracking-[0.2em] uppercase text-cyan-400 drop-shadow-md font-extrabold mb-0.5 sm:mb-1 max-lg:landscape:mb-0">
                   {title}
                 </p>
-                <p className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl max-lg:landscape:text-2xl font-black text-white leading-tight drop-shadow-2xl max-w-4xl px-2 sm:px-4">
-                  <span className="text-slate-400 mr-2 sm:mr-3 block sm:inline text-2xl xs:text-3xl sm:text-5xl md:text-6xl mb-1 sm:mb-0">MISSION:</span>
+                <p className="text-2xl xs:text-4xl sm:text-6xl md:text-7xl max-lg:landscape:text-xl font-black text-white leading-snug max-lg:landscape:leading-tight drop-shadow-2xl max-w-4xl px-2 sm:px-4 max-lg:landscape:px-1">
+                  <span className="text-slate-400 mr-2 sm:mr-3 inline text-base xs:text-2xl sm:text-5xl max-lg:landscape:text-lg font-black">MISSION:</span>
                   {briefing.target}
                 </p>
 
                 {briefing.targetImageUrl && (
-                  <div className="relative my-2 sm:my-4 max-w-xs sm:max-w-md w-full flex items-center justify-center">
+                  <div className="relative my-1.5 sm:my-4 max-lg:landscape:my-1 max-w-xs sm:max-w-md w-full flex items-center justify-center">
                     <img
                       src={briefing.targetImageUrl}
                       alt="Mission Target"
-                      className="max-h-44 sm:max-h-56 md:max-h-64 object-contain rounded-2xl drop-shadow-[0_10px_35px_rgba(0,0,0,0.6)] border border-cyan-400/30 bg-slate-950/40 p-2 sm:p-3 backdrop-blur-sm"
+                      className="max-h-36 sm:max-h-56 md:max-h-64 max-lg:landscape:max-h-28 object-contain rounded-2xl max-lg:landscape:rounded-xl drop-shadow-[0_10px_35px_rgba(0,0,0,0.6)] border border-cyan-400/30 bg-slate-950/40 p-1.5 sm:p-3 max-lg:landscape:p-1.5 backdrop-blur-sm"
                     />
                   </div>
                 )}
@@ -239,10 +239,10 @@ export function GameHUDContainer({
                 {instructionsOverlay ? (
                   <button
                     onClick={() => setPreMissionStep("instructions")}
-                    className="mt-4 sm:mt-6 max-lg:landscape:mt-2 px-12 sm:px-16 py-4 sm:py-5 rounded-full bg-cyan-500/20 hover:bg-cyan-500/35 border border-cyan-400/50 hover:border-cyan-300 text-cyan-50 font-mono font-bold text-base sm:text-lg uppercase tracking-widest transition-all active:scale-95 backdrop-blur-md shadow-[0_0_35px_rgba(6,182,212,0.45)] flex items-center gap-3 cursor-pointer"
+                    className="mt-2.5 sm:mt-6 max-lg:landscape:mt-1.5 px-8 sm:px-16 max-lg:landscape:px-8 py-2.5 sm:py-5 max-lg:landscape:py-2 rounded-full bg-cyan-500/20 hover:bg-cyan-500/35 border border-cyan-400/50 hover:border-cyan-300 text-cyan-50 font-mono font-bold text-xs sm:text-lg max-lg:landscape:text-sm uppercase tracking-widest transition-all active:scale-95 backdrop-blur-md shadow-[0_0_35px_rgba(6,182,212,0.45)] flex items-center gap-2 max-lg:landscape:gap-2 cursor-pointer"
                   >
                     <span>NEXT</span>
-                    <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+                    <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6 max-lg:landscape:w-4 max-lg:landscape:h-4" />
                   </button>
                 ) : (
                   <button
@@ -250,7 +250,7 @@ export function GameHUDContainer({
                       setMissionStarted(true);
                       onMissionStart?.();
                     }}
-                    className="mt-8 sm:mt-12 max-lg:landscape:mt-2.5 px-12 sm:px-16 py-4 sm:py-5 rounded-full bg-cyan-500/20 hover:bg-cyan-500/35 border border-cyan-400/50 hover:border-cyan-300 text-cyan-50 font-mono font-bold text-base sm:text-lg uppercase tracking-widest transition-all active:scale-95 backdrop-blur-md shadow-[0_0_35px_rgba(6,182,212,0.45)] cursor-pointer"
+                    className="mt-4 sm:mt-12 max-lg:landscape:mt-1.5 px-8 sm:px-16 max-lg:landscape:px-8 py-2.5 sm:py-5 max-lg:landscape:py-2 rounded-full bg-cyan-500/20 hover:bg-cyan-500/35 border border-cyan-400/50 hover:border-cyan-300 text-cyan-50 font-mono font-bold text-xs sm:text-lg max-lg:landscape:text-sm uppercase tracking-widest transition-all active:scale-95 backdrop-blur-md shadow-[0_0_35px_rgba(6,182,212,0.45)] cursor-pointer"
                   >
                     PLAY MISSION
                   </button>
@@ -332,9 +332,8 @@ export function GameHUDContainer({
 
           {/* ── FLOATING SIDE HUD PANELS (SLEEK FROSTED GLASS WIDGETS) ── */}
           <div
-            className={`w-full flex-1 flex justify-between items-start gap-2 pt-2 pb-16 pointer-events-none transition-opacity duration-300 ${
-              isCinematicMode ? "opacity-0" : "opacity-100"
-            }`}
+            className={`w-full flex-1 flex justify-between items-start gap-2 pt-2 pb-16 pointer-events-none transition-opacity duration-300 ${isCinematicMode ? "opacity-0" : "opacity-100"
+              }`}
           >
             {/* Left HUD Column */}
             {leftHUD && (
@@ -342,7 +341,7 @@ export function GameHUDContainer({
                 {leftHUD}
               </div>
             )}
-            
+
             <div className="flex-1 pointer-events-none" />
 
             {/* Right HUD Column */}
@@ -355,9 +354,8 @@ export function GameHUDContainer({
 
           {/* ── BOTTOM ACTION DOCK ── */}
           <div
-            className={`transition-opacity duration-300 shrink-0 ${
-              isCinematicMode ? "opacity-0 pointer-events-none" : "opacity-100"
-            }`}
+            className={`transition-opacity duration-300 shrink-0 ${isCinematicMode ? "opacity-0 pointer-events-none" : "opacity-100"
+              }`}
           >
             {bottomDock}
           </div>
@@ -422,7 +420,7 @@ export function GameHUDContainer({
           title={title}
           topicName={topicName}
           difficulty={difficulty}
-          onRetry={result.onRetry || (onReset ? onReset : () => {})}
+          onRetry={result.onRetry || (onReset ? onReset : () => { })}
           onNextTier={result.onNextTier}
           nextTierUrl={result.nextTierUrl}
           nextTierLabel={result.nextTierLabel}

@@ -114,6 +114,12 @@ export function EmergencyStopControls({ config }: Props) {
   const theoreticalStoppingDist = (initialSpeed * initialSpeed) / (2 * theoreticalDecel);
   const predictedStopX = brakeMarkerX + theoreticalStoppingDist;
   const liveGap = Math.max(0, 60 - liveCarX);
+  const actualOrPredictedStopX = stoppedPos !== null ? stoppedPos : predictedStopX;
+  const optimalGate = Math.max(0, Math.min(55, Math.round((57.5 - theoreticalStoppingDist) * 10) / 10));
+  const maxSafeVelocityForGate = Math.max(
+    0,
+    Math.round(Math.sqrt(Math.max(0, 2 * theoreticalDecel * (59.8 - brakeMarkerX))) * 10) / 10
+  );
 
   return (
     <GameHUDContainer
@@ -161,105 +167,83 @@ export function EmergencyStopControls({ config }: Props) {
           {
             label: "Stopping Distance",
             formula: "s = \\frac{u^2}{2 \\cdot \\mu \\cdot g}",
-            explanation: "Derived from v² = u² - 2as with final velocity v = 0.",
+            explanation: "Required braking distance based on initial velocity u and surface friction μ.",
           },
           {
-            label: "Friction Deceleration",
-            formula: "a = \\mu \\cdot g",
-            explanation: "Tire grip deceleration equals surface friction coefficient times gravity.",
-          },
-          {
-            label: "Target Position",
+            label: "Vehicle Stop Position",
             formula: "x_{\\mathrm{stop}} = x_{\\mathrm{gate}} + s",
-            explanation: "Car must stop between 55.0m and 59.8m for 3-star clearance.",
+            explanation: "Final car stop point equals braking gate position x_gate plus stopping distance s.",
+          },
+          {
+            label: "Optimal Gate Calibration",
+            formula: "x_{\\mathrm{gate}} = 57.5 - \\frac{u^2}{2 \\cdot \\mu \\cdot g}",
+            explanation: "Position the braking gate so that x_gate + s lands the vehicle inside the 55–59.8m emerald safety zone.",
           },
         ],
       }}
       result={{
         isWon: isWonRound,
-        isGameOver: isCrashedRound,
+        isGameOver: isCrashedRound || isStoppedShort,
         onNextTier: currentRound < 3 ? nextRound : undefined,
         nextTierUrl: currentRound === 3 ? "/physics/kinematics/1d-motion-deceleration/challenge/medium" : undefined,
         nextTierLabel: currentRound < 3 ? `STAGE ${currentRound + 1}` : "NEXT TIER",
         failureReason: isCrashedRound
-          ? "Barrier Breach! The car overshot the 60m intersection barrier at high speed."
-          : "Stopped too early before the emerald target zone.",
-        tip:
-          sc.mu === 0.1
-            ? "On Black Ice (μ=0.1), stopping distance at 15 m/s is >114m! You MUST lower vehicle speed to 8.8 m/s or below to stop before 60m!"
-            : "Adjust the braking gate x_gate closer to 58m - stopping distance.",
+          ? `Barrier Breach! At velocity u = ${initialSpeed} m/s and braking gate x_gate = ${brakeMarkerX}m, stopping distance on ${sc.label} (μ = ${sc.mu}) is ${theoreticalStoppingDist.toFixed(1)}m. Total stopping point was ${actualOrPredictedStopX.toFixed(1)}m, smashing through the 60m barrier by ${Math.max(0.1, actualOrPredictedStopX - 60).toFixed(1)}m!`
+          : `Stopped short! At velocity u = ${initialSpeed} m/s and braking gate x_gate = ${brakeMarkerX}m, stopping distance is only ${theoreticalStoppingDist.toFixed(1)}m. The vehicle came to a complete halt at ${actualOrPredictedStopX.toFixed(1)}m (${Math.max(0.1, 55.0 - actualOrPredictedStopX).toFixed(1)}m before the 55m emerald zone).`,
+        tip: isCrashedRound
+          ? (sc.mu === 0.1 && initialSpeed > 10)
+            ? `On Black Ice (μ=0.1), stopping from ${initialSpeed} m/s requires ${theoreticalStoppingDist.toFixed(0)}m (> road length)! Reduce velocity to 7–9 m/s to stop before the 60m barrier.`
+            : `At velocity u = ${initialSpeed} m/s (needs ${theoreticalStoppingDist.toFixed(1)}m to stop), shift braking gate back to x_gate ≈ ${optimalGate.toFixed(1)}m (or keep gate at ${brakeMarkerX}m and lower velocity below ${maxSafeVelocityForGate} m/s).`
+          : `At velocity u = ${initialSpeed} m/s, the car only needs ${theoreticalStoppingDist.toFixed(1)}m to stop. Shift braking gate forward to x_gate ≈ ${optimalGate.toFixed(1)}m (advance by ${Math.max(0, optimalGate - brakeMarkerX).toFixed(1)}m) so it reaches the green zone.`,
         stats: [
-          { label: "Stopped At", value: stoppedPos ? stoppedPos.toFixed(1) : "0", unit: "m" },
-          { label: "Target Zone", value: "55 - 59.8", unit: "m" },
-          { label: "Road Surface", value: sc.label },
+          { label: "Velocity (u)", value: initialSpeed, unit: "m/s" },
+          { label: "Brake Gate (x)", value: brakeMarkerX, unit: "m" },
+          { label: "Stop Dist (s)", value: theoreticalStoppingDist.toFixed(1), unit: "m" },
+          { label: "Halted At", value: actualOrPredictedStopX.toFixed(1), unit: "m" },
+          { label: "Target Zone", value: "55.0 - 59.8", unit: "m" },
+          { label: "Road Grip (μ)", value: `${sc.label} (${sc.mu})` },
         ],
         calculation: {
-          title: "Friction Deceleration & Stopping Distance",
-          concept: "1D Constant Acceleration Kinematics (v² = u² - 2as)",
+          title: `Kinematic Breakdown (u = ${initialSpeed} m/s, x_gate = ${brakeMarkerX}m)`,
+          concept: "1D Deceleration Kinematics: v² = u² - 2as & x_stop = x_gate + s",
           steps: [
             {
               step: 1,
-              title: "Friction Deceleration Rate",
-              math: "a = \\mu \\cdot g = " + sc.mu + " \\times 9.81 = " + (sc.mu * 9.81).toFixed(2) + "\\text{ m/s}^2",
-              calculation: `On ${sc.label} with coefficient of friction μ = ${sc.mu}, the maximum braking deceleration available is a = ${(sc.mu * 9.81).toFixed(2)} m/s².`,
+              title: "Tire Friction Deceleration Rate",
+              math: "a = \\mu \\cdot g = " + sc.mu + " \\times 9.81 = " + theoreticalDecel.toFixed(2) + "\\text{ m/s}^2",
+              calculation: `On ${sc.label} with coefficient of friction μ = ${sc.mu}, maximum braking deceleration is a = ${theoreticalDecel.toFixed(2)} m/s².`,
+              explanation: "Deceleration a = μg is determined by tire-road friction and gravity, independent of vehicle mass.",
             },
             {
               step: 2,
-              title: "Kinematic Stopping Distance",
-              math: "s = \\frac{u^2}{2 \\mu g} = \\frac{" + initialSpeed + "^2}{2 \\times " + sc.mu + " \\times 9.81} = " + ((initialSpeed * initialSpeed) / (2 * sc.mu * 9.81)).toFixed(2) + "\\text{ m}",
-              calculation: `From v² = u² - 2as (v = 0), stopping from u = ${initialSpeed} m/s requires s = ${((initialSpeed * initialSpeed) / (2 * sc.mu * 9.81)).toFixed(1)}m.`,
+              title: "Braking Distance for Velocity u = " + initialSpeed + " m/s",
+              math: "s = \\frac{u^2}{2a} = \\frac{" + initialSpeed + "^2}{2 \\times " + theoreticalDecel.toFixed(2) + "} = " + theoreticalStoppingDist.toFixed(2) + "\\text{ m}",
+              calculation: `From v² = u² - 2as (v = 0), stopping from initial velocity u = ${initialSpeed} m/s requires exactly s = ${theoreticalStoppingDist.toFixed(1)}m.`,
+              explanation: `Stopping distance scales quadratically (u²). At ${initialSpeed} m/s, the car requires ${theoreticalStoppingDist.toFixed(1)}m of road once brakes are applied.`,
             },
             {
               step: 3,
-              title: "Braking Gate Position",
-              math: "x_{\\mathrm{gate}} = x_{\\mathrm{target}} - s = 58.0 - " + ((initialSpeed * initialSpeed) / (2 * sc.mu * 9.81)).toFixed(1) + " = " + (58.0 - (initialSpeed * initialSpeed) / (2 * sc.mu * 9.81)).toFixed(1) + "\\text{ m}",
-              calculation: `To stop at x = 58.0m (within the 55–59.8m emerald safety zone), trigger braking at x_gate = ${(58.0 - (initialSpeed * initialSpeed) / (2 * sc.mu * 9.81)).toFixed(1)}m.`,
+              title: "Vehicle Stopping Point for Gate x_gate = " + brakeMarkerX + "m",
+              math: "x_{\\mathrm{stop}} = x_{\\mathrm{gate}} + s = " + brakeMarkerX + " + " + theoreticalStoppingDist.toFixed(1) + " = " + (brakeMarkerX + theoreticalStoppingDist).toFixed(1) + "\\text{ m}",
+              calculation: `Brakes engage at x_gate = ${brakeMarkerX}m. Adding the ${theoreticalStoppingDist.toFixed(1)}m stopping distance brings the vehicle to x = ${(brakeMarkerX + theoreticalStoppingDist).toFixed(1)}m.`,
+              explanation: (brakeMarkerX + theoreticalStoppingDist) >= 55.0 && (brakeMarkerX + theoreticalStoppingDist) <= 59.8
+                ? "This stops the car safely inside the emerald safety zone (55.0m – 59.8m)!"
+                : (brakeMarkerX + theoreticalStoppingDist) < 55.0
+                ? `The car halts ${(55.0 - (brakeMarkerX + theoreticalStoppingDist)).toFixed(1)}m short of the green target zone.`
+                : `The car overshoots the 60.0m barrier by ${((brakeMarkerX + theoreticalStoppingDist) - 60.0).toFixed(1)}m!`,
+            },
+            {
+              step: 4,
+              title: "Optimal Gate Position for u = " + initialSpeed + " m/s",
+              math: "x_{\\mathrm{gate, opt}} = 57.5 - s = 57.5 - " + theoreticalStoppingDist.toFixed(1) + " = " + (57.5 - theoreticalStoppingDist).toFixed(1) + "\\text{ m}",
+              calculation: `To hit the 57.5m center of the emerald zone at ${initialSpeed} m/s, set the braking gate to x_gate = ${optimalGate.toFixed(1)}m.`,
+              explanation: `Setting the braking gate to ${optimalGate.toFixed(1)}m with velocity ${initialSpeed} m/s guarantees a clean target stop.`,
             },
           ],
           conclusion:
-            "Stopping distance scales quadratically with speed (s ∝ u²) and inversely with surface friction (s ∝ 1/μ). Halving friction doubles the required stopping runway.",
+            `Stopping position combines both initial speed u (which determines braking distance s = u²/2μg) and the braking gate position x_gate (x_stop = x_gate + s). On ${sc.label} (μ = ${sc.mu}), u = ${initialSpeed} m/s and x_gate = ${optimalGate.toFixed(1)}m produce a perfect landing at 57.5m.`,
         },
       }}
-      leftHUD={
-        <div className="flex flex-col items-center gap-1.5 p-2 rounded-3xl bg-slate-950/40 backdrop-blur-xl border border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.3)]">
-          <SpeedometerDial
-            value={liveSpeed}
-            min={0}
-            max={25}
-            targetValue={initialSpeed}
-            label="VEHICLE SPEED"
-            unit="m/s"
-            variant={liveSpeed === 0 ? "emerald" : "cyan"}
-          />
-        </div>
-      }
-      rightHUD={
-        <div className="flex flex-col items-center gap-2.5">
-          {/* Barrier Gap Circular Ring */}
-          <CircularRingGauge
-            value={liveGap}
-            max={60}
-            label="barrier gap"
-            sublabel={liveGap <= 5 ? "critical" : "proximity"}
-            unit="m"
-            icon={ShieldAlert}
-            variant={liveGap <= 5 ? "rose" : "cyan"}
-            size={70}
-          />
-
-          {/* Stopping Distance Circular Ring */}
-          <CircularRingGauge
-            value={theoreticalStoppingDist}
-            max={60}
-            label="stopping dist"
-            sublabel={`μ = ${sc.mu}`}
-            unit="m"
-            icon={Flame}
-            variant={theoreticalStoppingDist > 55 ? "rose" : "emerald"}
-            size={70}
-          />
-        </div>
-      }
       bottomDock={
         <div className="flex flex-col items-center gap-2 sm:gap-3">
           {/* In-Flight Speed Readout Bar */}

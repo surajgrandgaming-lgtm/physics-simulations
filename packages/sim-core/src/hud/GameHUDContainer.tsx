@@ -120,12 +120,12 @@ export function GameHUDContainer({
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 pointer-events-none z-20 flex flex-col justify-between p-1 xs:p-1.5 sm:p-4 max-lg:landscape:p-1 font-sans overflow-hidden select-none"
+      className="absolute inset-0 pointer-events-none z-20 flex flex-col justify-between p-1 xs:p-1.5 sm:p-4 font-sans overflow-hidden select-none"
     >
       
       {/* ── PRE-MISSION OVERLAY: blurs the canvas and shows bare text ── */}
       {!missionStarted && (
-        <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-2.5 sm:gap-5 max-lg:landscape:gap-1.5 pointer-events-auto p-2 sm:p-4">
+        <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-2.5 sm:gap-5 max-lg:landscape:gap-1.5 pointer-events-auto p-2 sm:p-4 max-lg:landscape:p-2 overflow-y-auto no-scrollbar">
           {/* Blur layer — sits behind text */}
           <div className="absolute inset-0 backdrop-blur-md bg-black/50" />
 
