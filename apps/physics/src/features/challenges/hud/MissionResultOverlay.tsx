@@ -336,29 +336,31 @@ export function MissionResultOverlay({
           /* ─── PHYSICS & CALCULATION VIEW (Full Canvas Height & Wide) ─── */
           <div className="flex flex-col h-full flex-1 overflow-hidden pointer-events-auto">
             {/* Header */}
-            <div className="p-4 sm:p-5 max-lg:landscape:p-2 max-lg:landscape:px-3.5 border-b border-white/10 bg-slate-950/80 flex items-center justify-between gap-3 shrink-0">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-cyan-950/80 border border-cyan-500/40 flex items-center justify-center text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.3)] shrink-0">
-                  <Calculator className="w-5 h-5" />
+            <div className="relative p-3.5 sm:p-5 max-lg:landscape:p-2 max-lg:landscape:px-3.5 border-b border-white/10 bg-slate-950/80 flex items-center justify-center shrink-0 min-h-[64px] max-lg:landscape:min-h-[46px]">
+              {/* Centered Heading */}
+              <div className="flex items-center justify-center gap-2.5 sm:gap-3 text-center px-16 sm:px-28">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 max-lg:landscape:w-6 max-lg:landscape:h-6 rounded-xl bg-cyan-950/80 border border-cyan-500/40 flex items-center justify-center text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.3)] shrink-0">
+                  <Calculator className="w-4 h-4 sm:w-5 sm:h-5 max-lg:landscape:w-3.5 max-lg:landscape:h-3.5" />
                 </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[11px] font-mono font-black tracking-widest text-cyan-400 uppercase">
+                <div className="flex flex-col items-center text-center">
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="text-[10px] sm:text-[11px] max-lg:landscape:text-[9.5px] font-mono font-black tracking-widest text-cyan-400 uppercase">
                       PHYSICS & CALCULATION BREAKDOWN
                     </span>
                     <span
-                      className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full border uppercase ${difficultyColors}`}
+                      className={`text-[8px] sm:text-[9px] font-mono font-bold px-2 py-0.5 rounded-full border uppercase ${difficultyColors}`}
                     >
                       {difficulty}
                     </span>
                   </div>
-                  <h3 className="text-base sm:text-lg lg:text-xl font-black text-white leading-tight">
+                  <h3 className="text-sm sm:text-lg lg:text-xl max-lg:landscape:text-sm font-black text-white leading-tight">
                     {title}
                   </h3>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
+              {/* Right Action Button (Anchored Top-Right) */}
+              <div className="absolute right-3 sm:right-5 flex items-center gap-2">
                 {(!isWon && !isGameOver && onClose) ? (
                   <button
                     type="button"
@@ -367,7 +369,7 @@ export function MissionResultOverlay({
                       e.stopPropagation();
                       onClose();
                     }}
-                    className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-slate-600 text-slate-300 hover:text-white font-mono text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-md"
+                    className="px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-slate-600 text-slate-300 hover:text-white font-mono text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-md"
                   >
                     <span>CLOSE</span>
                   </button>
@@ -383,9 +385,9 @@ export function MissionResultOverlay({
                         setActiveTab("summary");
                       }
                     }}
-                    className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-slate-600 text-slate-300 hover:text-white font-mono text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-md"
+                    className="px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-slate-600 text-slate-300 hover:text-white font-mono text-xs font-bold flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer shadow-md"
                   >
-                    <ArrowLeft className="w-4 h-4" />
+                    <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     <span>SUMMARY</span>
                   </button>
                 )}
