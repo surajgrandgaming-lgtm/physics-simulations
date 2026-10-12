@@ -39,6 +39,7 @@ function CarrierTakeoffInner({ deckLength = 250 }: InnerSceneProps) {
   const setLiveSpeedGetter = useLastHundredMetersStore((s) => s.setLiveSpeedGetter);
   const setLiveJetPosGetter = useLastHundredMetersStore((s) => s.setLiveJetPosGetter);
   const hasLaunched = useLastHundredMetersStore((s) => s.hasLaunched);
+  const isAccelerating = useLastHundredMetersStore((s) => s.isAccelerating);
   const takeoffTriggered = useLastHundredMetersStore((s) => s.takeoffTriggered);
   const inputAcceleration = useLastHundredMetersStore((s) => s.inputAcceleration);
   const targetTakeoffSpeed = useLastHundredMetersStore((s) => s.targetTakeoffSpeed);

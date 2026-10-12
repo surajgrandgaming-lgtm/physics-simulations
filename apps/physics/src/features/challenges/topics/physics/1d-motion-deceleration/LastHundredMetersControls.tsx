@@ -8,8 +8,6 @@ import {
 import {
   GameHUDContainer,
   HUDPanel,
-  SpeedometerDial,
-  CircularRingGauge,
   TelemetryGrid,
   ResourceGauge,
   TactilePedalButton,
@@ -24,7 +22,6 @@ import {
   Camera,
   Volume2,
   VolumeX,
-  Sparkles,
   ChevronRight,
   Zap,
   Lock,
@@ -68,6 +65,7 @@ export function LastHundredMetersControls({ config }: Props) {
   const deckLength = useLastHundredMetersStore((s) => s.deckLength);
   const inputAcceleration = useLastHundredMetersStore((s) => s.inputAcceleration);
   const hasLaunched = useLastHundredMetersStore((s) => s.hasLaunched);
+  const isAccelerating = useLastHundredMetersStore((s) => s.isAccelerating);
   const takeoffTriggered = useLastHundredMetersStore((s) => s.takeoffTriggered);
   const flightOutcome = useLastHundredMetersStore((s) => s.flightOutcome);
   const finalSpeed = useLastHundredMetersStore((s) => s.finalSpeed);
@@ -75,6 +73,7 @@ export function LastHundredMetersControls({ config }: Props) {
   const isSoundEnabled = useLastHundredMetersStore((s) => s.isSoundEnabled);
 
   const setInputAcceleration = useLastHundredMetersStore((s) => s.setInputAcceleration);
+  const setIsAccelerating = useLastHundredMetersStore((s) => s.setIsAccelerating);
   const setCameraMode = useLastHundredMetersStore((s) => s.setCameraMode);
   const toggleSound = useLastHundredMetersStore((s) => s.toggleSound);
   const autoCalibrate = useLastHundredMetersStore((s) => s.autoCalibrate);
@@ -99,20 +98,51 @@ export function LastHundredMetersControls({ config }: Props) {
     return () => cancelAnimationFrame(animId);
   }, [getLiveSpeed, getLiveJetPos]);
 
-  // Keyboard controls
+
+  const isSpeedReady = liveSpeed >= targetTakeoffSpeed;
+
+  // Keyboard controls: Hold Space to accelerate, release to stop
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.code === "Space" || e.code === "Enter") {
-        if (!hasLaunched) {
-          launchCatapult();
-        } else if (!takeoffTriggered && liveSpeed >= targetTakeoffSpeed) {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
+      if (e.code === "Space") {
+        if (!e.repeat) {
+          if (!hasLaunched) {
+            launchCatapult();
+            challengeAudio.playLaunch();
+          } else if (isSpeedReady && !takeoffTriggered) {
+            triggerTakeoffPitch();
+          } else {
+            setIsAccelerating(true);
+          }
+        }
+      } else if (e.code === "Enter" || e.code === "KeyW" || e.code === "ArrowUp") {
+        if (isSpeedReady && !takeoffTriggered) {
           triggerTakeoffPitch();
         }
       }
     };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.code === "Space") {
+        setIsAccelerating(false);
+      }
+    };
+
+    const handleBlur = () => {
+      setIsAccelerating(false);
+    };
+
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [hasLaunched, takeoffTriggered, liveSpeed, targetTakeoffSpeed, launchCatapult, triggerTakeoffPitch]);
+    window.addEventListener("keyup", handleKeyUp);
+    window.addEventListener("blur", handleBlur);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+      window.removeEventListener("blur", handleBlur);
+    };
+  }, [hasLaunched, takeoffTriggered, isSpeedReady, launchCatapult, setIsAccelerating, triggerTakeoffPitch]);
 
   const theoreticalMinA = useMemo(() => {
     const safeDeck = Math.max(50, deckLength - 25);
@@ -121,7 +151,6 @@ export function LastHundredMetersControls({ config }: Props) {
 
   const isAirborne = flightOutcome === "airborne";
   const isCrashed = flightOutcome === "stalled_water" || flightOutcome === "overshot_deck" || flightOutcome === "overheated_structural";
-  const isSpeedReady = liveSpeed >= targetTakeoffSpeed;
   const remainingRunway = Math.max(0, deckLength - livePos);
   const missionInfo = MISSION_DETAILS[currentRound - 1] || MISSION_DETAILS[0];
 
@@ -132,6 +161,29 @@ export function LastHundredMetersControls({ config }: Props) {
       difficulty="medium"
       xpReward={150}
       onReset={reset}
+      hideEyeButton={true}
+      hideRestartButton={true}
+      hideTopBar={true}
+      instructionsOverlay={{
+        title: "INSTRUCTIONS TO PLAY",
+        instructions: [
+          {
+            title: "Hold To Accelerate",
+            badge: "Bottom Center",
+            description: "Press and hold the ACCELERATE pedal (or Spacebar). Catapult thrust is ONLY applied while held down — releasing immediately cuts engine thrust!",
+          },
+          {
+            title: "Build Takeoff Airspeed",
+            badge: "Target Lift Speed",
+            description: "Hold down the pedal until your airspeed reaches the mission's required lift speed before running out of the carrier runway.",
+          },
+          {
+            title: "Rotate & Take Off",
+            badge: "Bottom Right",
+            description: "Once lift speed is reached, the right button unlocks green. Tap TAKE OFF NOW immediately to rotate pitch and climb safely into the sky!",
+          },
+        ],
+      }}
       topCenterHUD={
         <div className="flex items-center gap-3 bg-[#080E1C]/90 backdrop-blur-xl border border-white/[0.08] px-3.5 py-1.5 rounded-2xl">
           <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-amber-400">
@@ -140,8 +192,11 @@ export function LastHundredMetersControls({ config }: Props) {
           </div>
           <span className="text-slate-600">|</span>
           <div className="flex items-center gap-1 font-mono text-xs text-slate-300">
-            <span>MISSION</span>
+            <span>STAGE</span>
             <span className="text-cyan-400 font-bold">{currentRound} / 3</span>
+            <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+              {deckLength}m Deck · Req: {targetTakeoffSpeed} m/s
+            </span>
           </div>
         </div>
       }
@@ -192,8 +247,8 @@ export function LastHundredMetersControls({ config }: Props) {
           flightOutcome === "stalled_water"
             ? "Stalled into the ocean! Insufficient airspeed at end of deck."
             : flightOutcome === "overshot_deck"
-            ? "Overshot runway without rotating pitch in time!"
-            : "Airframe structural failure from excessive G-forces.",
+              ? "Overshot runway without rotating pitch in time!"
+              : "Airframe structural failure from excessive G-forces.",
         tip: `Keep holding ACCELERATE to build speed, and tap TAKE OFF as soon as the button unlocks green at ${targetTakeoffSpeed} m/s.`,
         stats: [
           { label: "Takeoff Speed", value: `${finalSpeed !== null ? finalSpeed.toFixed(1) : "0.0"} / ${targetTakeoffSpeed}`, unit: "m/s" },
@@ -227,47 +282,6 @@ export function LastHundredMetersControls({ config }: Props) {
             "Catapult launches operate at high acceleration to provide sufficient airspeed over a short deck length before running out of runway.",
         },
       }}
-      leftHUD={
-        <div className="flex flex-col items-center gap-1.5 p-1.5 xs:p-2 rounded-3xl bg-slate-950/40 backdrop-blur-xl border border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.3)]">
-          <SpeedometerDial
-            value={liveSpeed}
-            min={0}
-            max={60}
-            targetValue={targetTakeoffSpeed}
-            label="AIRSPEED"
-            unit="m/s"
-            size={130}
-            variant={isSpeedReady ? "emerald" : "cyan"}
-          />
-        </div>
-      }
-      rightHUD={
-        <div className="flex flex-col items-center gap-2">
-          {/* Runway Left Circular Ring */}
-          <CircularRingGauge
-            value={remainingRunway}
-            max={deckLength}
-            label="runway left"
-            sublabel={remainingRunway < 30 ? "critical" : `${remainingRunway.toFixed(0)}m deck`}
-            unit="m"
-            icon={PlaneTakeoff}
-            variant={remainingRunway < 30 ? "rose" : "cyan"}
-            size={68}
-          />
-
-          {/* Catapult Thrust Circular Ring */}
-          <CircularRingGauge
-            value={inputAcceleration}
-            max={8}
-            label="catapult thrust"
-            sublabel={`min: ${theoreticalMinA.toFixed(1)}`}
-            unit="m/s²"
-            icon={Flame}
-            variant={inputAcceleration >= theoreticalMinA ? "emerald" : "amber"}
-            size={68}
-          />
-        </div>
-      }
       bottomDock={
         <div className="flex flex-col items-center gap-1.5 xs:gap-2 pointer-events-auto select-none pb-2 sm:pb-3">
           {/* Minimalist Floating Speed Readout */}
@@ -280,11 +294,10 @@ export function LastHundredMetersControls({ config }: Props) {
             </div>
             <div className="w-24 sm:w-36 h-0.5 bg-white/15 rounded-full overflow-hidden mt-0.5 backdrop-blur-sm">
               <div
-                className={`h-full rounded-full transition-all duration-150 ${
-                  isSpeedReady
+                className={`h-full rounded-full transition-all duration-150 ${isSpeedReady
                     ? "bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.9)]"
                     : "bg-cyan-400 shadow-[0_0_6px_rgba(6,182,212,0.8)]"
-                }`}
+                  }`}
                 style={{
                   width: `${Math.min(100, Math.max(0, (liveSpeed / targetTakeoffSpeed) * 100))}%`,
                 }}
@@ -294,34 +307,25 @@ export function LastHundredMetersControls({ config }: Props) {
 
           {/* Engaging Vehicle Controls: Accelerator Pedal + Dynamic Takeoff Trigger */}
           <div className="flex items-center justify-center gap-3 sm:gap-5">
-            {/* Left: Floating Circular Auto-Calibrate Button */}
-            <button
-              type="button"
-              onClick={autoCalibrate}
-              disabled={hasLaunched}
-              className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-slate-950/45 hover:bg-slate-900/65 backdrop-blur-xl border border-white/15 text-slate-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] flex items-center justify-center active:scale-90 transition-all disabled:opacity-30"
-              title="Auto-calibrate optimal catapult thrust"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            </button>
-
             {/* Center: Tactile ACCELERATOR / AFTERBURNER Pedal Button */}
             <TactilePedalButton
-              label={hasLaunched ? "ACCELERATING" : "HOLD TO ACCEL"}
-              sublabel={hasLaunched ? `${liveSpeed.toFixed(0)} m/s` : "Engage Afterburner"}
+              label={isAccelerating ? "ACCELERATING..." : hasLaunched ? "HOLD TO ACCEL" : "HOLD TO ACCEL"}
+              sublabel={isAccelerating ? `${liveSpeed.toFixed(0)} m/s (THRUST ENGAGED)` : hasLaunched ? "Coasting (Thrust Disengaged)" : "Engage Afterburner"}
               icon={Flame}
-              variant="amber"
+              variant={isAccelerating ? "amber" : "cyan"}
               disabled={isAirborne || isCrashed}
               onPressStart={() => {
                 if (!hasLaunched) {
                   launchCatapult();
                   challengeAudio.playLaunch();
+                } else {
+                  setIsAccelerating(true);
                 }
               }}
+              onPressEnd={() => {
+                setIsAccelerating(false);
+              }}
               onHold={(dt) => {
-                if (!hasLaunched) {
-                  launchCatapult();
-                }
                 // When holding accelerator, spool thrust to reach lift speed
                 if (inputAcceleration < theoreticalMinA) {
                   setInputAcceleration(Math.min(6.0, +(inputAcceleration + dt * 2.0).toFixed(1)));

@@ -12,6 +12,7 @@ export interface CarrierTakeoffExtra extends Record<string, unknown> {
   deckLength: number;
   inputAcceleration: number;
   hasLaunched: boolean;
+  isAccelerating: boolean;
   takeoffTriggered: boolean;
   flightOutcome: "idle" | "airborne" | "stalled_water" | "overheated_structural" | "overshot_deck";
   finalSpeed: number | null;
@@ -26,6 +27,7 @@ export interface CarrierTakeoffExtra extends Record<string, unknown> {
   setLiveSpeedGetter: (fn: () => number) => void;
   setLiveJetPosGetter: (fn: () => number) => void;
   setInputAcceleration: (a: number) => void;
+  setIsAccelerating: (accel: boolean) => void;
   setThrottleLevel: (t: number) => void;
   setCameraMode: (mode: CarrierCameraMode) => void;
   toggleSound: () => void;
@@ -51,6 +53,7 @@ export const createLastHundredMetersStore = createChallengeStore<CarrierTakeoffE
     deckLength: 250,
     inputAcceleration: 3.2,
     hasLaunched: false,
+    isAccelerating: false,
     takeoffTriggered: false,
     flightOutcome: "idle",
     finalSpeed: null,
@@ -65,6 +68,7 @@ export const createLastHundredMetersStore = createChallengeStore<CarrierTakeoffE
     setLiveSpeedGetter: () => {},
     setLiveJetPosGetter: () => {},
     setInputAcceleration: () => {},
+    setIsAccelerating: () => {},
     setThrottleLevel: () => {},
     setCameraMode: () => {},
     toggleSound: () => {},
@@ -191,7 +195,8 @@ export const createLastHundredMetersStore = createChallengeStore<CarrierTakeoffE
             targetTakeoffSpeed: config.targetSpeed,
             inputAcceleration: nextR === 2 ? 4.4 : 5.0,
             hasLaunched: false,
-            takeoffTriggered: false,
+    isAccelerating: false,
+    takeoffTriggered: false,
             flightOutcome: "idle",
             finalSpeed: null,
             takeoffPos: null,

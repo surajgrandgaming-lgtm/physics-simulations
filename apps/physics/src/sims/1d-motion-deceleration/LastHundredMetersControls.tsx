@@ -126,8 +126,11 @@ export function LastHundredMetersControls({ config }: Props) {
           </div>
           <span className="text-slate-600">•</span>
           <div className="flex items-center gap-1 font-mono text-xs text-slate-300">
-            <span>MISSION</span>
+            <span>STAGE</span>
             <span className="text-cyan-400 font-bold">{currentRound} / 3</span>
+            <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+              {deckLength}m Deck · Req: {targetTakeoffSpeed} m/s
+            </span>
           </div>
         </div>
       }

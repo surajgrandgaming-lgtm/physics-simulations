@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import { LucideIcon } from "lucide-react";
 
 export interface TactilePedalButtonProps {
@@ -30,6 +30,8 @@ export function TactilePedalButton({
   className = "",
 }: TactilePedalButtonProps) {
   const [isPressed, setIsPressed] = useState(false);
+  const isPressedRef = useRef(false);
+
   const onHoldRef = useRef(onHold);
   onHoldRef.current = onHold;
 
@@ -39,7 +41,59 @@ export function TactilePedalButton({
   const onPressEndRef = useRef(onPressEnd);
   onPressEndRef.current = onPressEnd;
 
-  // Unbroken continuous hold loop
+  const stopPress = useCallback(() => {
+    if (isPressedRef.current) {
+      isPressedRef.current = false;
+      setIsPressed(false);
+      onPressEndRef.current?.();
+    }
+  }, []);
+
+  const startPress = useCallback(() => {
+    if (disabled || isPressedRef.current) return;
+    isPressedRef.current = true;
+    setIsPressed(true);
+    if (typeof navigator !== "undefined" && navigator.vibrate) {
+      try {
+        navigator.vibrate(15);
+      } catch {}
+    }
+    onPressStartRef.current?.();
+  }, [disabled]);
+
+  // If disabled while pressed, immediately stop
+  useEffect(() => {
+    if (disabled && isPressedRef.current) {
+      stopPress();
+    }
+  }, [disabled, stopPress]);
+
+  // Global window release listener so the button NEVER gets stuck pressed anywhere on screen
+  useEffect(() => {
+    const handleGlobalRelease = () => {
+      if (isPressedRef.current) {
+        stopPress();
+      }
+    };
+
+    window.addEventListener("pointerup", handleGlobalRelease);
+    window.addEventListener("pointercancel", handleGlobalRelease);
+    window.addEventListener("mouseup", handleGlobalRelease);
+    window.addEventListener("touchend", handleGlobalRelease);
+    window.addEventListener("touchcancel", handleGlobalRelease);
+    window.addEventListener("blur", handleGlobalRelease);
+
+    return () => {
+      window.removeEventListener("pointerup", handleGlobalRelease);
+      window.removeEventListener("pointercancel", handleGlobalRelease);
+      window.removeEventListener("mouseup", handleGlobalRelease);
+      window.removeEventListener("touchend", handleGlobalRelease);
+      window.removeEventListener("touchcancel", handleGlobalRelease);
+      window.removeEventListener("blur", handleGlobalRelease);
+    };
+  }, [stopPress]);
+
+  // Continuous hold loop while isPressed is true
   useEffect(() => {
     if (!isPressed || disabled) return;
 
@@ -48,12 +102,14 @@ export function TactilePedalButton({
     let lastTime = performance.now();
 
     const loop = (now: number) => {
-      if (!isRunning) return;
+      if (!isRunning || !isPressedRef.current) return;
       const dt = Math.min((now - lastTime) / 1000, 0.05);
       lastTime = now;
 
       onHoldRef.current?.(dt);
-      animId = requestAnimationFrame(loop);
+      if (isPressedRef.current && isRunning) {
+        animId = requestAnimationFrame(loop);
+      }
     };
 
     animId = requestAnimationFrame(loop);
@@ -63,31 +119,13 @@ export function TactilePedalButton({
     };
   }, [isPressed, disabled]);
 
-  const handlePointerDown = (e: React.PointerEvent<HTMLButtonElement>) => {
+  const handlePressDown = (e: React.SyntheticEvent) => {
     if (disabled) return;
-    e.preventDefault();
-    e.stopPropagation();
-
-    try {
-      e.currentTarget.setPointerCapture(e.pointerId);
-    } catch {}
-
-    setIsPressed(true);
-    if (typeof navigator !== "undefined" && navigator.vibrate) {
-      try {
-        navigator.vibrate(15);
-      } catch {}
-    }
-    onPressStartRef.current?.();
+    startPress();
   };
 
-  const handlePointerUp = (e: React.PointerEvent<HTMLButtonElement>) => {
-    try {
-      e.currentTarget.releasePointerCapture(e.pointerId);
-    } catch {}
-
-    setIsPressed(false);
-    onPressEndRef.current?.();
+  const handlePressUp = (e: React.SyntheticEvent) => {
+    stopPress();
   };
 
   const cyanStyle = isPressed
@@ -111,12 +149,18 @@ export function TactilePedalButton({
   return (
     <button
       type="button"
-      onPointerDown={handlePointerDown}
-      onPointerUp={handlePointerUp}
-      onPointerCancel={handlePointerUp}
+      onPointerDown={handlePressDown}
+      onPointerUp={handlePressUp}
+      onPointerCancel={handlePressUp}
+      onPointerLeave={handlePressUp}
+      onMouseDown={handlePressDown}
+      onMouseUp={handlePressUp}
+      onTouchStart={handlePressDown}
+      onTouchEnd={handlePressUp}
+      onTouchCancel={handlePressUp}
       disabled={disabled}
       style={{ touchAction: "none" }}
-      className={`relative h-12 sm:h-14 px-4 sm:px-6 rounded-2xl border backdrop-blur-xl flex items-center justify-center gap-2.5 font-mono uppercase tracking-wider transition-all duration-150 disabled:opacity-30 disabled:pointer-events-none select-none ${variantStyles} ${className}`}
+      className={`relative h-12 sm:h-14 px-4 sm:px-6 rounded-2xl border backdrop-blur-xl flex items-center justify-center gap-2.5 font-mono uppercase tracking-wider transition-all duration-150 disabled:opacity-30 disabled:pointer-events-none select-none cursor-pointer ${variantStyles} ${className}`}
     >
       {/* Icon with glow */}
       {Icon && (

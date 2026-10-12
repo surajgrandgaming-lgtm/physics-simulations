@@ -12,6 +12,7 @@ export interface CarrierTakeoffExtra extends Record<string, unknown> {
   deckLength: number;
   inputAcceleration: number;
   hasLaunched: boolean;
+  isAccelerating: boolean;
   takeoffTriggered: boolean;
   flightOutcome: "idle" | "airborne" | "stalled_water" | "overheated_structural" | "overshot_deck";
   finalSpeed: number | null;
@@ -26,6 +27,7 @@ export interface CarrierTakeoffExtra extends Record<string, unknown> {
   setLiveSpeedGetter: (fn: () => number) => void;
   setLiveJetPosGetter: (fn: () => number) => void;
   setInputAcceleration: (a: number) => void;
+  setIsAccelerating: (accel: boolean) => void;
   setThrottleLevel: (t: number) => void;
   setCameraMode: (mode: CarrierCameraMode) => void;
   toggleSound: () => void;
@@ -49,8 +51,9 @@ export const createLastHundredMetersStore = createChallengeStore<CarrierTakeoffE
     targetTakeoffSpeed: 36,
     maxSafeSpeed: 55,
     deckLength: 250,
-    inputAcceleration: 2.0,
+    inputAcceleration: 3.2,
     hasLaunched: false,
+    isAccelerating: false,
     takeoffTriggered: false,
     flightOutcome: "idle",
     finalSpeed: null,
@@ -65,6 +68,7 @@ export const createLastHundredMetersStore = createChallengeStore<CarrierTakeoffE
     setLiveSpeedGetter: () => {},
     setLiveJetPosGetter: () => {},
     setInputAcceleration: () => {},
+    setIsAccelerating: () => {},
     setThrottleLevel: () => {},
     setCameraMode: () => {},
     toggleSound: () => {},
@@ -95,6 +99,10 @@ export const createLastHundredMetersStore = createChallengeStore<CarrierTakeoffE
         }
       },
 
+      setIsAccelerating: (accel: boolean) => {
+        set({ isAccelerating: accel });
+      },
+
       setThrottleLevel: (t: number) => {
         set({ throttleLevel: Math.max(20, Math.min(100, t)) });
       },
@@ -118,6 +126,7 @@ export const createLastHundredMetersStore = createChallengeStore<CarrierTakeoffE
       launchCatapult: () => {
         set({
           hasLaunched: true,
+          isAccelerating: true,
           takeoffTriggered: false,
           flightOutcome: "idle",
           finalSpeed: null,
@@ -166,6 +175,7 @@ export const createLastHundredMetersStore = createChallengeStore<CarrierTakeoffE
           flightOutcome: outcome,
           finalSpeed: speed,
           takeoffPos: pos,
+          isAccelerating: false,
           status: isSuccess ? "success" : "fail",
         });
 
@@ -189,8 +199,9 @@ export const createLastHundredMetersStore = createChallengeStore<CarrierTakeoffE
             currentRound: nextR,
             deckLength: config.deckLength,
             targetTakeoffSpeed: config.targetSpeed,
-            inputAcceleration: nextR === 2 ? 2.5 : 2.8,
+            inputAcceleration: nextR === 2 ? 4.4 : 5.0,
             hasLaunched: false,
+            isAccelerating: false,
             takeoffTriggered: false,
             flightOutcome: "idle",
             finalSpeed: null,
@@ -207,9 +218,10 @@ export const createLastHundredMetersStore = createChallengeStore<CarrierTakeoffE
         set({
           deckLength: config.deckLength,
           targetTakeoffSpeed: config.targetSpeed,
-          inputAcceleration: round === 1 ? 2.0 : round === 2 ? 2.5 : 2.8,
+          inputAcceleration: round === 1 ? 3.2 : round === 2 ? 4.4 : 5.0,
           throttleLevel: 80,
           hasLaunched: false,
+          isAccelerating: false,
           takeoffTriggered: false,
           flightOutcome: "idle",
           finalSpeed: null,

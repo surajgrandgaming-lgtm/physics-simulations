@@ -435,6 +435,7 @@ function CarrierTakeoffInner({ deckLength = 250 }: InnerSceneProps) {
   const setLiveSpeedGetter = useLastHundredMetersStore((s) => s.setLiveSpeedGetter);
   const setLiveJetPosGetter = useLastHundredMetersStore((s) => s.setLiveJetPosGetter);
   const hasLaunched = useLastHundredMetersStore((s) => s.hasLaunched);
+  const isAccelerating = useLastHundredMetersStore((s) => s.isAccelerating);
   const takeoffTriggered = useLastHundredMetersStore((s) => s.takeoffTriggered);
   const inputAcceleration = useLastHundredMetersStore((s) => s.inputAcceleration);
   const targetTakeoffSpeed = useLastHundredMetersStore((s) => s.targetTakeoffSpeed);
@@ -513,8 +514,17 @@ function CarrierTakeoffInner({ deckLength = 250 }: InnerSceneProps) {
 
     // ── 1. Runway Acceleration Stage ──
     if (hasLaunched && !hasEnded.current) {
-      const a = inputAcceleration;
-      velX.current += a * delta;
+      if (!takeoffTriggered) {
+        const accelActive = store ? store.getState().isAccelerating : isAccelerating;
+        if (accelActive) {
+          // Accelerate ONLY while the user actively holds the acceleration button or key
+          const a = inputAcceleration;
+          velX.current += a * delta;
+        } else {
+          // When released, coast with natural rolling friction/aerodynamic drag
+          velX.current = Math.max(0, velX.current - 1.0 * delta);
+        }
+      }
       posX.current += velX.current * delta;
 
       // ── 2. Takeoff / Pitch Rotation Execution ──
