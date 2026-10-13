@@ -3,7 +3,7 @@
 import React, { useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { OrbitControls, Line, Html } from "@react-three/drei";
+import { OrbitControls, Line } from "@react-three/drei";
 import { SceneLighting } from "@topcoaching/sim-core";
 import { JetFighter, DrogueBasket } from "@/sims/kit/JetFighter";
 import { SkyEnvironment } from "@/sims/kit/SkyEnvironment";
@@ -161,8 +161,8 @@ function FlightScene({ controlsRef }: { controlsRef: React.RefObject<any> }) {
         position={leadPos}
         speed={store.tankerSpeed}
         variant="tanker"
-        callsign="LEAD JET (100 m/s)"
         hasProbe={false}
+        showLabels={false}
       />
 
       {/* ── Dropped Fuel Pipe ── */}
@@ -186,8 +186,8 @@ function FlightScene({ controlsRef }: { controlsRef: React.RefObject<any> }) {
           speed={store.playerSpeed}
           variant="player"
           isDocked={store.isConnected}
-          callsign="YOUR JET"
           hasProbe={true}
+          showLabels={false}
         />
         {/* Crash Fire & Smoke */}
         {store.isCrashed && (
@@ -205,29 +205,7 @@ function FlightScene({ controlsRef }: { controlsRef: React.RefObject<any> }) {
       </group>
 
       {/* ── Relative Velocity Vector Overlay ── */}
-      {store.isRunning && Math.abs(store.relativeSpeed) > 0.5 && !store.isCrashed && !store.isConnected && (
-        <group position={[-pipeLength - store.pipeDistance, 16.5, 0]}>
-          <Line
-            points={[
-              [0, 0, 0],
-              [store.relativeSpeed > 0 ? 3.5 : -3.5, 0, 0],
-            ]}
-            color={store.relativeSpeed > 0 ? "#10b981" : "#f43f5e"}
-            lineWidth={4}
-          />
-          <Html center distanceFactor={60}>
-            <div
-              className={`px-1.5 py-0.5 rounded text-[8px] sm:text-[10px] font-mono font-bold whitespace-nowrap shadow-md border pointer-events-none ${
-                store.relativeSpeed > 0
-                  ? "bg-emerald-950/90 text-emerald-300 border-emerald-500"
-                  : "bg-rose-950/90 text-rose-300 border-rose-500"
-              }`}
-            >
-              v_rel = {store.relativeSpeed > 0 ? `+${store.relativeSpeed.toFixed(0)}` : store.relativeSpeed.toFixed(0)} m/s
-            </div>
-          </Html>
-        </group>
-      )}
+      
     </group>
   );
 }
