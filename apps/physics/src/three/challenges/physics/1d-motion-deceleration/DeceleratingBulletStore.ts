@@ -268,6 +268,9 @@ export const createDeceleratingBulletStore = createChallengeStore<DeceleratingBu
             failedAttempts: 0,
             actualExitVelocity: null,
             actualPenetrationDepth: null,
+            stoppedInZone: false,
+            breachedLayer1: false,
+            breachedLayer2: false,
           });
         }
       },
@@ -289,6 +292,9 @@ export const createDeceleratingBulletStore = createChallengeStore<DeceleratingBu
           status: "idle",
           actualExitVelocity: null,
           actualPenetrationDepth: null,
+          stoppedInZone: false,
+          breachedLayer1: false,
+          breachedLayer2: false,
           stars: 0,
           elapsedMs: 0,
         });

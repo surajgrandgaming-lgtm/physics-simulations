@@ -1,6 +1,6 @@
 "use client";
 
-import { createChallengeStore, createChallengeContext } from "@topcoaching/sim-core";
+import { createChallengeStore, createChallengeContext } from "@/stores/factory";
 
 export type BallisticCameraMode = "side" | "fpv" | "impact";
 
@@ -35,6 +35,8 @@ export interface DeceleratingBulletExtra extends Record<string, unknown> {
   setLiveDepthGetter: (fn: () => number) => void;
   setVtPointsGetter: (fn: () => Array<{ t: number; x: number; v: number }>) => void;
   setInitialVelocity: (v: number) => void;
+  adjustVelocity: (delta: number) => void;
+  dischargeCapacitors: () => void;
   setPlaybackSpeed: (speed: number) => void;
   setCameraMode: (mode: BallisticCameraMode) => void;
   toggleSound: () => void;
@@ -92,7 +94,7 @@ export const BALLISTIC_MISSIONS = [
 export const createDeceleratingBulletStore = createChallengeStore<DeceleratingBulletExtra>(
   {
     currentRound: 1,
-    initialVelocity: 220,
+    initialVelocity: 200,
     minSliderV: 180,
     maxSliderV: 480,
     mass: 0.01,
@@ -121,6 +123,8 @@ export const createDeceleratingBulletStore = createChallengeStore<DeceleratingBu
     setLiveDepthGetter: () => {},
     setVtPointsGetter: () => {},
     setInitialVelocity: () => {},
+    adjustVelocity: () => {},
+    dischargeCapacitors: () => {},
     setPlaybackSpeed: () => {},
     setCameraMode: () => {},
     toggleSound: () => {},
@@ -153,6 +157,20 @@ export const createDeceleratingBulletStore = createChallengeStore<DeceleratingBu
         if (get().phase !== "firing") {
           const { minSliderV, maxSliderV } = get();
           set({ initialVelocity: Math.max(minSliderV, Math.min(maxSliderV, Math.round(v))) });
+        }
+      },
+
+      adjustVelocity: (delta: number) => {
+        if (get().phase !== "firing") {
+          const { minSliderV, maxSliderV, initialVelocity } = get();
+          set({ initialVelocity: Math.max(minSliderV, Math.min(maxSliderV, Math.round(initialVelocity + delta))) });
+        }
+      },
+
+      dischargeCapacitors: () => {
+        if (get().phase !== "firing") {
+          const { minSliderV } = get();
+          set({ initialVelocity: minSliderV });
         }
       },
 
@@ -244,12 +262,15 @@ export const createDeceleratingBulletStore = createChallengeStore<DeceleratingBu
             targetMaxDepth: config.targetMax,
             minSliderV: config.minSliderV,
             maxSliderV: config.maxSliderV,
-            initialVelocity: config.minSliderV + 60,
+            initialVelocity: config.minSliderV + 20,
             phase: "ready",
             status: "idle",
             failedAttempts: 0,
             actualExitVelocity: null,
             actualPenetrationDepth: null,
+            stoppedInZone: false,
+            breachedLayer1: false,
+            breachedLayer2: false,
           });
         }
       },
@@ -266,11 +287,14 @@ export const createDeceleratingBulletStore = createChallengeStore<DeceleratingBu
           targetMaxDepth: config.targetMax,
           minSliderV: config.minSliderV,
           maxSliderV: config.maxSliderV,
-          initialVelocity: config.minSliderV + 60,
+          initialVelocity: config.minSliderV + 20,
           phase: "ready",
           status: "idle",
           actualExitVelocity: null,
           actualPenetrationDepth: null,
+          stoppedInZone: false,
+          breachedLayer1: false,
+          breachedLayer2: false,
           stars: 0,
           elapsedMs: 0,
         });

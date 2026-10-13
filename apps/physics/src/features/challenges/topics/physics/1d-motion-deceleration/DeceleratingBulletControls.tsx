@@ -130,22 +130,29 @@ export function DeceleratingBulletControls({ config }: Props) {
       difficulty="advanced"
       xpReward={200}
       onReset={reset}
-      topCenterHUD={
-        <div className="flex items-center gap-3 bg-[#080E1C]/90 backdrop-blur-xl border border-white/[0.08] px-3.5 py-1.5 rounded-2xl">
-          <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-amber-400">
-            <Trophy className="w-3.5 h-3.5" />
-            <span>{totalScore} PTS</span>
-          </div>
-          <span className="text-slate-600">|</span>
-          <div className="flex items-center gap-1 font-mono text-xs text-slate-300">
-            <span>TARGET STAGE</span>
-            <span className="text-cyan-400 font-bold">{currentRound} / 3</span>
-            <span className="ml-1 text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-1.5 py-0.5 rounded">
-              SENSOR {targetMinDepth}m - {targetMaxDepth}m
-            </span>
-          </div>
-        </div>
-      }
+      hideEyeButton={true}
+      hideRestartButton={true}
+      hideTopBar={true}
+      instructionsOverlay={{
+        title: "INSTRUCTIONS TO PLAY",
+        instructions: [
+          {
+            title: "Tune Muzzle Speed",
+            badge: "Bottom Throttle",
+            description: "Hold [+] to CHARGE or [-] to VENT (or swipe) to adjust bullet launch velocity v0.",
+          },
+          {
+            title: "Penetrate Composite Armor",
+            badge: "2 Layers",
+            description: "Round decelerates exponentially through Layer 1 (Ballistic Gel) and Layer 2 (Composite Armor).",
+          },
+          {
+            title: "Lodge in Target Sensor Core",
+            badge: `${targetMinDepth}m – ${targetMaxDepth}m`,
+            description: "Calculate optimal muzzle velocity so the round halts precisely inside the Emerald Sensor Zone!",
+          },
+        ],
+      }}
       briefing={{
         target: "Fire the bullet so it stops inside the target sensor zone",
         storyObjective:
@@ -188,7 +195,7 @@ export function DeceleratingBulletControls({ config }: Props) {
         ],
       }}
       result={{
-        isWon: stoppedInZone,
+        isWon: isFinished && stoppedInZone,
         isGameOver: isFinished && !stoppedInZone,
         onNextTier: currentRound < 3 ? nextRound : undefined,
         nextTierUrl: currentRound === 3 ? "/physics/kinematics/relative-motion/challenge/easy" : undefined,
@@ -231,47 +238,6 @@ export function DeceleratingBulletControls({ config }: Props) {
             "Energy absorption under quadratic drag yields velocity decay exponential with distance: v(x) = v0·exp(-βx). Total penetration is governed by cumulative logarithmic resistance.",
         },
       }}
-      leftHUD={
-        <div className="flex flex-col items-center gap-2 p-2 rounded-3xl bg-slate-950/40 backdrop-blur-xl border border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.3)]">
-          <SpeedometerDial
-            value={isFiring ? liveSpeed : initialVelocity}
-            min={0}
-            max={maxSliderV}
-            targetValue={initialVelocity}
-            label={isFiring ? "LIVE SPEED" : "MUZZLE SPEED"}
-            unit="m/s"
-            size={130}
-            variant={stoppedInZone ? "emerald" : "cyan"}
-          />
-        </div>
-      }
-      rightHUD={
-        <div className="flex flex-col items-center gap-2">
-          {/* Armor Penetration Circular Ring */}
-          <CircularRingGauge
-            value={liveDepth}
-            max={totalLength}
-            label="armor depth"
-            sublabel={stoppedInZone ? "in target" : `${liveDepth.toFixed(1)}m / ${totalLength}m`}
-            unit="m"
-            icon={Crosshair}
-            variant={stoppedInZone ? "emerald" : "cyan"}
-            size={68}
-          />
-
-          {/* Mach Speed Circular Ring */}
-          <CircularRingGauge
-            value={parseFloat(machSpeed) || 1}
-            max={5}
-            label="mach rating"
-            sublabel={`${initialVelocity} m/s`}
-            unit="M"
-            icon={Flame}
-            variant="amber"
-            size={68}
-          />
-        </div>
-      }
       bottomDock={
         <div className="flex flex-col items-center gap-2 pointer-events-auto select-none pb-2 sm:pb-3 max-w-xl mx-auto w-full px-3">
           {/* Real-time Telemetry & Armor Cross-Section Progress Bar */}
@@ -348,42 +314,50 @@ export function DeceleratingBulletControls({ config }: Props) {
           {/* PHASE 1: READY - BIDIRECTIONAL THROTTLE & FIRE SABOT                      */}
           {/* ========================================================================= */}
           {phase === "ready" && (
-            <div className="flex items-center justify-center gap-2 sm:gap-3.5 w-full">
-              {/* Quick Auto-Tune Button */}
+            <div className="flex flex-wrap sm:flex-nowrap items-center justify-center gap-2 sm:gap-4 w-full max-w-xl px-1">
+              {/* Velocity Setter Bar with + and - matching Easy & Medium theme */}
+              <div className="order-1 flex-1 sm:flex-none flex items-center justify-between sm:justify-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-2xl bg-slate-950/70 backdrop-blur-xl border border-white/15 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
+                <button
+                  type="button"
+                  onClick={() => setInitialVelocity(Math.max(minSliderV, initialVelocity - 5))}
+                  className="w-7 h-7 sm:w-8 sm:h-8 shrink-0 rounded-xl bg-white/[0.08] hover:bg-white/[0.18] border border-white/15 flex items-center justify-center text-cyan-300 active:scale-90 transition-all cursor-pointer"
+                  title="Decrease muzzle velocity"
+                >
+                  <Minus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                </button>
+
+                <div className="flex flex-col items-center px-0.5 sm:px-1 min-w-[70px] sm:min-w-[90px]">
+                  <span className="text-[8px] sm:text-[9px] font-mono uppercase tracking-wider text-slate-400">
+                    Muzzle Speed
+                  </span>
+                  <span className="font-mono text-[11px] sm:text-sm font-extrabold text-cyan-200 whitespace-nowrap">
+                    {initialVelocity} m/s
+                  </span>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setInitialVelocity(Math.min(maxSliderV, initialVelocity + 5))}
+                  className="w-7 h-7 sm:w-8 sm:h-8 shrink-0 rounded-xl bg-white/[0.08] hover:bg-white/[0.18] border border-white/15 flex items-center justify-center text-cyan-300 active:scale-90 transition-all cursor-pointer"
+                  title="Increase muzzle velocity"
+                >
+                  <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                </button>
+              </div>
+
+              {/* CENTER: FIRE SABOT Button with glowing cyan-to-blue gradient */}
               <button
                 type="button"
-                onClick={autoCalibrate}
-                className="h-12 sm:h-14 px-3 sm:px-3.5 rounded-2xl bg-slate-950/60 hover:bg-slate-900/80 border border-amber-400/30 text-amber-300 backdrop-blur-xl flex items-center gap-1.5 font-mono text-xs font-bold active:scale-95 transition-all shadow-[0_0_12px_rgba(245,158,11,0.2)] shrink-0"
-                title="Auto-calculate theoretical velocity for sensor lodgement"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                <span className="hidden xs:inline">AUTO-TUNE</span>
-              </button>
-
-              {/* Center: Tactile Throttle Controller (Hold/Tap [-] to VENT, [+] to CHARGE, or Swipe UP/DOWN) */}
-              <TactileThrottleControl
-                value={initialVelocity}
-                min={minSliderV}
-                max={maxSliderV}
-                step={5}
-                ratePerSecond={150}
-                onChange={setInitialVelocity}
-                decreaseLabel="VENT"
-                increaseLabel="CHARGE"
-                unit="m/s"
-                variant="cyan"
-              />
-
-              {/* Tactical FIRE SABOT Trigger */}
-              <MobileActionTrigger
                 onClick={fireRound}
-                icon={Crosshair}
-                label="FIRE SABOT"
-                sublabel={isPredictedInZone ? "Target Locked!" : undefined}
-                variant={isPredictedInZone ? "success" : "primary"}
-                isPulsing={isPredictedInZone}
-                hotkey="SPACE"
-              />
+                className="order-2 w-full sm:w-auto h-11 sm:h-12 px-6 sm:px-10 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 border border-cyan-300/60 hover:border-white text-white font-mono font-black text-xs sm:text-sm uppercase tracking-widest transition-all active:scale-95 shadow-[0_0_25px_rgba(6,182,212,0.4)] flex items-center justify-center gap-2 cursor-pointer shrink-0 mt-1 sm:mt-0"
+                title="Fire Sabot Round"
+              >
+                <Crosshair className="w-4 h-4 text-white shrink-0" />
+                <span>FIRE SABOT</span>
+                <kbd className="hidden md:inline-block ml-1 px-1.5 py-0.5 rounded bg-black/30 border border-white/20 text-[9px] font-mono opacity-80 text-white">
+                  SPACE
+                </kbd>
+              </button>
             </div>
           )}
 

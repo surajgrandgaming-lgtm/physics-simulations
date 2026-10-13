@@ -4,12 +4,131 @@ import { useRef, useEffect, useContext, useState, Suspense, useMemo } from "reac
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { OrbitControls, Html } from "@react-three/drei";
-import { SceneLighting } from "@topcoaching/sim-core";
-import { challengeAudio } from "@topcoaching/sim-core";
+import { challengeAudio } from "@/lib/audio/challengeAudio";
 import {
   DeceleratingBulletContext,
   useDeceleratingBulletStore,
 } from "./DeceleratingBulletStore";
+
+// ════════════════════════════════════════════════════════════════════════════
+// High-Tech Ballistics Research Chamber Environment
+// ════════════════════════════════════════════════════════════════════════════
+function BallisticsFacilityEnvironment({ totalLength }: { totalLength: number }) {
+  const chamberWidth = totalLength + 30;
+
+  return (
+    <group>
+      {/* Clean White Modern Testing Laboratory Environment & Distance Fog */}
+      <color attach="background" args={["#f8fafc"]} />
+      <fog attach="fog" args={["#f8fafc", 35, 95]} />
+
+      {/* High-Key Studio Key, Rim & Ambient Fill Lighting */}
+      <ambientLight intensity={1.15} />
+      <directionalLight
+        position={[14, 22, 16]}
+        intensity={2.4}
+        color="#ffffff"
+        castShadow
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
+      />
+      {/* Cyan Back Rim Light for Rich Gel/Armor Optical Refractions */}
+      <directionalLight
+        position={[4, 12, -12]}
+        intensity={1.6}
+        color="#38bdf8"
+      />
+      {/* Soft Daylight Hemisphere Ambient Fill */}
+      <hemisphereLight args={["#f8fafc", "#e2e8f0", 0.9]} />
+
+      {/* ── 1. Structural Laboratory Back Wall (z = -8) ── */}
+      <group position={[totalLength * 0.45, 0, -8]}>
+        {/* Reinforced Clean White Laboratory Wall */}
+        <mesh>
+          <planeGeometry args={[chamberWidth, 22]} />
+          <meshStandardMaterial color="#f8fafc" roughness={0.6} metalness={0.05} />
+        </mesh>
+        {/* Horizontal LED Safety Conduits */}
+        <mesh position={[0, 4.5, 0.05]}>
+          <planeGeometry args={[chamberWidth, 0.2]} />
+          <meshBasicMaterial color="#00d8f6" />
+        </mesh>
+        <mesh position={[0, -2.5, 0.05]}>
+          <planeGeometry args={[chamberWidth, 0.15]} />
+          <meshBasicMaterial color="#f59e0b" />
+        </mesh>
+        {/* Vertical Column Accents */}
+        {[-15, 0, 15, 30].map((x, i) => (
+          <mesh key={i} position={[x, 0, 0.04]}>
+            <planeGeometry args={[0.3, 20]} />
+            <meshStandardMaterial color="#e2e8f0" metalness={0.4} roughness={0.5} />
+          </mesh>
+        ))}
+      </group>
+
+      {/* ── 2. Overhead Gantry Trusses & Industrial Light Fixtures (y = 6.5) ── */}
+      <group position={[totalLength * 0.45, 6.5, 0]}>
+        {/* Longitudinal Support Beams */}
+        <mesh position={[0, 0, 3]}>
+          <boxGeometry args={[chamberWidth, 0.35, 0.35]} />
+          <meshStandardMaterial color="#94a3b8" metalness={0.5} roughness={0.3} />
+        </mesh>
+        <mesh position={[0, 0, -3]}>
+          <boxGeometry args={[chamberWidth, 0.35, 0.35]} />
+          <meshStandardMaterial color="#94a3b8" metalness={0.5} roughness={0.3} />
+        </mesh>
+        {/* Cross Trusses & Downward Lighting Lamps */}
+        {[-12, -4, 4, 12, 20].map((x, i) => (
+          <group key={i} position={[x, 0, 0]}>
+            <mesh>
+              <boxGeometry args={[0.3, 0.3, 6.2]} />
+              <meshStandardMaterial color="#cbd5e1" metalness={0.5} roughness={0.4} />
+            </mesh>
+            {/* Glowing Fluorescent Lamp Housing */}
+            <mesh position={[0, -0.25, 0]}>
+              <boxGeometry args={[1.6, 0.15, 1.8]} />
+              <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={1.5} />
+            </mesh>
+          </group>
+        ))}
+      </group>
+
+      {/* ── 3. High-Tech Measurement Grid Floor (y = -3) ── */}
+      <group position={[totalLength * 0.45, -3, 0]}>
+        {/* Polished Epoxy Testing Floor Base */}
+        <mesh rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[chamberWidth, 24]} />
+          <meshStandardMaterial color="#f1f5f9" roughness={0.25} metalness={0.15} />
+        </mesh>
+        {/* Clean Measurement Calibration Grid */}
+        <gridHelper args={[chamberWidth, 32, 0x0284c7, 0xcfd8dc]} position={[0, 0.01, 0]} />
+      </group>
+
+      {/* ── 4. Railgun Magnetic Muzzle Barrel at x = -6 ── */}
+      <group position={[-6.2, 0, 0]}>
+        <mesh rotation={[0, 0, -Math.PI / 2]}>
+          <cylinderGeometry args={[0.8, 1.0, 5, 16]} />
+          <meshStandardMaterial color="#475569" metalness={0.8} roughness={0.25} />
+        </mesh>
+        {/* Muzzle Glow Ring */}
+        <mesh position={[2.55, 0, 0]} rotation={[0, 0, -Math.PI / 2]}>
+          <ringGeometry args={[0.6, 0.85, 24]} />
+          <meshBasicMaterial color="#00f0ff" />
+        </mesh>
+        {/* Muzzle Charging Point Light */}
+        <pointLight position={[2.6, 0, 0]} color="#00f0ff" intensity={2.0} distance={8} />
+      </group>
+
+      {/* ── 5. Continuous Laser Alignment Targeting Beam ── */}
+      <group position={[-6, 0, 0]}>
+        <mesh position={[(totalLength + 6) / 2, 0, 0]} rotation={[0, 0, -Math.PI / 2]}>
+          <cylinderGeometry args={[0.018, 0.018, totalLength + 6, 8]} />
+          <meshBasicMaterial color="#ef4444" transparent opacity={0.65} />
+        </mesh>
+      </group>
+    </group>
+  );
+}
 
 function BallisticSimulationInner() {
   const store = useContext(DeceleratingBulletContext);
@@ -53,10 +172,8 @@ function BallisticSimulationInner() {
 
     let stopX: number;
     if (v1 <= V_STOP_THRESHOLD) {
-      // Stopped inside Layer 1
       stopX = Math.max(0, (1 / layer1Beta) * Math.log(v0 / V_STOP_THRESHOLD));
     } else {
-      // Breached Layer 1, enters Layer 2
       const deltaX2 = (1 / layer2Beta) * Math.log(v1 / V_STOP_THRESHOLD);
       stopX = layer1Thickness + deltaX2;
     }
@@ -123,7 +240,7 @@ function BallisticSimulationInner() {
     const isOverpenetration = stopX >= totalLength;
     const maxBound = isOverpenetration ? totalLength + 1.2 : stopX;
 
-    // Smooth visual travel speed:
+    // Smooth visual travel speed
     const currentX = posX.current;
     let vExact: number;
     let currentLayer = 0;
@@ -139,7 +256,6 @@ function BallisticSimulationInner() {
       currentLayer = 2;
     }
 
-    // Normalized progress speed
     const speedRatio = Math.max(0.2, vExact / v0);
     const stepDx = 5.5 * speedRatio * (playbackSpeed ?? 0.25) * 4 * delta;
 
@@ -153,7 +269,6 @@ function BallisticSimulationInner() {
       challengeAudio.playBrakeSkid();
     }
 
-    // Record VT curve points
     vtPoints.current.push({
       t: timeT.current,
       x: posX.current,
@@ -197,25 +312,20 @@ function BallisticSimulationInner() {
         minDistance={2}
         maxDistance={60}
       />
-      <SceneLighting />
 
-      {/* ── Holographic Ballistic Range Backdrop ── */}
-      <mesh position={[totalLength * 0.45, 0, -5]}>
-        <planeGeometry args={[totalLength + 20, 14]} />
-        <meshBasicMaterial color="#040814" />
-      </mesh>
-      <gridHelper args={[totalLength + 20, 24, 0x00f0ff, 0x1e293b]} position={[totalLength * 0.45, -3, 0]} />
+      {/* 1. High-Tech Ballistics Testing Facility Atmosphere & Structural Lab */}
+      <BallisticsFacilityEnvironment totalLength={totalLength} />
 
-      {/* ── Layer 1: Ballistic Gel / Kevlar Medium (Cyan) ── */}
+      {/* 2. Layer 1: Ballistic Gel / Kevlar Medium (Cyan Translucent) */}
       <group position={[0, 0, 0]}>
         <mesh position={[layer1Thickness / 2, 0, 0]}>
           <boxGeometry args={[layer1Thickness, 5, 5]} />
           <meshStandardMaterial
             color="#0284C7"
-            roughness={0.15}
+            roughness={0.12}
             metalness={0.1}
             transparent
-            opacity={0.45}
+            opacity={0.5}
           />
         </mesh>
         <lineSegments position={[layer1Thickness / 2, 0, 0]}>
@@ -224,16 +334,16 @@ function BallisticSimulationInner() {
         </lineSegments>
       </group>
 
-      {/* ── Layer 2: Composite Ceramic Plate (Purple/Indigo) ── */}
+      {/* 3. Layer 2: Composite Ceramic Plate (Purple/Indigo Translucent) */}
       <group position={[layer1Thickness, 0, 0]}>
         <mesh position={[layer2Thickness / 2, 0, 0]}>
           <boxGeometry args={[layer2Thickness, 5, 5]} />
           <meshStandardMaterial
             color="#7C3AED"
-            roughness={0.25}
-            metalness={0.4}
+            roughness={0.2}
+            metalness={0.35}
             transparent
-            opacity={0.55}
+            opacity={0.6}
           />
         </mesh>
         <lineSegments position={[layer2Thickness / 2, 0, 0]}>
@@ -242,52 +352,54 @@ function BallisticSimulationInner() {
         </lineSegments>
       </group>
 
-      {/* ── Target Emerald Sensor Zone in Layer 2 ── */}
+      {/* 4. Target Emerald Sensor Core Zone in Layer 2 */}
       <group position={[targetMinDepth, 0, 0]}>
         <mesh position={[(targetMaxDepth - targetMinDepth) / 2, 0, 0]}>
           <boxGeometry args={[targetMaxDepth - targetMinDepth, 5.2, 5.2]} />
           <meshStandardMaterial
             color="#10B981"
             emissive="#10B981"
-            emissiveIntensity={0.6}
+            emissiveIntensity={0.8}
             transparent
-            opacity={0.35}
+            opacity={0.45}
           />
         </mesh>
         <lineSegments position={[(targetMaxDepth - targetMinDepth) / 2, 0, 0]}>
           <edgesGeometry args={[new THREE.BoxGeometry(targetMaxDepth - targetMinDepth, 5.2, 5.2)]} />
           <lineBasicMaterial color="#34D399" linewidth={2} />
         </lineSegments>
+        {/* Internal Sensor Glow Light */}
+        <pointLight
+          position={[(targetMaxDepth - targetMinDepth) / 2, 0, 0]}
+          color="#10B981"
+          intensity={2.0}
+          distance={6}
+        />
       </group>
 
-      {/* ── Caliper Measurement Bar on Top ── */}
+      {/* 5. Caliper Measurement Bar on Top */}
       <group position={[0, 3.2, 0]}>
-        {/* Layer 1 Caliper */}
         <mesh position={[layer1Thickness / 2, 0, 0]}>
           <boxGeometry args={[layer1Thickness - 0.1, 0.08, 0.08]} />
           <meshBasicMaterial color="#38BDF8" />
         </mesh>
-        {/* Layer 2 Caliper */}
         <mesh position={[layer1Thickness + layer2Thickness / 2, 0, 0]}>
           <boxGeometry args={[layer2Thickness - 0.1, 0.08, 0.08]} />
           <meshBasicMaterial color="#A78BFA" />
         </mesh>
       </group>
 
-      {/* ── Hypervelocity Tungsten Sabot Round ── */}
+      {/* 6. Hypervelocity Tungsten Sabot Round */}
       <group ref={bulletRef} position={[-3, 0, 0]}>
-        {/* Bullet Body */}
         <mesh rotation={[0, 0, -Math.PI / 2]}>
           <cylinderGeometry args={[0.18, 0.18, 1.2, 16]} />
           <meshStandardMaterial color="#E2E8F0" metalness={0.95} roughness={0.1} />
         </mesh>
-        {/* Aerodynamic Tip */}
         <mesh position={[0.75, 0, 0]} rotation={[0, 0, -Math.PI / 2]}>
           <coneGeometry args={[0.18, 0.5, 16]} />
           <meshStandardMaterial color="#F59E0B" emissive="#F59E0B" emissiveIntensity={0.8} />
         </mesh>
 
-        {/* Supersonic Shockwave Glow */}
         {phase === "firing" && (
           <mesh ref={shockwaveRef} position={[0.3, 0, 0]} rotation={[0, 0, -Math.PI / 2]}>
             <coneGeometry args={[0.7, 1.4, 16, 1, true]} />
@@ -298,16 +410,20 @@ function BallisticSimulationInner() {
         {/* Floating Proximity Telemetry Tag */}
         <Html position={[0, 1.6, 0]} center distanceFactor={18} zIndexRange={[100, 0]}>
           <div className="pointer-events-none select-none flex flex-col items-center">
-            <div className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-black uppercase tracking-wider border shadow-xl backdrop-blur-md transition-colors ${
-              bulletX >= targetMinDepth && bulletX <= targetMaxDepth
-                ? "bg-emerald-500/90 text-white border-emerald-400 shadow-emerald-500/50"
-                : bulletX >= totalLength
-                ? "bg-rose-500/90 text-white border-rose-400 shadow-rose-500/50"
-                : "bg-[#090E1C]/90 text-cyan-300 border-cyan-500/40 shadow-cyan-500/30"
-            }`}>
-              {bulletX < 0 ? `MUZZLE: ${currentSpeed.toFixed(0)} m/s` : `DEPTH: ${bulletX.toFixed(2)}m (${currentSpeed.toFixed(0)} m/s)`}
+            <div
+              className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-black uppercase tracking-wider border shadow-md backdrop-blur-md transition-colors ${
+                bulletX >= targetMinDepth && bulletX <= targetMaxDepth
+                  ? "bg-emerald-500 text-white border-emerald-400 shadow-emerald-500/30"
+                  : bulletX >= totalLength
+                  ? "bg-rose-500 text-white border-rose-400 shadow-rose-500/30"
+                  : "bg-white/95 text-slate-800 border-slate-300 shadow-slate-400/30"
+              }`}
+            >
+              {bulletX < 0
+                ? `MUZZLE: ${currentSpeed.toFixed(0)} m/s`
+                : `DEPTH: ${bulletX.toFixed(2)}m (${currentSpeed.toFixed(0)} m/s)`}
             </div>
-            <div className="w-1.5 h-1.5 rotate-45 bg-[#090E1C] border-r border-b border-cyan-500/40 -mt-1" />
+            <div className="w-1.5 h-1.5 rotate-45 bg-white border-r border-b border-slate-300 -mt-1" />
           </div>
         </Html>
       </group>
@@ -317,7 +433,7 @@ function BallisticSimulationInner() {
 
 export function DeceleratingBulletScene({ config }: { config: any }) {
   return (
-    <div className="w-full h-full min-h-[560px] relative bg-[#070D1E]">
+    <div className="w-full h-full min-h-[560px] relative">
       <Suspense fallback={null}>
         <Canvas camera={{ position: [7, 1.5, 15], fov: 45 }}>
           <BallisticSimulationInner />
