@@ -1,5 +1,5 @@
 import { useRef, useEffect, useContext, useState, useMemo, Suspense } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { ChallengeCanvas } from "@topcoaching/sim-core";
 import * as THREE from "three";
 import { OrbitControls, Html } from "@react-three/drei";
@@ -216,6 +216,7 @@ function EmergencyStopInner({
   intersectionPosition = 60,
 }: InnerSceneProps) {
   const store = useContext(EmergencyStopContext);
+  const { camera } = useThree();
   const controlsRef = useRef<any>(null);
   const posX = useRef(0);
   const velX = useRef(15);
@@ -232,6 +233,7 @@ function EmergencyStopInner({
   const status = useEmergencyStopStore((s) => s.status);
   const cameraMode = useEmergencyStopStore((s) => s.cameraMode);
   const isSoundEnabled = useEmergencyStopStore((s) => s.isSoundEnabled);
+  const resetCount = useEmergencyStopStore((s) => s.resetCount);
   const addVtPoint = useEmergencyStopStore((s) => s.addVtPoint);
   const setLiveSpeedGetter = useEmergencyStopStore((s) => s.setLiveSpeedGetter);
   const setLiveCarPosGetter = useEmergencyStopStore((s) => s.setLiveCarPosGetter);
@@ -257,7 +259,7 @@ function EmergencyStopInner({
     setLiveCarPosGetter(() => posX.current);
   }, [setLiveSpeedGetter, setLiveCarPosGetter]);
 
-  // Reset internal state when round, initial speed, or status changes back to idle
+  // Reset internal state when round, initial speed, or status changes back to idle, or on restart
   useEffect(() => {
     if (!isRunning && status === "idle") {
       posX.current = 0;
@@ -269,12 +271,13 @@ function EmergencyStopInner({
       setCarPos(0);
       setCarSpeed(initialSpeed);
       setBrakingActive(false);
-      if (controlsRef.current && cameraMode === "orbit") {
-        controlsRef.current.target.set(15, 1, 0);
+      if (controlsRef.current) {
+        camera.position.set(-8.5, 3.2, 0);
+        controlsRef.current.target.set(8, 1.2, 0);
         controlsRef.current.update();
       }
     }
-  }, [currentRound, initialSpeed, isRunning, status, cameraMode]);
+  }, [currentRound, initialSpeed, isRunning, status, resetCount, camera]);
 
   // Handle simulation start
   useEffect(() => {

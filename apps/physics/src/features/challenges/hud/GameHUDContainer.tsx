@@ -386,10 +386,10 @@ export function GameHUDContainer({
               e.stopPropagation();
               setIsExplanationOpen(true);
             }}
-            className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-cyan-500/40 hover:border-cyan-400 text-cyan-200 hover:text-white font-mono font-bold text-[11px] sm:text-xs uppercase tracking-wider backdrop-blur-xl shadow-[0_0_20px_rgba(6,182,212,0.25)] transition-all active:scale-95 cursor-pointer"
+            className="flex items-center gap-2 px-5 py-2 sm:py-2.5 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 border border-cyan-300/70 hover:border-white text-white font-mono font-black text-xs sm:text-sm uppercase tracking-widest shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all active:scale-95 cursor-pointer"
             title="View Physics Calculation & Explanation"
           >
-            <Calculator className="w-3.5 h-3.5 text-cyan-400" />
+            <Calculator className="w-4 h-4 text-white fill-white/20" />
             <span>EXPLANATION</span>
           </button>
         </div>

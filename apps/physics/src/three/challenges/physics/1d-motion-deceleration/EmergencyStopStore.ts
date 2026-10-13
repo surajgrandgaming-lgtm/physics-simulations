@@ -29,6 +29,7 @@ export interface EmergencyStopExtra extends Record<string, unknown> {
   vtPoints: VtDataPoint[];
   isMissionStarted: boolean;
   missionStartedAt: number | null;
+  resetCount: number;
   startMission: () => void;
   getLiveSpeed: () => number;
   getLiveCarPos: () => number;
@@ -68,6 +69,7 @@ export const createEmergencyStopStore = createChallengeStore<EmergencyStopExtra>
     vtPoints: [],
     isMissionStarted: false,
     missionStartedAt: null,
+    resetCount: 0,
     startMission: () => {},
     getLiveSpeed: () => 0,
     getLiveCarPos: () => 0,
@@ -229,6 +231,7 @@ export const createEmergencyStopStore = createChallengeStore<EmergencyStopExtra>
             failedAttempts: 0,
             vtPoints: [],
             status: "idle",
+            resetCount: (get().resetCount || 0) + 1,
           });
         }
       },
@@ -250,6 +253,7 @@ export const createEmergencyStopStore = createChallengeStore<EmergencyStopExtra>
           status: "idle",
           stars: 0,
           elapsedMs: 0,
+          resetCount: (get().resetCount || 0) + 1,
         });
       },
     };

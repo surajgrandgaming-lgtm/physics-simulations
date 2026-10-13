@@ -26,6 +26,7 @@ export interface EmergencyStopExtra extends Record<string, unknown> {
   totalScore: number;
   streak: number;
   vtPoints: VtDataPoint[];
+  resetCount: number;
   getLiveSpeed: () => number;
   getLiveCarPos: () => number;
   setLiveSpeedGetter: (fn: () => number) => void;
@@ -59,6 +60,7 @@ export const createEmergencyStopStore = createChallengeStore<EmergencyStopExtra>
     totalScore: 0,
     streak: 0,
     vtPoints: [],
+    resetCount: 0,
     getLiveSpeed: () => 0,
     getLiveCarPos: () => 0,
     setLiveSpeedGetter: () => {},

@@ -710,6 +710,7 @@ function EmergencyStopInner({
   intersectionPosition = 60,
 }: InnerSceneProps) {
   const store = useContext(EmergencyStopContext);
+  const { camera } = useThree();
   const controlsRef = useRef<any>(null);
   const posX = useRef(0);
   const velX = useRef(10);
@@ -730,6 +731,7 @@ function EmergencyStopInner({
   const isSoundEnabled = useEmergencyStopStore((s) => s.isSoundEnabled);
   const isMissionStarted = useEmergencyStopStore((s) => s.isMissionStarted);
   const missionStartedAt = useEmergencyStopStore((s) => s.missionStartedAt);
+  const resetCount = useEmergencyStopStore((s) => s.resetCount);
   const addVtPoint = useEmergencyStopStore((s) => s.addVtPoint);
   const setLiveSpeedGetter = useEmergencyStopStore((s) => s.setLiveSpeedGetter);
   const setLiveCarPosGetter = useEmergencyStopStore((s) => s.setLiveCarPosGetter);
@@ -758,7 +760,7 @@ function EmergencyStopInner({
   const introCompletedRef = useRef(false);
   const prevCarX = useRef(0);
 
-  // Reset internal state when round, initial speed, or status changes back to idle
+  // Reset internal state when round, initial speed, or status changes back to idle, or on restart
   useEffect(() => {
     if (!isRunning && status === "idle") {
       posX.current = 0;
@@ -772,16 +774,16 @@ function EmergencyStopInner({
       setBrakingActive(false);
       setIsBrakingActive(false);
 
-      if (introCompletedRef.current && controlsRef.current) {
-        const deltaX = 0 - prevCarX.current;
+      if (controlsRef.current && (introCompletedRef.current || isMissionStarted)) {
+        introCompletedRef.current = true;
         prevCarX.current = 0;
-        if (deltaX !== 0) {
-          controlsRef.current.target.x += deltaX;
-          controlsRef.current.update();
-        }
+        // Reset camera position and target back to behind the car (first-time TPP angle)
+        camera.position.set(-8.5, 3.2, 0);
+        controlsRef.current.target.set(8, 1.2, 0);
+        controlsRef.current.update();
       }
     }
-  }, [currentRound, initialSpeed, isRunning, status, setIsBrakingActive]);
+  }, [currentRound, initialSpeed, isRunning, status, resetCount, isMissionStarted, setIsBrakingActive, camera]);
 
   // Handle simulation start
   useEffect(() => {
