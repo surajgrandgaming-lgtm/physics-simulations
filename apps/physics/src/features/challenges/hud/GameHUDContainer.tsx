@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, ReactNode } from "react";
+import { exitSimulation } from "@/lib/mobileBridge";
 import {
   Compass,
   RotateCcw,
@@ -38,6 +39,8 @@ export interface GameHUDContainerProps {
   rightHUD?: ReactNode;
   bottomDock?: ReactNode;
   topCenterHUD?: ReactNode;
+  showExitButton?: boolean;
+  onExit?: () => void;
   hideEyeButton?: boolean;
   hideRestartButton?: boolean;
   hideTopBar?: boolean;
@@ -79,6 +82,8 @@ export function GameHUDContainer({
   rightHUD,
   bottomDock,
   topCenterHUD,
+  showExitButton = true,
+  onExit,
   hideEyeButton = false,
   hideRestartButton = false,
   hideTopBar = false,
@@ -375,6 +380,29 @@ export function GameHUDContainer({
         formulas={briefing.formulas}
         xpReward={xpReward}
       />
+
+      {/* ─── TOP LEFT CANVAS: EXIT BUTTON (Always accessible on canvas) ─── */}
+      {showExitButton && (
+        <div className="absolute top-2.5 sm:top-4 left-2.5 sm:left-4 z-[60] pointer-events-auto">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (onExit) {
+                onExit();
+              } else {
+                exitSimulation();
+              }
+            }}
+            className="flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white border border-white/20 hover:border-white/40 backdrop-blur-md font-mono font-black text-xs sm:text-sm uppercase tracking-wider shadow-[0_4px_16px_rgba(0,0,0,0.3)] transition-all active:scale-95 cursor-pointer"
+            title="Exit Simulation (Back to App)"
+          >
+            <ArrowLeft className="w-4 h-4 text-cyan-300 shrink-0" />
+            <span>EXIT</span>
+          </button>
+        </div>
+      )}
 
       {/* ── TOP RIGHT CANVAS: EXPLANATION BUTTON (Always accessible during simulation) ── */}
       {missionStarted && (result?.calculation || briefing?.steps?.length > 0) && (
