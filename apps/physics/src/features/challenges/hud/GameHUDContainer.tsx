@@ -47,7 +47,8 @@ export interface GameHUDContainerProps {
   instructionsOverlay?:
   | {
     title?: string;
-    instructions: { title: string; description: string; badge?: string }[];
+    instructions: { title: string; description: string; badge?: string; imageUrl?: string }[];
+    tip?: string;
   }
   | ReactNode;
   briefing: {
@@ -170,34 +171,47 @@ export function GameHUDContainer({
                 {React.isValidElement(instructionsOverlay) ? (
                   instructionsOverlay
                 ) : typeof instructionsOverlay === "object" && "instructions" in instructionsOverlay ? (
-                  <div className="flex flex-col max-lg:landscape:grid max-lg:landscape:grid-cols-3 gap-3 sm:gap-4 max-lg:landscape:gap-2.5 w-full text-left">
+                  <div className="flex flex-col max-lg:landscape:grid max-lg:landscape:grid-cols-3 gap-2.5 sm:gap-3.5 max-lg:landscape:gap-2 w-full max-w-4xl text-left">
                     {instructionsOverlay.instructions.map((item, idx) => (
                       <div
                         key={idx}
-                        className="flex items-start gap-3 sm:gap-4 max-lg:landscape:gap-2.5 p-3.5 sm:p-5 max-lg:landscape:p-2.5 rounded-2xl max-lg:landscape:rounded-xl bg-white/95 text-slate-900 border border-white/80 shadow-[0_8px_30px_rgb(0,0,0,0.12)] backdrop-blur-xl transition-all"
+                        className="flex flex-col justify-between p-3 sm:p-4 max-lg:landscape:p-2 rounded-2xl bg-white/95 text-slate-900 border border-white/80 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xl transition-all"
                       >
-                        <div className="w-7 h-7 sm:w-9 sm:h-9 max-lg:landscape:w-6 max-lg:landscape:h-6 rounded-xl max-lg:landscape:rounded-lg bg-cyan-600 border border-cyan-500/30 flex items-center justify-center font-mono font-bold text-xs sm:text-base max-lg:landscape:text-xs text-white shrink-0 mt-0.5 shadow-sm">
-                          {idx + 1}
-                        </div>
-                        <div className="flex flex-col gap-0.5 sm:gap-1.5 flex-1 min-w-0">
-                          <div className="flex items-center gap-1.5 sm:gap-3 flex-wrap">
-                            <span className="font-mono text-xs sm:text-base md:text-lg max-lg:landscape:text-xs font-bold text-slate-900 tracking-tight">
-                              {item.title}
-                            </span>
-                            {item.badge && (
-                              <span className="text-[10px] sm:text-sm max-lg:landscape:text-[10px] font-semibold px-2 py-0.5 sm:px-3 sm:py-1 max-lg:landscape:px-1.5 max-lg:landscape:py-0.5 rounded-full bg-cyan-100 text-cyan-800 border border-cyan-300">
-                                {item.badge}
-                              </span>
-                            )}
+                        <div className="flex items-start gap-2.5 sm:gap-3">
+                          <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-cyan-600 border border-cyan-500/30 flex items-center justify-center font-mono font-bold text-xs sm:text-sm text-white shrink-0 shadow-sm">
+                            {idx + 1}
                           </div>
-                          <span className="text-xs sm:text-base max-lg:landscape:text-xs text-slate-600 leading-relaxed max-lg:landscape:leading-snug font-sans mt-0.5 max-lg:landscape:mt-0">
-                            {item.description}
-                          </span>
+                          <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="font-mono text-xs sm:text-sm font-bold text-slate-900 tracking-tight">
+                                {item.title}
+                              </span>
+                              {item.badge && (
+                                <span className="text-[9px] sm:text-[10px] font-semibold px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-800 border border-cyan-200">
+                                  {item.badge}
+                                </span>
+                              )}
+                            </div>
+                            <span className="text-[11px] sm:text-xs text-slate-600 leading-snug font-sans">
+                              {item.description}
+                            </span>
+                          </div>
                         </div>
+
+                        {item.imageUrl && (
+                          <div className="mt-2 w-full rounded-xl overflow-hidden border border-slate-200/60 bg-slate-950/5 flex items-center justify-center p-1.5 h-20 sm:h-24 max-lg:landscape:h-18">
+                            <img
+                              src={item.imageUrl}
+                              alt={item.title}
+                              className="max-h-full max-w-full object-contain rounded-lg"
+                            />
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
                 ) : null}
+
 
                 <div className="flex items-center gap-4 max-lg:landscape:gap-3.5 mt-2 sm:mt-5 max-lg:landscape:mt-1.5">
                   <button
@@ -219,6 +233,13 @@ export function GameHUDContainer({
                     <span>PLAY</span>
                   </button>
                 </div>
+
+                {typeof instructionsOverlay === "object" && "tip" in instructionsOverlay && instructionsOverlay.tip && (
+                  <div className="mt-3 sm:mt-5 max-lg:landscape:mt-2 flex items-center justify-center gap-2.5 px-4 sm:px-6 py-2 sm:py-2.5 max-lg:landscape:py-1.5 rounded-full bg-slate-950/40 border border-white/15 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.35)] text-xs sm:text-sm max-lg:landscape:text-xs font-medium max-w-2xl text-center">
+                    <span className="font-mono font-bold text-[10px] sm:text-xs uppercase bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 px-2.5 py-0.5 rounded-md tracking-wider shrink-0 shadow-sm">TIP</span>
+                    <span className="text-slate-300 leading-snug">{instructionsOverlay.tip}</span>
+                  </div>
+                )}
               </div>
             ) : (
               /* Step 1: Target view */

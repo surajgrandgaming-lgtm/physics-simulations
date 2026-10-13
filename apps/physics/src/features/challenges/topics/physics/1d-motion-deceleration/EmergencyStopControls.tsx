@@ -162,7 +162,7 @@ export function EmergencyStopControls({ config }: Props) {
     setInitialSpeed,
   ]);
 
-return (
+  return (
     <GameHUDContainer
       title="Emergency Stop & Road Grip"
       topicName="1D Motion & Deceleration"
@@ -179,19 +179,25 @@ return (
           {
             title: "Set Initial Velocity",
             badge: "Bottom Left",
-            description: "Use the + and - buttons on the bottom left to adjust vehicle speed (default is set to 10 m/s).",
+
+
+            description: "Use the + and - buttons to adjust vehicle speed.",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%201/Topic%201/easy/1.png",
           },
           {
             title: "Set Braking Area",
             badge: "Bottom Right",
-            description: "Set the braking distance mark on the bottom right after which the car applies brakes and slows down.",
+            description: "Set the distance marker where the car slams brakes.",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%201/Topic%201/easy/2.png",
           },
           {
             title: "Halt in Target Area",
-            badge: "55.0m – 59.8m",
-            description: "Stop the car safely inside the green Target Area before the 60m barrier to clear the stage!",
+            badge: "55.0m - 59.8m",
+            description: "Stop safely inside the green zone before the barrier.",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%201/Topic%201/easy/3.png",
           },
         ],
+        tip: "Lower your initial speed on slippery surfaces like ice to prevent barrier collisions.",
       }}
       topCenterHUD={
         <div className="flex items-center gap-3 bg-[#080E1C]/90 backdrop-blur-xl border border-white/[0.08] px-3.5 py-1.5 rounded-2xl">
@@ -211,7 +217,7 @@ return (
       }
       briefing={{
         target: "Stop the car inside the target zone without crashing",
-        targetImageUrl: "https://topcoaching.b-cdn.net/module1topic1easytarget.png",
+        targetImageUrl: "https://topcoaching.b-cdn.net/Module%201/Topic%201/easy/target.png",
         storyObjective:
           "Safely stop a 1200kg test car inside the Emerald Target Zone (55m - 59.8m) without crashing into the 60m barrier. Calculate the stopping distance across 3 distinct road conditions: Dry Asphalt (μ = 0.8), Wet Rain (μ = 0.4), and Slippery Black Ice (μ = 0.1).",
         steps: [
@@ -300,8 +306,8 @@ return (
               explanation: (brakeMarkerX + theoreticalStoppingDist) >= 55.0 && (brakeMarkerX + theoreticalStoppingDist) <= 59.8
                 ? "This stops the car safely inside the emerald safety zone (55.0m – 59.8m)!"
                 : (brakeMarkerX + theoreticalStoppingDist) < 55.0
-                ? `The car halts ${(55.0 - (brakeMarkerX + theoreticalStoppingDist)).toFixed(1)}m short of the green target zone.`
-                : `The car overshoots the 60.0m barrier by ${((brakeMarkerX + theoreticalStoppingDist) - 60.0).toFixed(1)}m!`,
+                  ? `The car halts ${(55.0 - (brakeMarkerX + theoreticalStoppingDist)).toFixed(1)}m short of the green target zone.`
+                  : `The car overshoots the 60.0m barrier by ${((brakeMarkerX + theoreticalStoppingDist) - 60.0).toFixed(1)}m!`,
             },
             {
               step: 4,
@@ -424,6 +430,6 @@ return (
             </div>
           )}
         </div>
-      }    />
+      } />
   );
 }

@@ -118,7 +118,7 @@ export function LastHundredMetersControls({ config }: Props) {
           }
         }
       } else if (e.code === "Enter" || e.code === "KeyW" || e.code === "ArrowUp") {
-        if (isSpeedReady && !takeoffTriggered) {
+        if (hasLaunched && !takeoffTriggered) {
           triggerTakeoffPitch();
         }
       }
@@ -170,19 +170,23 @@ export function LastHundredMetersControls({ config }: Props) {
           {
             title: "Hold To Accelerate",
             badge: "Bottom Center",
-            description: "Press and hold the ACCELERATE pedal (or Spacebar). Catapult thrust is ONLY applied while held down — releasing immediately cuts engine thrust!",
+            description: "Hold the ACCELERATE pedal to maintain continuous catapult thrust.",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%201/Topic%201/medium/1.png",
           },
           {
-            title: "Build Takeoff Airspeed",
-            badge: "Target Lift Speed",
-            description: "Hold down the pedal until your airspeed reaches the mission's required lift speed before running out of the carrier runway.",
+            title: "Build Takeoff speed",
+            badge: "Lift Speed",
+            description: "Keep accelerating until airspeed reaches required lift speed before runway ends.",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%201/Topic%201/medium/3.png",
           },
           {
             title: "Rotate & Take Off",
             badge: "Bottom Right",
-            description: "Once lift speed is reached, the right button unlocks green. Tap TAKE OFF NOW immediately to rotate pitch and climb safely into the sky!",
+            description: "Tap PULL UP when speed is sufficient to climb safely into the sky.",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%201/Topic%201/medium/2.png",
           },
         ],
+        tip: "Do not release the pedal early — cutting thrust mid-runway drops airspeed and causes stall into the sea.",
       }}
       topCenterHUD={
         <div className="flex items-center gap-3 bg-[#080E1C]/90 backdrop-blur-xl border border-white/[0.08] px-3.5 py-1.5 rounded-2xl">
@@ -202,6 +206,7 @@ export function LastHundredMetersControls({ config }: Props) {
       }
       briefing={{
         target: "Launch the jet and reach takeoff speed before the deck ends",
+        targetImageUrl: "https://topcoaching.b-cdn.net/Module%201/Topic%201/medium/target.png",
         storyObjective:
           `A 15-ton naval fighter jet must accelerate from standstill (u = 0) to aerodynamic lift speed (v ≈ ${targetTakeoffSpeed} m/s) before running out of the ${deckLength}m aircraft carrier runway. Hold down the ACCELERATOR pedal to race down the deck, and hit TAKE OFF once lift speed is reached!`,
         steps: [
@@ -341,29 +346,22 @@ export function LastHundredMetersControls({ config }: Props) {
                 label={`MISSION ${currentRound + 1}`}
                 variant="success"
               />
-            ) : isSpeedReady && !takeoffTriggered ? (
-              <MobileActionTrigger
-                onClick={triggerTakeoffPitch}
-                icon={PlaneTakeoff}
-                label="TAKE OFF NOW!"
-                sublabel="Lift Ready! Pull Up"
-                variant="success"
-                isPulsing={true}
-                hotkey="SPACE"
-              />
             ) : (
               <MobileActionTrigger
-                onClick={() => {
-                  if (isSpeedReady) {
-                    triggerTakeoffPitch();
-                  }
-                }}
-                disabled={!isSpeedReady || takeoffTriggered}
-                icon={Lock}
-                label="PULL UP"
-                sublabel={takeoffTriggered ? "Climbing..." : `${liveSpeed.toFixed(0)}/${targetTakeoffSpeed} m/s`}
-                variant="secondary"
-                hotkey="SPACE"
+                onClick={triggerTakeoffPitch}
+                disabled={!hasLaunched || takeoffTriggered}
+                icon={PlaneTakeoff}
+                label={isSpeedReady ? "TAKE OFF NOW!" : "PULL UP"}
+                sublabel={
+                  takeoffTriggered
+                    ? "Climbing..."
+                    : isSpeedReady
+                    ? "Lift Ready! Pull Up"
+                    : `${liveSpeed.toFixed(0)}/${targetTakeoffSpeed} m/s`
+                }
+                variant={isSpeedReady ? "success" : "secondary"}
+                isPulsing={isSpeedReady && !takeoffTriggered}
+                hotkey="ENTER"
               />
             )}
           </div>
