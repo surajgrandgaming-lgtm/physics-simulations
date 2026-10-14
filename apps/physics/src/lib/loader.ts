@@ -21,6 +21,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if (slug === canonicalTopic) return true;
     if (canonicalTopic === "1d-motion-deceleration" && slug.includes("1d-motion")) return true;
     if (canonicalTopic === "relative-motion" && slug.includes("relative-motion")) return true;
+    if (canonicalTopic === "vectors-river-rain" && (slug.includes("vectors") || slug.includes("rain"))) return true;
     return false;
   });
 
@@ -49,6 +50,7 @@ export const getChallenge = cache(
     const challengeData = (foundTopic as any)?.challenges?.[difficulty];
     const is1DMotion = canonicalTopic === "1d-motion-deceleration" || canonicalTopic === "uniform-motion" || foundTopic?.topicId === "1";
     const isRelativeMotion = canonicalTopic === "relative-motion" || foundTopic?.topicId === "2";
+    const isVectors = canonicalTopic === "vectors-river-rain" || foundTopic?.topicId === "3";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -74,6 +76,17 @@ export const getChallenge = cache(
       } else if (difficulty === "advanced") {
         sceneType = "air-drop-interception";
         parameters = { altitude: 125, heliVelocityX: 40, heliVelocityY: 0, boatMotorVelocityX: 15, boatMotorVelocityY: 0, riverVelocityX: 5, riverVelocityY: 0, crosswindVelocityX: 0, crosswindVelocityY: -3, gravity: 9.8 };
+      }
+    } else if (isVectors) {
+      if (difficulty === "medium") {
+        sceneType = "umbrella-tilt";
+        parameters = { rainSpeedY: 10, windSpeedX: 0, trackDistance: 40, rounds: 3 };
+      } else if (difficulty === "easy") {
+        sceneType = "umbrella-tilt";
+        parameters = { rainSpeedY: 10, windSpeedX: 0, trackDistance: 35, rounds: 3 };
+      } else {
+        sceneType = "umbrella-tilt";
+        parameters = { rainSpeedY: 14, windSpeedX: 5, trackDistance: 60, rounds: 3 };
       }
     } else if (canonicalTopic === "tablecloth-pull") {
       sceneType = "tablecloth-pull";
@@ -169,9 +182,10 @@ export function getModuleData(subject: string, moduleSlug: string) {
     let slug = rawSlug;
     if (rawSlug.includes("1d-motion") || t.topicId === "1") slug = "1d-motion-deceleration";
     else if (rawSlug.includes("relative-motion") || t.topicId === "2") slug = "relative-motion";
+    else if (rawSlug.includes("vectors") || t.topicId === "3") slug = "vectors-river-rain";
     else if (rawSlug.includes("tablecloth-pull")) slug = "tablecloth-pull";
 
-    const has3D = slug === "1d-motion-deceleration" || slug === "relative-motion" || slug === "tablecloth-pull";
+    const has3D = slug === "1d-motion-deceleration" || slug === "relative-motion" || slug === "vectors-river-rain" || slug === "tablecloth-pull";
     return {
       id: t.topicId,
       name: t.topicName,
@@ -279,6 +293,8 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
       sceneType:
         canonicalTopic === "1d-motion-deceleration"
           ? "last-hundred-meters"
+          : canonicalTopic === "vectors-river-rain"
+          ? "umbrella-tilt"
           : canonicalTopic === "relative-motion"
           ? "the-last-gap"
           : "tablecloth-pull",

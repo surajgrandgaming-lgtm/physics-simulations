@@ -1952,8 +1952,8 @@
               "description": "Calibrate your umbrella tilt angle θ = arctan((v_man - v_wind)/v_rain) across dynamic runner sprint speeds (0 to 14 m/s) and crosswinds to reach the shelter dome with 0% wetness."
             },
             "medium": {
-              "title": "Crosswind River Crossing (Escape Artist)",
-              "description": "Navigate a high-speed stealth boat across heavy river currents and avoid patrol radar zones. Compute upstream heading angles and boost nitro to hit the extraction beacon."
+              "title": "Umbrella Tilt (Rain-Man Relative Velocity)",
+              "description": "Walk and sprint your character through dynamic rain and crosswinds. Calibrate your umbrella tilt angle θ = arctan((v_man - v_wind)/v_rain) to stay dry as your walking speed changes."
             },
             "advanced": {
               "title": "Crosswind Crab Landing (Aeroplane-Wind Vector Triangle)",

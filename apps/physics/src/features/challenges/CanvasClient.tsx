@@ -23,6 +23,17 @@ const LoadingFallback = () => (
 );
 
 // ── Critical: ssr: false — Three.js never runs in SSR (Directive 1) ──────
+const UmbrellaTiltScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/vectors-river-rain/UmbrellaTiltScene"
+    ).then((mod) => mod.UmbrellaTiltScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const TableclothPullScene = dynamic(
   () =>
     import(
@@ -117,6 +128,14 @@ interface Props {
 
 export default function CanvasClient({ config }: Props) {
   const sceneType = config?.sceneType;
+
+  if (sceneType === "umbrella-tilt") {
+    return (
+      <div className="w-full h-full">
+        <UmbrellaTiltScene config={config} />
+      </div>
+    );
+  }
 
   if (sceneType === "air-drop-interception") {
     return (

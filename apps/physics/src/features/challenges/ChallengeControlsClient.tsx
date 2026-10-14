@@ -1,5 +1,6 @@
-﻿"use client";
+"use client";
 
+import { UmbrellaTiltControls } from "@/features/challenges/topics/physics/vectors-river-rain/UmbrellaTiltControls";
 import { ChallengeControlsPanel } from "@/features/challenges/ChallengeControlsPanel";
 import { EmergencyStopControls } from "@/features/challenges/topics/physics/1d-motion-deceleration/EmergencyStopControls";
 import { LastHundredMetersControls } from "@/features/challenges/topics/physics/1d-motion-deceleration/LastHundredMetersControls";
@@ -16,6 +17,10 @@ interface ChallengeControlsClientProps {
 
 export function ChallengeControlsClient({ config }: ChallengeControlsClientProps) {
   const sceneType = config?.sceneType;
+
+  if (sceneType === "umbrella-tilt") {
+    return <UmbrellaTiltControls config={config} />;
+  }
 
   if (sceneType === "air-drop-interception") {
     return <AirDropInterceptionControls config={config} />;
