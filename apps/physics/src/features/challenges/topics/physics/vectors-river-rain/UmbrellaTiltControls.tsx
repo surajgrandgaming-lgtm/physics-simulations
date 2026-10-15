@@ -305,7 +305,6 @@ export function UmbrellaTiltControls({ config }: Props) {
           { label: "Allowed Limit", value: stageConfig.allowedWetnessLimit, unit: "%" },
           { label: "Walk Speed", value: playerVelocityX.toFixed(1), unit: "m/s" },
           { label: "Umbrella Tilt", value: `${umbrellaAngleDeg}°` },
-          { label: "Score Bonus", value: totalScore },
         ],
         failureReason: isSoaked
           ? `You got soaked! Wetness reached ${wetnessPercentage.toFixed(1)}% (exceeded the ${stageConfig.allowedWetnessLimit}% limit). Keep your umbrella aligned within 16° of the relative rain vector.`

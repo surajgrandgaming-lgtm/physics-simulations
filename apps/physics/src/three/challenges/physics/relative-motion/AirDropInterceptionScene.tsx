@@ -240,8 +240,8 @@ function BombSightOverlays() {
               <Crosshair className={`w-3.5 h-3.5 ${isTargetLocked ? "text-emerald-400 animate-spin" : "text-amber-400"}`} />
               <span>
                 {isTargetLocked
-                  ? "🎯 INTERCEPT LOCKED! PRESS [SPACE]"
-                  : `LEAD ERROR: ${leadDistanceError.toFixed(1)}m (STEER TO ALIGN)`}
+                  ? "🎯 INTERCEPT LOCKED"
+                  : `LEAD ERROR: ${leadDistanceError.toFixed(1)}m`}
               </span>
             </div>
           </Html>
@@ -345,16 +345,7 @@ function AirDropSceneSimulation({ controlsRef }: { controlsRef: React.RefObject<
           callsign={`RESCUE-01 (${heliVelX.toFixed(0)} m/s)`}
           rotorSpeed={38}
         />
-        <Html position={[0, 6.0, 0]} center distanceFactor={35}>
-          <div className="px-3 py-1 rounded-full bg-slate-950/95 border border-orange-500 text-[10px] font-mono font-bold text-orange-200 shadow-2xl whitespace-nowrap select-none flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse" />
-            <span>
-              {Math.abs(heliVelX) < 1 && Math.abs(heliVelZ) < 1
-                ? "HOVER READY • USE W/A/S/D TO STEER"
-                : `SPEED: ${Math.sqrt(heliVelX * heliVelX + heliVelZ * heliVelZ).toFixed(0)} m/s (v_x=${heliVelX.toFixed(0)})`}
-            </span>
-          </div>
-        </Html>
+
       </group>
 
       {/* ── 3D River Boat Target (Moving straight downstream) ── */}
@@ -436,74 +427,6 @@ export function AirDropInterceptionScene({ config }: { config?: any }) {
 
   return (
     <div className="relative w-full h-full bg-[#0284c7] overflow-hidden select-none">
-      {/* ── Camera Mode & Visualizer Bar (Positioned unobtrusively at bottom-left on md+ screens) ── */}
-      <div className="hidden md:flex absolute bottom-20 left-4 z-20 items-center gap-1 sm:gap-1.5 bg-slate-950/85 backdrop-blur-md p-1 sm:p-1.5 rounded-2xl border border-white/10 shadow-xl pointer-events-auto">
-        <button
-          onClick={() => setCameraMode("bomb-sight")}
-          className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-mono font-bold flex items-center gap-1 sm:gap-1.5 transition-all ${
-            cameraMode === "bomb-sight"
-              ? "bg-amber-500 text-slate-950 shadow-md"
-              : "text-slate-400 hover:text-white"
-          }`}
-          title="Tactical Bomb-Sight"
-        >
-          <Crosshair className="w-3.5 h-3.5 shrink-0" />
-          <span className="hidden sm:inline">Bomb-Sight</span>
-        </button>
-
-        <button
-          onClick={() => setCameraMode("chase")}
-          className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-mono font-bold flex items-center gap-1 sm:gap-1.5 transition-all ${
-            cameraMode === "chase"
-              ? "bg-orange-500 text-slate-950 shadow-md"
-              : "text-slate-400 hover:text-white"
-          }`}
-          title="Helicopter Chase View"
-        >
-          <Eye className="w-3.5 h-3.5 shrink-0" />
-          <span className="hidden sm:inline">Heli Chase</span>
-        </button>
-
-        <button
-          onClick={() => setCameraMode("tactical")}
-          className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-mono font-bold flex items-center gap-1 sm:gap-1.5 transition-all ${
-            cameraMode === "tactical"
-              ? "bg-cyan-500 text-slate-950 shadow-md"
-              : "text-slate-400 hover:text-white"
-          }`}
-          title="Tactical 3D View"
-        >
-          <Compass className="w-3.5 h-3.5 shrink-0" />
-          <span className="hidden sm:inline">Tactical 3D</span>
-        </button>
-
-        <div className="w-[1px] h-4 bg-slate-700 mx-0.5" />
-
-        <button
-          onClick={toggleVectorHUD}
-          className={`px-1.5 sm:px-2 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-mono font-bold transition-all ${
-            showVectorHUD
-              ? "bg-sky-500/20 text-sky-300 border border-sky-500/40"
-              : "text-slate-400 hover:text-slate-200"
-          }`}
-          title="Toggle Vector Overlay"
-        >
-          Vectors
-        </button>
-
-        <button
-          onClick={toggleTrajectoryArc}
-          className={`px-1.5 sm:px-2 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-mono font-bold transition-all ${
-            showTrajectoryArc
-              ? "bg-sky-500/20 text-sky-300 border border-sky-500/40"
-              : "text-slate-400 hover:text-slate-200"
-          }`}
-          title="Toggle Trajectory Arc"
-        >
-          Arc
-        </button>
-      </div>
-
       <Canvas
         camera={{ position: [-260, 160, 140], fov: 48, near: 0.5, far: 6000 }}
         dpr={[1, 1.5]}

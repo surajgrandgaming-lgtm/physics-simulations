@@ -273,10 +273,6 @@ function DynamicCameraRig({ controlsRef }: { controlsRef: React.RefObject<any> }
 // ─────────────────────────────────────────────────────────────────────────────
 export function LastGapScene({ config }: { config: any }) {
   const controlsRef = useRef<any>(null);
-  const cameraMode = useLastGapStore((s) => s.cameraMode);
-  const setCameraMode = useLastGapStore((s) => s.setCameraMode);
-  const showVectors = useLastGapStore((s) => s.showVectors);
-  const setShowVectors = useLastGapStore((s) => s.setShowVectors);
 
   return (
     <div className="relative w-full h-full bg-slate-950 select-none">
@@ -300,48 +296,6 @@ export function LastGapScene({ config }: { config: any }) {
           maxDistance={600}
         />
       </Canvas>
-
-      {/* ── Camera + Vector Toggle Bar (Positioned unobtrusively at bottom-left on md+ screens) ── */}
-      <div className="hidden md:flex absolute bottom-20 left-4 z-20 flex-col items-start gap-1.5 pointer-events-auto">
-        <div className="bg-slate-950/85 border border-white/10 rounded-2xl p-1 sm:p-1.5 shadow-xl backdrop-blur flex gap-1 items-center">
-          {(["tpp", "isometric", "overhead", "target"] as const).map((mode) => {
-            const labels: Record<string, string> = {
-              tpp: "🚤 Chase",
-              isometric: "🚁 Drone",
-              overhead: "🗺️ Map",
-              target: "🎯 Pad",
-            };
-            return (
-              <button
-                key={mode}
-                onClick={() => setCameraMode(mode)}
-                className={`px-2 sm:px-2.5 py-1 rounded-xl text-[10px] sm:text-xs font-mono font-bold transition-all ${
-                  cameraMode === mode
-                    ? "bg-emerald-500 text-slate-950 shadow-md"
-                    : "text-slate-300 hover:bg-slate-800"
-                }`}
-              >
-                {labels[mode]}
-              </button>
-            );
-          })}
-          <div className="w-px h-4 bg-slate-700 mx-0.5 self-center" />
-          <button
-            onClick={() => setShowVectors(!showVectors)}
-            className={`px-1.5 sm:px-2.5 py-1 rounded-xl text-[10px] sm:text-xs font-mono font-bold transition-all ${
-              showVectors
-                ? "bg-cyan-500/20 text-sky-300 border border-cyan-500/40"
-                : "text-slate-400 hover:text-slate-200"
-            }`}
-          >
-            Vectors
-          </button>
-        </div>
-
-        <div className="text-[9px] font-mono text-slate-400 bg-slate-950/80 border border-white/10 px-2 py-0.5 rounded-lg shadow backdrop-blur">
-          🖱️ Drag: Orbit • Scroll: Zoom
-        </div>
-      </div>
     </div>
   );
 }

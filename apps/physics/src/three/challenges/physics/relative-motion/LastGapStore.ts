@@ -88,6 +88,8 @@ export interface LastGapExtra extends Record<string, unknown> {
   // Actions & Real-Time Steering
   setSteerAngleDeg: (angle: number) => void;
   adjustSteering: (deltaAngle: number) => void;
+  setBoatSpeed: (speed: number) => void;
+  adjustBoatSpeed: (deltaSpeed: number) => void;
   setSimSpeedMultiplier: (mult: number) => void;
   setFrameOfReference: (frame: ReferenceFrame) => void;
   setCameraMode: (mode: CameraMode) => void;
@@ -143,6 +145,8 @@ export const createLastGapStore = createChallengeStore<LastGapExtra>(
 
     setSteerAngleDeg: () => {},
     adjustSteering: () => {},
+    setBoatSpeed: () => {},
+    adjustBoatSpeed: () => {},
     setSimSpeedMultiplier: () => {},
     setFrameOfReference: () => {},
     setCameraMode: () => {},
@@ -159,11 +163,12 @@ export const createLastGapStore = createChallengeStore<LastGapExtra>(
     updateLivePosition: () => {},
   },
   (set, get) => {
-    const recalcPhysics = (angleDeg: number, roundNum: number) => {
+    const recalcPhysics = (angleDeg: number, roundNum: number, customBoatSpeed?: number) => {
       const cfg = LAST_GAP_ROUNDS[roundNum - 1] || LAST_GAP_ROUNDS[0];
+      const speed = customBoatSpeed !== undefined ? customBoatSpeed : (get()?.boatSpeed ?? cfg.boatSpeed);
       const rad = (angleDeg * Math.PI) / 180;
-      const vxG = cfg.boatSpeed * Math.cos(rad);
-      const vyWater = -cfg.boatSpeed * Math.sin(rad); // pointing South
+      const vxG = speed * Math.cos(rad);
+      const vyWater = -speed * Math.sin(rad); // pointing South
       const vyG = vyWater + cfg.riverSpeed;
       const vRes = Math.sqrt(vxG * vxG + vyG * vyG);
       const timeCross = cfg.riverWidth / Math.max(0.1, vxG);
@@ -176,7 +181,7 @@ export const createLastGapStore = createChallengeStore<LastGapExtra>(
       setSteerAngleDeg: (angle: number) => {
         const s = get();
         const clampedAngle = Math.max(-30, Math.min(75, angle));
-        const { vxG, vyG, vRes, timeCross, predDrift } = recalcPhysics(clampedAngle, s.currentRound);
+        const { vxG, vyG, vRes, timeCross, predDrift } = recalcPhysics(clampedAngle, s.currentRound, s.boatSpeed);
         set({
           steerAngleDeg: clampedAngle,
           vxGround: vxG,
@@ -190,9 +195,37 @@ export const createLastGapStore = createChallengeStore<LastGapExtra>(
       adjustSteering: (deltaAngle: number) => {
         const s = get();
         const newAngle = Math.max(-30, Math.min(75, s.steerAngleDeg + deltaAngle));
-        const { vxG, vyG, vRes, timeCross, predDrift } = recalcPhysics(newAngle, s.currentRound);
+        const { vxG, vyG, vRes, timeCross, predDrift } = recalcPhysics(newAngle, s.currentRound, s.boatSpeed);
         set({
           steerAngleDeg: newAngle,
+          vxGround: vxG,
+          vyGround: vyG,
+          vGroundResultant: vRes,
+          effectiveCrossingTime: timeCross,
+          finalPredictedDrift: predDrift,
+        });
+      },
+
+      setBoatSpeed: (speed: number) => {
+        const s = get();
+        const clampedSpeed = Math.max(2, Math.min(15, speed));
+        const { vxG, vyG, vRes, timeCross, predDrift } = recalcPhysics(s.steerAngleDeg, s.currentRound, clampedSpeed);
+        set({
+          boatSpeed: clampedSpeed,
+          vxGround: vxG,
+          vyGround: vyG,
+          vGroundResultant: vRes,
+          effectiveCrossingTime: timeCross,
+          finalPredictedDrift: predDrift,
+        });
+      },
+
+      adjustBoatSpeed: (deltaSpeed: number) => {
+        const s = get();
+        const newSpeed = Math.max(2, Math.min(15, Math.round((s.boatSpeed + deltaSpeed) * 10) / 10));
+        const { vxG, vyG, vRes, timeCross, predDrift } = recalcPhysics(s.steerAngleDeg, s.currentRound, newSpeed);
+        set({
+          boatSpeed: newSpeed,
           vxGround: vxG,
           vyGround: vyG,
           vGroundResultant: vRes,
@@ -251,7 +284,7 @@ export const createLastGapStore = createChallengeStore<LastGapExtra>(
       resetRound: () => {
         const s = get();
         const cfg = LAST_GAP_ROUNDS[s.currentRound - 1] || LAST_GAP_ROUNDS[0];
-        const { vxG, vyG, vRes, timeCross, predDrift } = recalcPhysics(s.steerAngleDeg, s.currentRound);
+        const { vxG, vyG, vRes, timeCross, predDrift } = recalcPhysics(s.steerAngleDeg, s.currentRound, s.boatSpeed);
 
         set({
           boatPosX: 0,
@@ -262,7 +295,7 @@ export const createLastGapStore = createChallengeStore<LastGapExtra>(
           isTargetHit: false,
           riverWidth: cfg.riverWidth,
           riverSpeed: cfg.riverSpeed,
-          boatSpeed: cfg.boatSpeed,
+          boatSpeed: s.boatSpeed,
           targetY: cfg.targetY,
           targetTolerance: cfg.targetTolerance,
           vxGround: vxG,
@@ -279,7 +312,7 @@ export const createLastGapStore = createChallengeStore<LastGapExtra>(
         const nextR = (s.currentRound % LAST_GAP_ROUNDS.length) + 1;
         const cfg = LAST_GAP_ROUNDS[nextR - 1];
         const defaultAngle = 36.87;
-        const { vxG, vyG, vRes, timeCross, predDrift } = recalcPhysics(defaultAngle, nextR);
+        const { vxG, vyG, vRes, timeCross, predDrift } = recalcPhysics(defaultAngle, nextR, cfg.boatSpeed);
 
         set({
           currentRound: nextR,

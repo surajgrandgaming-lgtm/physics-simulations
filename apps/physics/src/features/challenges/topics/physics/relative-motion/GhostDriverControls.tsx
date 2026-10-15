@@ -84,22 +84,26 @@ export function GhostDriverControls({ config }: Props) {
           {
             title: "Accelerate Forward",
             badge: "Catch Up ([+] / W)",
-            description: `Press [+] or [W] to fly faster than the lead tanker (${tankerSpeed} m/s). A positive relative velocity (v_rel > 0) closes the ${stageInfo.initialDistance}m separation gap.`,
+            description: "Press [+] or [W] to fly faster than the lead tanker and close the separation gap.",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%201/Topic%202/easy/1.png",
           },
           {
             title: "Match Tanker Velocity",
             badge: "Zero Drift (v_rel = 0)",
-            description: `When entering the green drogue basket zone (within ±2.0m), adjust your speed to exactly ${tankerSpeed} m/s so relative drift becomes 0 m/s.`,
+            description: "When entering the green drogue zone, match your speed to eliminate relative drift.",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%201/Topic%202/easy/2.png",
           },
           {
             title: "Lock Probe & Refuel",
             badge: "5-Second Transfer",
-            description: "Tap LOCK PROBE (or Spacebar) in the green zone and hold synchronized flight for 5.0 seconds to transfer 100% fuel.",
+            description: "Tap LOCK PROBE in the green zone and hold synchronized flight for 5 seconds.",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%201/Topic%202/easy/3.png",
           },
         ],
       }}
       briefing={{
         target: "Catch the tanker and refuel your jet mid-air",
+        targetImageUrl: "https://topcoaching.b-cdn.net/Module%201/Topic%202/easy/target.png",
         storyObjective:
           `Stage ${currentRound}: The KC-135 Stratotanker is cruising ahead at ${tankerSpeed} m/s with a ${stageInfo.initialDistance}m initial gap. Accelerate forward, match relative velocity to exactly ${tankerSpeed} m/s (v_rel = 0 m/s) inside the drogue basket, and hold probe lock for 5.0 seconds before fuel runs out!`,
         steps: [
