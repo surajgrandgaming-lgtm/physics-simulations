@@ -1,5 +1,7 @@
 "use client";
 
+import { CastleSiegeControls } from "@/features/challenges/topics/physics/2d-projectiles/CastleSiegeControls";
+
 import { UmbrellaTiltControls } from "@/features/challenges/topics/physics/vectors-river-rain/UmbrellaTiltControls";
 import { ChallengeControlsPanel } from "@/features/challenges/ChallengeControlsPanel";
 import { EmergencyStopControls } from "@/features/challenges/topics/physics/1d-motion-deceleration/EmergencyStopControls";
@@ -17,6 +19,10 @@ interface ChallengeControlsClientProps {
 
 export function ChallengeControlsClient({ config }: ChallengeControlsClientProps) {
   const sceneType = config?.sceneType;
+
+  if (sceneType === "castle-siege") {
+    return <CastleSiegeControls config={config} />;
+  }
 
   if (sceneType === "umbrella-tilt") {
     return <UmbrellaTiltControls config={config} />;

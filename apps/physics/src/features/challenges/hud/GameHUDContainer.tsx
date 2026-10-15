@@ -171,7 +171,7 @@ export function GameHUDContainer({
                 {React.isValidElement(instructionsOverlay) ? (
                   instructionsOverlay
                 ) : typeof instructionsOverlay === "object" && "instructions" in instructionsOverlay ? (
-                  <div className="flex flex-col max-lg:landscape:grid max-lg:landscape:grid-cols-3 gap-2.5 sm:gap-3.5 max-lg:landscape:gap-2 w-full max-w-4xl text-left">
+                  <div className="grid grid-cols-1 md:grid-cols-3 max-lg:landscape:grid-cols-3 gap-2.5 sm:gap-3.5 max-lg:landscape:gap-2 w-full max-w-4xl text-left">
                     {instructionsOverlay.instructions.map((item, idx) => (
                       <div
                         key={idx}
@@ -199,7 +199,7 @@ export function GameHUDContainer({
                         </div>
 
                         {item.imageUrl && (
-                          <div className="mt-2 w-full rounded-xl overflow-hidden border border-slate-200/60 bg-slate-950/5 flex items-center justify-center p-1.5 h-20 sm:h-24 max-lg:landscape:h-18">
+                          <div className="mt-2.5 w-full rounded-xl overflow-hidden border border-slate-200/70 bg-slate-950/5 flex items-center justify-center p-2 h-28 sm:h-36 max-lg:landscape:h-20">
                             <img
                               src={item.imageUrl}
                               alt={item.title}

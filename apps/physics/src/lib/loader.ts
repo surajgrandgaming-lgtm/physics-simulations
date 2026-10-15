@@ -22,6 +22,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if (canonicalTopic === "1d-motion-deceleration" && slug.includes("1d-motion")) return true;
     if (canonicalTopic === "relative-motion" && slug.includes("relative-motion")) return true;
     if (canonicalTopic === "vectors-river-rain" && (slug.includes("vectors") || slug.includes("rain"))) return true;
+    if ((canonicalTopic === "2d-projectiles" || canonicalTopic === "projectiles") && (slug.includes("projectile") || slug.includes("2d-projectile"))) return true;
     return false;
   });
 
@@ -51,6 +52,7 @@ export const getChallenge = cache(
     const is1DMotion = canonicalTopic === "1d-motion-deceleration" || canonicalTopic === "uniform-motion" || foundTopic?.topicId === "1";
     const isRelativeMotion = canonicalTopic === "relative-motion" || foundTopic?.topicId === "2";
     const isVectors = canonicalTopic === "vectors-river-rain" || foundTopic?.topicId === "3";
+    const isProjectiles = canonicalTopic === "2d-projectiles" || canonicalTopic === "projectiles" || foundTopic?.topicId === "4";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -88,6 +90,15 @@ export const getChallenge = cache(
         sceneType = "umbrella-tilt";
         parameters = { rainSpeedY: 14, windSpeedX: 5, trackDistance: 60, rounds: 3 };
       }
+    } else if (isProjectiles) {
+      sceneType = "castle-siege";
+      parameters = {
+        mountainDistance: 100,
+        mountainPeakHeight: 36,
+        targetDistance: 190,
+        gravity: 9.8,
+        rounds: 3,
+      };
     } else if (canonicalTopic === "tablecloth-pull") {
       sceneType = "tablecloth-pull";
       parameters = { pullSpeed: difficulty === "easy" ? 25 : difficulty === "medium" ? 35 : 45, clothFriction: 0.1 };
@@ -95,7 +106,7 @@ export const getChallenge = cache(
 
     const title =
       challengeData?.title ||
-      (canonicalTopic === "tablecloth-pull"
+      (isProjectiles ? "Castle Siege" : canonicalTopic === "tablecloth-pull"
         ? "Inertia Tablecloth Challenge"
         : difficulty === "easy"
         ? "Operation Falcon Refuel (Mid-Air Rendezvous)"

@@ -22,6 +22,17 @@ const LoadingFallback = () => (
   </div>
 );
 
+const CastleSiegeScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/2d-projectiles/CastleSiegeScene"
+    ).then((mod) => mod.CastleSiegeScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 // ── Critical: ssr: false — Three.js never runs in SSR (Directive 1) ──────
 const UmbrellaTiltScene = dynamic(
   () =>
@@ -128,6 +139,14 @@ interface Props {
 
 export default function CanvasClient({ config }: Props) {
   const sceneType = config?.sceneType;
+
+  if (sceneType === "castle-siege") {
+    return (
+      <div className="w-full h-full">
+        <CastleSiegeScene config={config} />
+      </div>
+    );
+  }
 
   if (sceneType === "umbrella-tilt") {
     return (
