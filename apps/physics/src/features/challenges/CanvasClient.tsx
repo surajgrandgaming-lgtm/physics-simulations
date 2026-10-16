@@ -1,8 +1,8 @@
-"use client";
+﻿"use client";
 /**
  * CanvasClient.tsx — Client Component wrapper for the Three.js canvas.
  *
- * ⚠️ DIRECTIVE 1 COMPLIANCE:
+ * DIRECTIVE 1 COMPLIANCE:
  * This is a "use client" component. next/dynamic with { ssr: false } is ONLY
  * allowed in Client Components. This ensures Three.js/R3F code NEVER executes
  * during server-side rendering.
@@ -22,6 +22,17 @@ const LoadingFallback = () => (
   </div>
 );
 
+const MountainSummitScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/inclined-projectiles/MountainSummitScene"
+    ).then((mod) => mod.MountainSummitScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CastleSiegeScene = dynamic(
   () =>
     import(
@@ -33,7 +44,6 @@ const CastleSiegeScene = dynamic(
   }
 );
 
-// ── Critical: ssr: false — Three.js never runs in SSR (Directive 1) ──────
 const UmbrellaTiltScene = dynamic(
   () =>
     import(
@@ -139,6 +149,14 @@ interface Props {
 
 export default function CanvasClient({ config }: Props) {
   const sceneType = config?.sceneType;
+
+  if (sceneType === "mountain-summit-siege") {
+    return (
+      <div className="w-full h-full">
+        <MountainSummitScene config={config} />
+      </div>
+    );
+  }
 
   if (sceneType === "castle-siege") {
     return (

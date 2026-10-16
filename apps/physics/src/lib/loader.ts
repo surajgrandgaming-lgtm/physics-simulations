@@ -1,4 +1,4 @@
-import { cache } from "react";
+﻿import { cache } from "react";
 import physicsData from "@/data/physics.json";
 import { ChallengeConfigSchema, type ChallengeConfig } from "@topcoaching/sim-core/schemas/challenge.schema";
 
@@ -23,6 +23,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if (canonicalTopic === "relative-motion" && slug.includes("relative-motion")) return true;
     if (canonicalTopic === "vectors-river-rain" && (slug.includes("vectors") || slug.includes("rain"))) return true;
     if ((canonicalTopic === "2d-projectiles" || canonicalTopic === "projectiles") && (slug.includes("projectile") || slug.includes("2d-projectile"))) return true;
+    if ((canonicalTopic === "inclined-projectiles" || canonicalTopic === "inclined") && (slug.includes("inclined") || t.topicId === "5")) return true;
     return false;
   });
 
@@ -53,6 +54,7 @@ export const getChallenge = cache(
     const isRelativeMotion = canonicalTopic === "relative-motion" || foundTopic?.topicId === "2";
     const isVectors = canonicalTopic === "vectors-river-rain" || foundTopic?.topicId === "3";
     const isProjectiles = canonicalTopic === "2d-projectiles" || canonicalTopic === "projectiles" || foundTopic?.topicId === "4";
+    const isInclinedProjectiles = canonicalTopic === "inclined-projectiles" || canonicalTopic === "inclined" || foundTopic?.topicId === "5";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -90,6 +92,15 @@ export const getChallenge = cache(
         sceneType = "umbrella-tilt";
         parameters = { rainSpeedY: 14, windSpeedX: 5, trackDistance: 60, rounds: 3 };
       }
+    } else if (isInclinedProjectiles) {
+      sceneType = "mountain-summit-siege";
+      parameters = {
+        summitElevation: 55,
+        slopeAngleDeg: 18,
+        targetDistance: 195,
+        gravity: 9.8,
+        rounds: 3,
+      };
     } else if (isProjectiles) {
       sceneType = "castle-siege";
       parameters = {
@@ -106,7 +117,11 @@ export const getChallenge = cache(
 
     const title =
       challengeData?.title ||
-      (isProjectiles ? "Castle Siege" : canonicalTopic === "tablecloth-pull"
+      (isInclinedProjectiles
+        ? "Mountain Summit Siege"
+        : isProjectiles
+        ? "Castle Siege"
+        : canonicalTopic === "tablecloth-pull"
         ? "Inertia Tablecloth Challenge"
         : difficulty === "easy"
         ? "Operation Falcon Refuel (Mid-Air Rendezvous)"
@@ -194,9 +209,18 @@ export function getModuleData(subject: string, moduleSlug: string) {
     if (rawSlug.includes("1d-motion") || t.topicId === "1") slug = "1d-motion-deceleration";
     else if (rawSlug.includes("relative-motion") || t.topicId === "2") slug = "relative-motion";
     else if (rawSlug.includes("vectors") || t.topicId === "3") slug = "vectors-river-rain";
+    else if (rawSlug.includes("projectile") || t.topicId === "4") slug = "2d-projectiles";
+    else if (rawSlug.includes("inclined") || t.topicId === "5") slug = "inclined-projectiles";
     else if (rawSlug.includes("tablecloth-pull")) slug = "tablecloth-pull";
 
-    const has3D = slug === "1d-motion-deceleration" || slug === "relative-motion" || slug === "vectors-river-rain" || slug === "tablecloth-pull";
+    const has3D =
+      slug === "1d-motion-deceleration" ||
+      slug === "relative-motion" ||
+      slug === "vectors-river-rain" ||
+      slug === "2d-projectiles" ||
+      slug === "inclined-projectiles" ||
+      slug === "tablecloth-pull";
+
     return {
       id: t.topicId,
       name: t.topicName,
@@ -269,7 +293,7 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
           : (foundTopic as any)?.challenges?.easy?.title || "Easy Challenge",
       description:
         canonicalTopic === "1d-motion-deceleration"
-          ? "Stopping distance s = u² / (2μg) across Dry, Wet, and Icy surfaces before the 60m barrier."
+          ? "Stopping distance s = u² / (2µg) across Dry, Wet, and Icy surfaces before the 60m barrier."
           : canonicalTopic === "relative-motion"
           ? "Match velocity with the lead tanker aircraft (v_rel = 0 m/s) and lock onto the trailing drogue basket."
           : canonicalTopic === "tablecloth-pull"
@@ -288,6 +312,10 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
       title:
         canonicalTopic === "1d-motion-deceleration"
           ? "Carrier Catapult & Runway Kinematics"
+          : canonicalTopic === "inclined-projectiles"
+          ? "Mountain Summit Siege"
+          : canonicalTopic === "2d-projectiles"
+          ? "Castle Siege"
           : canonicalTopic === "relative-motion"
           ? "The Last Gap (River Crossing)"
           : canonicalTopic === "tablecloth-pull"
@@ -296,6 +324,10 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
       description:
         canonicalTopic === "1d-motion-deceleration"
           ? "Minimum acceleration a = v² / (2s) to launch a fighter jet from an aircraft carrier deck without stalling."
+          : canonicalTopic === "inclined-projectiles"
+          ? "Downhill slope projectile kinematics from mountain summit. Optimize launch angle (45° - β/2) to obliterate the outpost."
+          : canonicalTopic === "2d-projectiles"
+          ? "High-arc rainbow lob over a mountain ridge to destroy the enemy target tower."
           : canonicalTopic === "relative-motion"
           ? "Compensate for river current by aiming upstream to land directly on the opposite slipway."
           : canonicalTopic === "tablecloth-pull"
@@ -304,6 +336,10 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
       sceneType:
         canonicalTopic === "1d-motion-deceleration"
           ? "last-hundred-meters"
+          : canonicalTopic === "inclined-projectiles"
+          ? "mountain-summit-siege"
+          : canonicalTopic === "2d-projectiles"
+          ? "castle-siege"
           : canonicalTopic === "vectors-river-rain"
           ? "umbrella-tilt"
           : canonicalTopic === "relative-motion"
