@@ -5,11 +5,17 @@ import { ChallengeConfigSchema, type ChallengeConfig } from "@topcoaching/sim-co
 export function findTopic(subject: string, moduleSlug: string, topicSlug: string) {
   if (subject !== "physics") return null;
 
-  const normalizedModule = moduleSlug.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const normalizedModule = moduleSlug.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
   const mod = physicsData.modules.find(
-    (m) =>
-      m.moduleName.toLowerCase().replace(/[^a-z0-9]+/g, "-") === normalizedModule ||
-      m.moduleId.toLowerCase() === normalizedModule
+    (m) => {
+      const modSlug = m.moduleName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+      return (
+        modSlug === normalizedModule ||
+        m.moduleId.toLowerCase() === normalizedModule ||
+        (normalizedModule.includes("dynamics") && m.moduleId === "M2") ||
+        (normalizedModule.includes("kinematics") && m.moduleId === "M1")
+      );
+    }
   );
 
   if (!mod) return null;
@@ -24,6 +30,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if (canonicalTopic === "vectors-river-rain" && (slug.includes("vectors") || slug.includes("rain"))) return true;
     if ((canonicalTopic === "2d-projectiles" || canonicalTopic === "projectiles") && (slug.includes("projectile") || slug.includes("2d-projectile"))) return true;
     if ((canonicalTopic === "inclined-projectiles" || canonicalTopic === "inclined") && (slug.includes("inclined") || t.topicId === "5")) return true;
+    if ((canonicalTopic === "inertia-nlm-1" || canonicalTopic === "inertia" || canonicalTopic === "asteroid-deflection") && (slug.includes("inertia") || t.topicId === "6")) return true;
     return false;
   });
 
@@ -55,6 +62,7 @@ export const getChallenge = cache(
     const isVectors = canonicalTopic === "vectors-river-rain" || foundTopic?.topicId === "3";
     const isProjectiles = canonicalTopic === "2d-projectiles" || canonicalTopic === "projectiles" || foundTopic?.topicId === "4";
     const isInclinedProjectiles = canonicalTopic === "inclined-projectiles" || canonicalTopic === "inclined" || foundTopic?.topicId === "5";
+    const isInertia = canonicalTopic === "inertia-nlm-1" || canonicalTopic === "inertia" || canonicalTopic === "asteroid-deflection" || foundTopic?.topicId === "6";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -92,6 +100,14 @@ export const getChallenge = cache(
         sceneType = "umbrella-tilt";
         parameters = { rainSpeedY: 14, windSpeedX: 5, trackDistance: 60, rounds: 3 };
       }
+    } else if (isInertia) {
+      sceneType = "asteroid-deflection";
+      parameters = {
+        asteroidMass: 1200,
+        initialSpeed: 30,
+        maxDeltaV: 20,
+        rounds: 3,
+      };
     } else if (isInclinedProjectiles) {
       sceneType = "mountain-summit-siege";
       parameters = {
@@ -117,7 +133,9 @@ export const getChallenge = cache(
 
     const title =
       challengeData?.title ||
-      (isInclinedProjectiles
+      (isInertia
+        ? "Asteroid Deflection"
+        : isInclinedProjectiles
         ? "Mountain Summit Siege"
         : isProjectiles
         ? "Castle Siege"
@@ -211,6 +229,7 @@ export function getModuleData(subject: string, moduleSlug: string) {
     else if (rawSlug.includes("vectors") || t.topicId === "3") slug = "vectors-river-rain";
     else if (rawSlug.includes("projectile") || t.topicId === "4") slug = "2d-projectiles";
     else if (rawSlug.includes("inclined") || t.topicId === "5") slug = "inclined-projectiles";
+    else if (rawSlug.includes("inertia") || t.topicId === "6") slug = "inertia-nlm-1";
     else if (rawSlug.includes("tablecloth-pull")) slug = "tablecloth-pull";
 
     const has3D =
@@ -219,6 +238,7 @@ export function getModuleData(subject: string, moduleSlug: string) {
       slug === "vectors-river-rain" ||
       slug === "2d-projectiles" ||
       slug === "inclined-projectiles" ||
+      slug === "inertia-nlm-1" ||
       slug === "tablecloth-pull";
 
     return {
@@ -312,6 +332,8 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
       title:
         canonicalTopic === "1d-motion-deceleration"
           ? "Carrier Catapult & Runway Kinematics"
+          : canonicalTopic === "inertia-nlm-1" || canonicalTopic === "inertia"
+          ? "Asteroid Deflection"
           : canonicalTopic === "inclined-projectiles"
           ? "Mountain Summit Siege"
           : canonicalTopic === "2d-projectiles"
@@ -324,6 +346,8 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
       description:
         canonicalTopic === "1d-motion-deceleration"
           ? "Minimum acceleration a = v² / (2s) to launch a fighter jet from an aircraft carrier deck without stalling."
+          : canonicalTopic === "inertia-nlm-1" || canonicalTopic === "inertia"
+          ? "In deep space, an asteroid coasts with constant velocity. Use limited thruster impulse J = m*Δv to alter its straight-line trajectory, bypassing planetary collision hazard zones and reaching the safe warp gate."
           : canonicalTopic === "inclined-projectiles"
           ? "Downhill slope projectile kinematics from mountain summit. Optimize launch angle (45° - β/2) to obliterate the outpost."
           : canonicalTopic === "2d-projectiles"
@@ -336,6 +360,8 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
       sceneType:
         canonicalTopic === "1d-motion-deceleration"
           ? "last-hundred-meters"
+          : canonicalTopic === "inertia-nlm-1" || canonicalTopic === "inertia"
+          ? "asteroid-deflection"
           : canonicalTopic === "inclined-projectiles"
           ? "mountain-summit-siege"
           : canonicalTopic === "2d-projectiles"

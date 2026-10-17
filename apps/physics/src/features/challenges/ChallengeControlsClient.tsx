@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import { AsteroidDeflectionControls } from "@/features/challenges/topics/physics/inertia/AsteroidDeflectionControls";
 import { MountainSummitControls } from "@/features/challenges/topics/physics/inclined-projectiles/MountainSummitControls";
 import { CastleSiegeControls } from "@/features/challenges/topics/physics/2d-projectiles/CastleSiegeControls";
 import { UmbrellaTiltControls } from "@/features/challenges/topics/physics/vectors-river-rain/UmbrellaTiltControls";
@@ -19,6 +20,10 @@ interface ChallengeControlsClientProps {
 
 export function ChallengeControlsClient({ config }: ChallengeControlsClientProps) {
   const sceneType = config?.sceneType;
+
+  if (sceneType === "asteroid-deflection") {
+    return <AsteroidDeflectionControls config={config} />;
+  }
 
   if (sceneType === "mountain-summit-siege") {
     return <MountainSummitControls config={config} />;

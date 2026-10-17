@@ -22,6 +22,17 @@ const LoadingFallback = () => (
   </div>
 );
 
+const AsteroidDeflectionScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/inertia/AsteroidDeflectionScene"
+    ).then((mod) => mod.AsteroidDeflectionScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const MountainSummitScene = dynamic(
   () =>
     import(
@@ -149,6 +160,14 @@ interface Props {
 
 export default function CanvasClient({ config }: Props) {
   const sceneType = config?.sceneType;
+
+  if (sceneType === "asteroid-deflection") {
+    return (
+      <div className="w-full h-full">
+        <AsteroidDeflectionScene config={config} />
+      </div>
+    );
+  }
 
   if (sceneType === "mountain-summit-siege") {
     return (
