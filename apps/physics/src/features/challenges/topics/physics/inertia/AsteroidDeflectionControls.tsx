@@ -33,9 +33,6 @@ export function AsteroidDeflectionControls({ config }: { config?: any }) {
   const score = useAsteroidDeflectionStore((s) => s.score);
   const walls = useAsteroidDeflectionStore((s) => s.walls);
   const isMissionStarted = useAsteroidDeflectionStore((s) => s.isMissionStarted);
-  const cameraView = useAsteroidDeflectionStore((s) => s.cameraView);
-  const cycleCameraView = useAsteroidDeflectionStore((s) => s.cycleCameraView);
-  const setCameraView = useAsteroidDeflectionStore((s) => s.setCameraView);
 
   const startMission = useAsteroidDeflectionStore((s) => s.startMission);
   const startFlight = useAsteroidDeflectionStore((s) => s.startFlight);
@@ -45,8 +42,7 @@ export function AsteroidDeflectionControls({ config }: { config?: any }) {
   const nextRound = useAsteroidDeflectionStore((s) => s.nextRound);
 
   // Global Keyboard Navigation (A/D, Arrow keys, Spacebar for Stabilize)
-  // Uses capture-phase listener so OrbitControls/Canvas/HUD buttons cannot swallow keys
-  // Debounces key-repeats to prevent fuel/velocity runaway while holding down a key
+  // Uses capture-phase listener with repeat cooldown so keys are never missed or spammed
   useEffect(() => {
     let lastPulseTime = 0;
     const REPEAT_COOLDOWN_MS = 140;
@@ -105,6 +101,57 @@ export function AsteroidDeflectionControls({ config }: { config?: any }) {
   const isWon = status === "cleared";
   const isGameOver = status === "crashed";
 
+  // Comprehensive Step-by-Step Mathematical Derivation
+  // (Available at ALL times: before mission, during flight, and post-game)
+  const flightCalculation = useMemo(() => {
+    const mass = stageConfig.massKg;
+    const vForward = stageConfig.forwardSpeed;
+    const deltaV = stageConfig.pulseDeltaV;
+    const impulse = ((mass * deltaV) / 1000).toFixed(1);
+    const forwardKE = ((0.5 * mass * vForward * vForward) / 1000).toFixed(1);
+
+    return {
+      title: "Newton's 1st Law & Spacecraft Inertial Navigation",
+      concept: "Zero-G Inertia, Momentum Conservation & Reaction Control Systems",
+      conclusion:
+        "Key Physics Takeaway: In the frictionless vacuum of deep space, an object in motion remains in motion at constant velocity unless acted upon by a net external force. Thrusters are required both to START a sideways drift and to STOP it!",
+      steps: [
+        {
+          step: 1,
+          title: "Inertial Forward Cruise (Newton's 1st Law)",
+          math: "v_z = " + vForward + "\\text{ m/s}, \\quad \\sum \\mathbf{F}_z = 0 \\implies a_z = 0",
+          calculation: "With zero aerodynamic drag or gravitational resistance in space, the " + mass + "kg scout vessel maintains a constant forward velocity of " + vForward + " m/s without requiring continuous engine thrust. Forward kinetic energy is conserved: E_k = \\frac{1}{2} m v_z^2 = " + forwardKE + "\\text{ kJ}.",
+        },
+        {
+          step: 2,
+          title: "Lateral RCS Impulse-Momentum Theorem",
+          math: "\\mathbf{J}_x = \\mathbf{F}_{\\text{RCS}} \\cdot \\Delta t = m \\Delta v_x = " + mass + "\\text{ kg} \\times " + deltaV + "\\text{ m/s} = " + impulse + "\\text{ kN}\\cdot\\text{s}",
+          calculation: "Each lateral thruster fire applies an external impulse J_x, instantaneously altering sideways momentum by " + impulse + " kN·s and imparting an exact velocity increment of ±" + deltaV + " m/s.",
+        },
+        {
+          step: 3,
+          title: "Perpetual Sideways Coasting (Inertial Drift)",
+          math: "\\sum \\mathbf{F}_x = 0 \\implies v_x = \\text{constant} = " + deltaV + "\\text{ m/s}",
+          calculation: "The moment the RCS nozzle shuts off, the net lateral force drops back to zero. In accordance with Newton's 1st Law, the vessel does not slow down; it coasts sideways indefinitely at constant speed along a diagonal drift vector \\theta = \\arctan(v_x/v_z) until an opposing force is applied.",
+        },
+        {
+          step: 4,
+          title: "Counter-Thrust Equilibrium & Alignment",
+          math: "v_{x,\\text{final}} = v_x + \\Delta v_{\\text{counter}} = " + deltaV + "\\text{ m/s} + (-" + deltaV + "\\text{ m/s}) = 0\\text{ m/s}",
+          calculation: isWon
+            ? "Flawless inertial piloting! Opposing counter-thrust successfully neutralized lateral momentum to 0 m/s, gliding directly through the illuminated gap."
+            : "Trajectory drifted into the asteroid wall because lateral momentum was not countered in time. Fire opposing thrust before entering the corridor.",
+        },
+        {
+          step: 5,
+          title: "Aperture Transit & Spatial Clearance",
+          math: "\\Delta x = \\int_0^{t} v_x(t)\\,dt, \\quad |x_{\\text{ship}} - x_{\\text{gap}}| < \\frac{W_{\\text{gap}} - W_{\\text{ship}}}{2}",
+          calculation: "Passing safely through all " + stageConfig.walls.length + " asteroid barriers requires keeping the ship's 3.2m wingspan strictly within the illuminated gap corridor as the ship traverses each barrier plane along the z-axis.",
+        },
+      ],
+    };
+  }, [stageConfig, isWon]);
+
   return (
     <GameHUDContainer
       title="Asteroid Wall Breach"
@@ -117,14 +164,15 @@ export function AsteroidDeflectionControls({ config }: { config?: any }) {
       hideEyeButton={true}
       hideRestartButton={false}
       showExitButton={true}
+      calculation={flightCalculation}
       topCenterHUD={
         <div className="flex items-center gap-2.5 sm:gap-3 bg-slate-950/70 backdrop-blur-xl border border-white/10 px-4 py-1.5 rounded-full shadow-[0_4px_16px_rgba(0,0,0,0.3)] select-none font-mono text-xs">
           <span className="text-white/70 font-semibold tracking-wide">SECTOR {currentRound}/3</span>
-          <span className="text-white/20">•</span>
+          <span className="text-white/20">|</span>
           <span className="text-emerald-400 font-bold">WALLS {clearedWallsCount}/{walls.length}</span>
           {nextUpcomingWall && (
             <>
-              <span className="text-white/20">•</span>
+              <span className="text-white/20">|</span>
               <span className="text-slate-300">{distToNextWall}m</span>
             </>
           )}
@@ -134,25 +182,19 @@ export function AsteroidDeflectionControls({ config }: { config?: any }) {
         title: "Flight Manual: Deep Space Inertial Navigation",
         instructions: [
           {
-            title: "Pulse Lateral RCS",
-            badge: "[A] / [D] or Buttons",
-            description: "Firing your port or starboard thrusters adds sideways velocity (Δvx) to your rocket.",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%202/Topic%201/medium/1.png",
+            title: "Flight Controls",
+            badge: "[A] / [D] or Arrow Keys",
+            description: "Pulse lateral RCS thrusters to initiate sideways velocity (±Δvx). Counter-thrust with the opposite key or [SPACE] to cancel drift and glide straight through openings.",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%202/Topic%201/medium/4.png",
           },
           {
-            title: "Newton's 1st Law (Zero Friction)",
-            badge: "Inertial Drift",
-            description: "In deep space, there is no air friction! Releasing the thruster does NOT stop your sideways drift. You coast forever.",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%202/Topic%201/medium/2.png",
-          },
-          {
-            title: "Counter-Thrust for Alignment",
-            badge: "[SPACE] or Opposite Key",
-            description: "To pass through the narrow aperture in the asteroid wall, fire opposing thrust to cancel your drift velocity.",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%202/Topic%201/medium/3.png",
+            title: "Mission Target",
+            badge: "Sector Goal",
+            description: `Guide your ${stageConfig.massKg}kg scout ship safely through all ${stageConfig.walls.length} asteroid barrier walls into the Warp Gate without colliding with space rocks.`,
+            imageUrl: "https://topcoaching.b-cdn.net/Module%202/Topic%201/medium/target2.png",
           },
         ],
-        tip: "Remember: ΣF = 0 means velocity is constant! If you are sliding left at 4 m/s, you must fire right by 4 m/s to fly straight.",
+        tip: "Newton's 1st Law Tip: ΣF = 0 means velocity is constant! Releasing a key does not stop sideways drift—fire counter-thrust to align straight.",
       }}
       briefing={{
         target: `Navigate your ${stageConfig.massKg}kg rocket through ${stageConfig.walls.length} sequential asteroid barrier walls into the Warp Gate.`,
@@ -179,17 +221,17 @@ export function AsteroidDeflectionControls({ config }: { config?: any }) {
         formulas: [
           {
             label: "1. Newton's First Law (Law of Inertia)",
-            formula: "\\Sigma \\vec{F} = 0 \\implies \\vec{a} = 0 \\implies \\vec{v} = \\text{constant}",
-            explanation: "In deep space with zero net force, velocity remains constant in both magnitude and direction.",
+            formula: "\\sum \\mathbf{F} = 0 \\implies \\mathbf{a} = 0 \\implies \\mathbf{v} = \\text{constant}",
+            explanation: "In deep space with zero net external force, velocity remains constant in both magnitude and direction.",
           },
           {
             label: "2. The Impulse-Momentum Theorem",
-            formula: "\\vec{J} = \\vec{F}_{\\text{RCS}} \\Delta t = m \\Delta\\vec{v}",
-            explanation: "Each thruster pulse imparts an instantaneous vector impulse that alters drift velocity.",
+            formula: "\\mathbf{J} = \\mathbf{F}_{\\text{RCS}} \\cdot \\Delta t = m \\Delta \\mathbf{v}",
+            explanation: "Each thruster pulse imparts an instantaneous vector impulse that directly alters lateral momentum.",
           },
           {
             label: "3. Momentum Neutralization (Counter-Thrust)",
-            formula: "\\Delta v_{x,\\text{net}} = \\Delta v_{\\text{left}} + \\Delta v_{\\text{right}} = 0",
+            formula: "v_{x,\\text{final}} = v_x + \\Delta v_{\\text{counter}} = 0 \\implies \\mathbf{p}_{x,\\text{net}} = 0",
             explanation: "To stop drifting sideways, an opposing impulse of equal magnitude must be applied.",
           },
         ],
@@ -197,59 +239,26 @@ export function AsteroidDeflectionControls({ config }: { config?: any }) {
       result={
         (isWon || isGameOver)
           ? {
-              isWon,
-              isGameOver,
-              onRetry: resetFlight,
-              onNextTier: currentRound < 3 ? nextRound : undefined,
-              nextTierLabel: currentRound < 3 ? `PROCEED TO SECTOR ${currentRound + 1}` : "REPLAY FLIGHT",
-              failureReason: isGameOver
-                ? crashReason || "Hull breached on Asteroid Barrier! Counter-thrust earlier to align with the gap."
-                : undefined,
-              tip: "Newton's 1st Law Key: If you fire Left, you will drift Left forever until you fire Right to cancel it!",
-              stats: [
-                { label: "Mission Status", value: isWon ? "Warp Gate Cleared! 🌀" : "Hull Destroyed 💥" },
-                { label: "Forward Velocity", value: `${stageConfig.forwardSpeed} m/s` },
-                { label: "Lateral Drift", value: `${Math.abs(rocketVel.vx).toFixed(1)} m/s ${rocketVel.vx < 0 ? 'RIGHT' : rocketVel.vx > 0 ? 'LEFT' : 'CENTER'}` },
-                { label: "Walls Cleared", value: `${clearedWallsCount} / ${walls.length}` },
-                { label: "RCS Pulses Fired", value: totalPulses },
-                { label: "Fuel Conserved", value: `${fuel}%` },
-                { label: "Flight Score", value: score },
-              ],
-              calculation: {
-                title: "Newton's 1st Law & Spacecraft Inertial Navigation",
-                concept: "Zero-G Inertia, Momentum Conservation & Spacecraft Thrusters",
-                steps: [
-                  {
-                    step: 1,
-                    title: "Step 1: The Inertial Cruise (Newton's 1st Law)",
-                    math: `v_z = ${stageConfig.forwardSpeed}\\text{ m/s}, \\quad \\Sigma F_z = 0 \\implies a_z = 0`,
-                    calculation: `With no aerodynamic drag in space, the ${stageConfig.massKg}kg rocket maintains a constant forward velocity of ${stageConfig.forwardSpeed} m/s without requiring continuous thrust.`,
-                  },
-                  {
-                    step: 2,
-                    title: "Step 2: Lateral RCS Impulse",
-                    math: `J_x = m \\Delta v_x = ${stageConfig.massKg} \\times ${stageConfig.pulseDeltaV}\\text{ m/s} = ${((stageConfig.massKg * stageConfig.pulseDeltaV) / 1000).toFixed(1)}\\text{ kN}\\cdot\\text{s}`,
-                    calculation: `Each lateral thruster fire delivers an impulse J, instantaneously increasing sideways velocity by ${stageConfig.pulseDeltaV} m/s.`,
-                  },
-                  {
-                    step: 3,
-                    title: "Step 3: Perpetual Sideways Coasting",
-                    math: `\\Sigma F_x = 0 \\implies v_x = \\text{constant}`,
-                    calculation: `Once the thruster cuts off, net lateral force drops back to zero. In accordance with Newton's 1st Law, the vessel coasts sideways indefinitely at constant speed until an opposing force is applied.`,
-                  },
-                  {
-                    step: 4,
-                    title: "Step 4: The Counter-Thrust Equilibrium",
-                    math: `v_{x,\\text{final}} = v_x + \\Delta v_{\\text{counter}} = 0\\text{ m/s}`,
-                    calculation: isWon
-                      ? "Flawless inertial piloting! Opposing counter-thrust successfully stabilized lateral drift to 0 m/s, gliding directly through the asteroid gap."
-                      : "Trajectory drifted into the asteroid wall because lateral momentum was not countered in time.",
-                  },
-                ],
-                conclusion:
-                  "🚀 Key Takeaway: In the frictionless vacuum of deep space, an object in motion remains in motion at constant velocity unless acted upon by a net external force. Thrusters are required both to START a drift and to STOP it!",
-              },
-            }
+            isWon,
+            isGameOver,
+            onRetry: resetFlight,
+            onNextTier: currentRound < 3 ? nextRound : undefined,
+            nextTierLabel: currentRound < 3 ? `PROCEED TO SECTOR ${currentRound + 1}` : "REPLAY FLIGHT",
+            failureReason: isGameOver
+              ? crashReason || "Hull breached on Asteroid Barrier! Counter-thrust earlier to align with the gap."
+              : undefined,
+            tip: "Newton's 1st Law Key: If you fire Left, you will drift Left forever until you fire Right to cancel it!",
+            stats: [
+              { label: "Mission Status", value: isWon ? "Warp Gate Cleared! 🚀" : "Hull Destroyed 💥" },
+              { label: "Forward Velocity", value: `${stageConfig.forwardSpeed} m/s` },
+              { label: "Lateral Drift", value: `${Math.abs(rocketVel.vx).toFixed(1)} m/s ${rocketVel.vx < 0 ? 'RIGHT' : rocketVel.vx > 0 ? 'LEFT' : 'CENTER'}` },
+              { label: "Walls Cleared", value: `${clearedWallsCount} / ${walls.length}` },
+              { label: "RCS Pulses Fired", value: totalPulses },
+              { label: "Fuel Conserved", value: `${fuel}%` },
+              { label: "Flight Score", value: score },
+            ],
+            calculation: flightCalculation,
+          }
           : undefined
       }
       bottomDock={
@@ -288,9 +297,9 @@ export function AsteroidDeflectionControls({ config }: { config?: any }) {
                   title="Counter-stabilize drift [SPACE]"
                 >
                   {rocketVel.vx < 0 ? (
-                    <>{Math.abs(rocketVel.vx).toFixed(1)} m/s ▶</>
+                    <>{Math.abs(rocketVel.vx).toFixed(1)} m/s ◄- </>
                   ) : (
-                    <>◀ {Math.abs(rocketVel.vx).toFixed(1)} m/s</>
+                    <>-► {Math.abs(rocketVel.vx).toFixed(1)} m/s</>
                   )}
                 </button>
               )}

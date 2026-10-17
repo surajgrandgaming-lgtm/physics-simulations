@@ -47,7 +47,7 @@ export interface GameHUDContainerProps {
   instructionsOverlay?:
   | {
     title?: string;
-    instructions: { title: string; description: string; badge?: string; imageUrl?: string }[];
+    instructions: { title: string; description: string; badge?: string; imageUrl?: string; visual?: ReactNode }[];
     tip?: string;
   }
   | ReactNode;
@@ -70,6 +70,7 @@ export interface GameHUDContainerProps {
     onNextTier?: () => void;
     calculation?: MissionCalculation;
   };
+  calculation?: MissionCalculation;
 }
 
 export function GameHUDContainer({
@@ -91,6 +92,7 @@ export function GameHUDContainer({
   instructionsOverlay,
   briefing,
   result,
+  calculation,
 }: GameHUDContainerProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [missionStarted, setMissionStarted] = useState(false);
@@ -171,7 +173,11 @@ export function GameHUDContainer({
                 {React.isValidElement(instructionsOverlay) ? (
                   instructionsOverlay
                 ) : typeof instructionsOverlay === "object" && "instructions" in instructionsOverlay ? (
-                  <div className="grid grid-cols-1 md:grid-cols-3 max-lg:landscape:grid-cols-3 gap-2.5 sm:gap-3.5 max-lg:landscape:gap-2 w-full max-w-4xl text-left">
+                  <div className={`grid gap-3 sm:gap-4 max-lg:landscape:gap-2 w-full text-left ${
+                    instructionsOverlay.instructions.length === 2
+                      ? "grid-cols-1 md:grid-cols-2 max-w-2xl sm:max-w-3xl"
+                      : "grid-cols-1 md:grid-cols-3 max-lg:landscape:grid-cols-3 max-w-4xl"
+                  }`}>
                     {instructionsOverlay.instructions.map((item, idx) => (
                       <div
                         key={idx}
@@ -198,15 +204,19 @@ export function GameHUDContainer({
                           </div>
                         </div>
 
-                        {item.imageUrl && (
-                          <div className="mt-2.5 w-full rounded-xl overflow-hidden border border-slate-200/70 bg-slate-950/5 flex items-center justify-center p-2 h-28 sm:h-36 max-lg:landscape:h-20">
-                            <img
-                              src={item.imageUrl}
-                              alt={item.title}
-                              className="max-h-full max-w-full object-contain rounded-lg"
-                            />
-                          </div>
-                        )}
+                        {(item.visual || item.imageUrl) && (
+                            <div className="mt-2.5 w-full rounded-xl overflow-hidden border border-slate-200/70 bg-slate-950 flex items-center justify-center h-28 sm:h-36 max-lg:landscape:h-20 shadow-inner">
+                              {item.visual ? (
+                                item.visual
+                              ) : (
+                                <img
+                                  src={item.imageUrl}
+                                  alt={item.title}
+                                  className="max-h-full max-w-full object-contain rounded-lg p-2"
+                                />
+                              )}
+                            </div>
+                          )}
                       </div>
                     ))}
                   </div>
@@ -426,7 +436,7 @@ export function GameHUDContainer({
       )}
 
       {/* ── TOP RIGHT CANVAS: EXPLANATION BUTTON (Always accessible during simulation) ── */}
-      {missionStarted && (result?.calculation || briefing?.steps?.length > 0) && (
+      {missionStarted && (calculation || result?.calculation || briefing?.steps?.length > 0) && (
         <div className="absolute top-2.5 sm:top-4 right-2.5 sm:right-4 z-40 pointer-events-auto">
           <button
             type="button"
@@ -456,7 +466,7 @@ export function GameHUDContainer({
           difficulty={difficulty}
           onRetry={onReset || (() => setIsExplanationOpen(false))}
           briefing={briefing}
-          calculation={result?.calculation}
+          calculation={calculation || result?.calculation}
           stats={result?.stats}
         />
       )}
@@ -478,7 +488,7 @@ export function GameHUDContainer({
           failureReason={result.failureReason}
           tip={result.tip}
           briefing={briefing}
-          calculation={result.calculation}
+          calculation={calculation || result.calculation}
         />
       )}
     </div>

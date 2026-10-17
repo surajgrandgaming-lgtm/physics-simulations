@@ -66,15 +66,17 @@ function SafeFormula({ formula, isLight = false }: { formula: string; isLight?: 
   if (!formula) return null;
   return (
     <span
-      className={`font-mono font-bold text-xs inline-flex items-center ${isLight ? "text-blue-950" : "text-cyan-300"
-        }`}
+      className={`text-xs sm:text-sm inline-flex items-center justify-center py-0.5 overflow-visible ${
+        isLight ? "text-slate-900 font-medium" : "text-cyan-300"
+      }`}
     >
       <InlineMath
         math={formula}
         renderError={() => (
           <span
-            className={`font-mono text-xs font-semibold ${isLight ? "text-slate-900" : "text-cyan-300"
-              }`}
+            className={`font-mono text-xs font-semibold ${
+              isLight ? "text-slate-900" : "text-cyan-300"
+            }`}
           >
             {formula}
           </span>
