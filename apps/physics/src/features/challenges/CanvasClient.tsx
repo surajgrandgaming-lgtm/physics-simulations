@@ -22,6 +22,17 @@ const LoadingFallback = () => (
   </div>
 );
 
+const TableclothScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/static-breakaway/TableclothScene"
+    ).then((mod) => mod.TableclothScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const AsteroidDeflectionScene = dynamic(
   () =>
     import(
@@ -160,6 +171,14 @@ interface Props {
 
 export default function CanvasClient({ config }: Props) {
   const sceneType = config?.sceneType;
+  if (sceneType === "static-breakaway") {
+    return (
+      <div className="w-full h-full">
+        <TableclothScene config={config} />
+      </div>
+    );
+  }
+
 
   if (sceneType === "asteroid-deflection") {
     return (

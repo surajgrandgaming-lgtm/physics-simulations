@@ -63,6 +63,7 @@ export const getChallenge = cache(
     const isProjectiles = canonicalTopic === "2d-projectiles" || canonicalTopic === "projectiles" || foundTopic?.topicId === "4";
     const isInclinedProjectiles = canonicalTopic === "inclined-projectiles" || canonicalTopic === "inclined" || foundTopic?.topicId === "5";
     const isInertia = canonicalTopic === "inertia-nlm-1" || canonicalTopic === "inertia" || canonicalTopic === "asteroid-deflection" || foundTopic?.topicId === "6";
+    const isStaticBreakaway = canonicalTopic === "static-breakaway-nlm-1" || canonicalTopic === "static-breakaway" || canonicalTopic === "tablecloth-pull" || foundTopic?.topicId === "7";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -126,9 +127,16 @@ export const getChallenge = cache(
         gravity: 9.8,
         rounds: 3,
       };
-    } else if (canonicalTopic === "tablecloth-pull") {
-      sceneType = "tablecloth-pull";
-      parameters = { pullSpeed: difficulty === "easy" ? 25 : difficulty === "medium" ? 35 : 45, clothFriction: 0.1 };
+    } else if (isStaticBreakaway) {
+      sceneType = "static-breakaway";
+      parameters = {
+        pullAcceleration: 6.5,
+        mass: 1.2,
+        muStatic: 0.42,
+        muKinetic: 0.28,
+        clothLength: 1.4,
+        tableEdgeX: 3.5,
+      };
     }
 
     const title =
@@ -139,8 +147,8 @@ export const getChallenge = cache(
         ? "Mountain Summit Siege"
         : isProjectiles
         ? "Castle Siege"
-        : canonicalTopic === "tablecloth-pull"
-        ? "Inertia Tablecloth Challenge"
+        : isStaticBreakaway
+        ? "The Grand Banquet Tablecloth Snatch"
         : difficulty === "easy"
         ? "Operation Falcon Refuel (Mid-Air Rendezvous)"
         : difficulty === "medium"
@@ -230,6 +238,7 @@ export function getModuleData(subject: string, moduleSlug: string) {
     else if (rawSlug.includes("projectile") || t.topicId === "4") slug = "2d-projectiles";
     else if (rawSlug.includes("inclined") || t.topicId === "5") slug = "inclined-projectiles";
     else if (rawSlug.includes("inertia") || t.topicId === "6") slug = "inertia-nlm-1";
+    else if (rawSlug.includes("static-breakaway") || rawSlug.includes("breakaway") || t.topicId === "7") slug = "static-breakaway-nlm-1";
     else if (rawSlug.includes("tablecloth-pull")) slug = "tablecloth-pull";
 
     const has3D =
@@ -239,6 +248,8 @@ export function getModuleData(subject: string, moduleSlug: string) {
       slug === "2d-projectiles" ||
       slug === "inclined-projectiles" ||
       slug === "inertia-nlm-1" ||
+      slug === "static-breakaway-nlm-1" ||
+      slug === "static-breakaway" ||
       slug === "tablecloth-pull";
 
     return {

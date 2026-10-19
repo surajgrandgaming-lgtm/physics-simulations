@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import { TableclothControls } from "@/features/challenges/topics/physics/static-breakaway/TableclothControls";
 import { AsteroidDeflectionControls } from "@/features/challenges/topics/physics/inertia/AsteroidDeflectionControls";
 import { MountainSummitControls } from "@/features/challenges/topics/physics/inclined-projectiles/MountainSummitControls";
 import { CastleSiegeControls } from "@/features/challenges/topics/physics/2d-projectiles/CastleSiegeControls";
@@ -20,6 +21,10 @@ interface ChallengeControlsClientProps {
 
 export function ChallengeControlsClient({ config }: ChallengeControlsClientProps) {
   const sceneType = config?.sceneType;
+
+  if (sceneType === "static-breakaway") {
+    return <TableclothControls config={config} />;
+  }
 
   if (sceneType === "asteroid-deflection") {
     return <AsteroidDeflectionControls config={config} />;
