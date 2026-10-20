@@ -22,6 +22,17 @@ const LoadingFallback = () => (
   </div>
 );
 
+const AtwoodElevatorScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/atwood-machine/AtwoodElevatorScene"
+    ).then((mod) => mod.AtwoodElevatorScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const TableclothScene = dynamic(
   () =>
     import(
@@ -171,6 +182,13 @@ interface Props {
 
 export default function CanvasClient({ config }: Props) {
   const sceneType = config?.sceneType;
+  if (sceneType === "atwood-elevator") {
+    return (
+      <div className="w-full h-full">
+        <AtwoodElevatorScene config={config} />
+      </div>
+    );
+  }
   if (sceneType === "static-breakaway") {
     return (
       <div className="w-full h-full">

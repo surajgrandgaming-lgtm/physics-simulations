@@ -71,6 +71,7 @@ export interface GameHUDContainerProps {
     calculation?: MissionCalculation;
   };
   calculation?: MissionCalculation;
+  isLight?: boolean;
 }
 
 export function GameHUDContainer({
@@ -93,6 +94,7 @@ export function GameHUDContainer({
   briefing,
   result,
   calculation,
+  isLight = false,
 }: GameHUDContainerProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [missionStarted, setMissionStarted] = useState(false);
@@ -426,10 +428,14 @@ export function GameHUDContainer({
                 exitSimulation();
               }
             }}
-            className="flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white border border-white/20 hover:border-white/40 backdrop-blur-md font-mono font-black text-xs sm:text-sm uppercase tracking-wider shadow-[0_4px_16px_rgba(0,0,0,0.3)] transition-all active:scale-95 cursor-pointer"
+            className={
+              isLight
+                ? "flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white/95 hover:bg-white text-slate-800 border border-slate-300 hover:border-slate-400 backdrop-blur-md font-mono font-black text-xs sm:text-sm uppercase tracking-wider shadow-[0_4px_16px_rgba(0,0,0,0.12)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.18)] transition-all active:scale-95 cursor-pointer"
+                : "flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white border border-white/20 hover:border-white/40 backdrop-blur-md font-mono font-black text-xs sm:text-sm uppercase tracking-wider shadow-[0_4px_16px_rgba(0,0,0,0.3)] transition-all active:scale-95 cursor-pointer"
+            }
             title="Exit Simulation (Back to App)"
           >
-            <ArrowLeft className="w-4 h-4 text-cyan-300 shrink-0" />
+            <ArrowLeft className={isLight ? "w-4 h-4 text-cyan-600 shrink-0" : "w-4 h-4 text-cyan-300 shrink-0"} />
             <span>EXIT</span>
           </button>
         </div>

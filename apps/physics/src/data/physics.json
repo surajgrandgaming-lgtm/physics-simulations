@@ -3049,8 +3049,8 @@
               "description": "Launch a curling stone on zero-friction ice. It slides forever. Press the retro-thruster at the exact right moment to stop it in the target zone."
             },
             "medium": {
-              "title": "Massive Cargo",
-              "description": "Push a heavy cargo crate in zero gravity. You must calculate the exact impulse (Force x Time) needed to start and stop it perfectly."
+              "title": "Asteroid Wall Breach",
+              "description": "Pilot a rocket in zero-friction deep space toward massive asteroid walls. Use lateral RCS thrusters to drift through narrow gaps under Newton's 1st Law of Inertia, counter-thrusting to neutralize sideways momentum before impact."
             },
             "advanced": {
               "title": "Asteroid Deflection",
@@ -3201,8 +3201,8 @@
               "description": "Balance the masses on an Atwood machine so the elevator cabin accelerates downward at exactly a safe 2 m/s^2."
             },
             "medium": {
-              "title": "The Double Pulley",
-              "description": "Connect two blocks via a movable pulley system. Calculate the tension ratio to safely lower a fragile artifact into a pit."
+              "title": "Futuristic Elevator Descent",
+              "description": "Calculate and load the exact counterweight mass on an Atwood elevator system to descend at a safe acceleration rate without shattering the fragile cargo."
             },
             "advanced": {
               "title": "Variable Chain",

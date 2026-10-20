@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import { AtwoodElevatorControls } from "@/features/challenges/topics/physics/atwood-machine/AtwoodElevatorControls";
 import { TableclothControls } from "@/features/challenges/topics/physics/static-breakaway/TableclothControls";
 import { AsteroidDeflectionControls } from "@/features/challenges/topics/physics/inertia/AsteroidDeflectionControls";
 import { MountainSummitControls } from "@/features/challenges/topics/physics/inclined-projectiles/MountainSummitControls";
@@ -21,6 +22,10 @@ interface ChallengeControlsClientProps {
 
 export function ChallengeControlsClient({ config }: ChallengeControlsClientProps) {
   const sceneType = config?.sceneType;
+
+  if (sceneType === "atwood-elevator") {
+    return <AtwoodElevatorControls config={config} />;
+  }
 
   if (sceneType === "static-breakaway") {
     return <TableclothControls config={config} />;
