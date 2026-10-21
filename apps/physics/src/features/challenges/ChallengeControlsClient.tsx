@@ -1,5 +1,7 @@
 ﻿"use client";
 
+import { MountainTruckControls } from "@/features/challenges/topics/physics/friction-banking/MountainTruckControls";
+import { BankedCurveControls } from "@/features/challenges/topics/physics/friction-banking/BankedCurveControls";
 import { AtwoodElevatorControls } from "@/features/challenges/topics/physics/atwood-machine/AtwoodElevatorControls";
 import { TableclothControls } from "@/features/challenges/topics/physics/static-breakaway/TableclothControls";
 import { AsteroidDeflectionControls } from "@/features/challenges/topics/physics/inertia/AsteroidDeflectionControls";
@@ -22,6 +24,14 @@ interface ChallengeControlsClientProps {
 
 export function ChallengeControlsClient({ config }: ChallengeControlsClientProps) {
   const sceneType = config?.sceneType;
+
+  if (sceneType === "mountain-truck") {
+    return <MountainTruckControls config={config} />;
+  }
+
+  if (sceneType === "banked-curve") {
+    return <BankedCurveControls config={config} />;
+  }
 
   if (sceneType === "atwood-elevator") {
     return <AtwoodElevatorControls config={config} />;

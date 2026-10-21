@@ -32,6 +32,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "inclined-projectiles" || canonicalTopic === "inclined") && (slug.includes("inclined") || t.topicId === "5")) return true;
     if ((canonicalTopic === "inertia-nlm-1" || canonicalTopic === "inertia" || canonicalTopic === "asteroid-deflection") && (slug.includes("inertia") || t.topicId === "6")) return true;
     if ((canonicalTopic === "atwood-machines-nlm-2" || canonicalTopic === "atwood-machines" || canonicalTopic.includes("atwood")) && (slug.includes("atwood") || t.topicId === "8")) return true;
+    if ((canonicalTopic === "friction-and-banking" || canonicalTopic === "friction-banking" || canonicalTopic.includes("banking") || canonicalTopic.includes("friction")) && (slug.includes("friction") || slug.includes("banking") || t.topicId === "9")) return true;
     return false;
   });
 
@@ -65,6 +66,7 @@ export const getChallenge = cache(
     const isInclinedProjectiles = canonicalTopic === "inclined-projectiles" || canonicalTopic === "inclined" || foundTopic?.topicId === "5";
     const isInertia = canonicalTopic === "inertia-nlm-1" || canonicalTopic === "inertia" || canonicalTopic === "asteroid-deflection" || foundTopic?.topicId === "6";
     const isAtwood = canonicalTopic === "atwood-machines-nlm-2" || canonicalTopic === "atwood-machines" || canonicalTopic.includes("atwood") || foundTopic?.topicId === "8";
+    const isFrictionBanking = canonicalTopic === "friction-and-banking" || canonicalTopic === "friction-banking" || canonicalTopic.includes("banking") || foundTopic?.topicId === "9";
     const isStaticBreakaway = canonicalTopic === "static-breakaway-nlm-1" || canonicalTopic === "static-breakaway" || canonicalTopic === "tablecloth-pull" || foundTopic?.topicId === "7";
 
     let sceneType = "physics-simulation";
@@ -129,6 +131,13 @@ export const getChallenge = cache(
         gravity: 9.8,
         rounds: 3,
       };
+    } else if (isFrictionBanking) {
+      sceneType = "mountain-truck";
+      parameters = {
+        truckMass: 4000,
+        gravity: 9.8,
+        rounds: 3,
+      };
     } else if (isAtwood) {
       sceneType = "atwood-elevator";
       parameters = {
@@ -152,7 +161,9 @@ export const getChallenge = cache(
 
     const title =
       challengeData?.title ||
-      (isAtwood
+      (isFrictionBanking
+        ? "Cliffside Hauler: Mountain Ridge"
+        : isAtwood
         ? "Futuristic Elevator Descent"
         : isInertia
         ? "Asteroid Deflection"
@@ -252,6 +263,7 @@ export function getModuleData(subject: string, moduleSlug: string) {
     else if (rawSlug.includes("inclined") || t.topicId === "5") slug = "inclined-projectiles";
     else if (rawSlug.includes("inertia") || t.topicId === "6") slug = "inertia-nlm-1";
     else if (rawSlug.includes("atwood") || t.topicId === "8") slug = "atwood-machines-nlm-2";
+    else if (rawSlug.includes("friction") || rawSlug.includes("banking") || t.topicId === "9") slug = "friction-and-banking";
     else if (rawSlug.includes("static-breakaway") || rawSlug.includes("breakaway") || t.topicId === "7") slug = "static-breakaway-nlm-1";
     else if (rawSlug.includes("tablecloth-pull")) slug = "tablecloth-pull";
 
@@ -263,6 +275,7 @@ export function getModuleData(subject: string, moduleSlug: string) {
       slug === "inclined-projectiles" ||
       slug === "inertia-nlm-1" ||
       slug === "atwood-machines-nlm-2" ||
+      slug === "friction-and-banking" ||
       slug === "static-breakaway-nlm-1" ||
       slug === "static-breakaway" ||
       slug === "tablecloth-pull";
@@ -358,6 +371,8 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
       title:
         canonicalTopic === "1d-motion-deceleration"
           ? "Carrier Catapult & Runway Kinematics"
+          : canonicalTopic === "friction-and-banking" || canonicalTopic.includes("banking")
+          ? "Cliffside Hauler: Mountain Ridge"
           : canonicalTopic === "atwood-machines-nlm-2" || canonicalTopic.includes("atwood")
           ? "Futuristic Elevator Descent"
           : canonicalTopic === "inertia-nlm-1" || canonicalTopic === "inertia"
@@ -388,6 +403,8 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
       sceneType:
         canonicalTopic === "1d-motion-deceleration"
           ? "last-hundred-meters"
+          : canonicalTopic === "friction-and-banking" || canonicalTopic.includes("banking")
+          ? "mountain-truck"
           : canonicalTopic === "atwood-machines-nlm-2" || canonicalTopic.includes("atwood")
           ? "atwood-elevator"
           : canonicalTopic === "inertia-nlm-1" || canonicalTopic === "inertia"

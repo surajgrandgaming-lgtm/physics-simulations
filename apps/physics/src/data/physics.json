@@ -3277,8 +3277,8 @@
               "description": "Drive a racecar around a flat, circular track. Increase speed until you break static friction and slide out of bounds."
             },
             "medium": {
-              "title": "NASCAR Banking",
-              "description": "Adjust the banking angle of a circular racetrack so cars can take the corner at 100 mph without relying on any friction at all."
+              "title": "Cliffside Hauler",
+              "description": "Control your accelerator and brake pedals to pilot a heavy loaded truck up steep mountain slopes and through cliff hairpins without rolling back or skidding off."
             },
             "advanced": {
               "title": "Icy Mountain Curve",

@@ -22,6 +22,28 @@ const LoadingFallback = () => (
   </div>
 );
 
+const MountainTruckScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/friction-banking/MountainTruckScene"
+    ).then((mod) => mod.MountainTruckScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
+const BankedCurveScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/friction-banking/BankedCurveScene"
+    ).then((mod) => mod.BankedCurveScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const AtwoodElevatorScene = dynamic(
   () =>
     import(
@@ -182,6 +204,20 @@ interface Props {
 
 export default function CanvasClient({ config }: Props) {
   const sceneType = config?.sceneType;
+  if (sceneType === "mountain-truck") {
+    return (
+      <div className="w-full h-full">
+        <MountainTruckScene config={config} />
+      </div>
+    );
+  }
+  if (sceneType === "banked-curve") {
+    return (
+      <div className="w-full h-full">
+        <BankedCurveScene config={config} />
+      </div>
+    );
+  }
   if (sceneType === "atwood-elevator") {
     return (
       <div className="w-full h-full">
