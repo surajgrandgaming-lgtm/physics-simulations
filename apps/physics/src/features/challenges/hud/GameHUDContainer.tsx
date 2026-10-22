@@ -377,7 +377,7 @@ export function GameHUDContainer({
 
           {/* ── FLOATING SIDE HUD PANELS (SLEEK FROSTED GLASS WIDGETS) ── */}
           <div
-            className={`w-full flex-1 flex justify-between items-start gap-2 pt-2 pb-16 pointer-events-none transition-opacity duration-300 ${isCinematicMode ? "opacity-0" : "opacity-100"
+            className={`w-full flex-1 flex justify-between items-start gap-2 pt-2 pb-2 sm:pb-4 max-lg:landscape:pb-1 pointer-events-none transition-opacity duration-300 ${isCinematicMode ? "opacity-0" : "opacity-100"
               }`}
           >
             {/* Left HUD Column */}
@@ -391,7 +391,7 @@ export function GameHUDContainer({
 
             {/* Right HUD Column */}
             {rightHUD && (
-              <div className="flex flex-col gap-2.5 pointer-events-auto items-end max-w-[110px] xs:max-w-[130px] sm:max-w-[150px]">
+              <div className="flex flex-col gap-2.5 pointer-events-auto items-end max-w-[160px] xs:max-w-[220px] sm:max-w-[320px]">
                 {rightHUD}
               </div>
             )}
@@ -399,7 +399,7 @@ export function GameHUDContainer({
 
           {/* ── BOTTOM ACTION DOCK ── */}
           <div
-            className={`transition-opacity duration-300 shrink-0 ${isCinematicMode ? "opacity-0 pointer-events-none" : "opacity-100"
+            className={`transition-opacity duration-300 shrink-0 pointer-events-auto ${isCinematicMode ? "opacity-0 pointer-events-none" : "opacity-100"
               }`}
           >
             {bottomDock}

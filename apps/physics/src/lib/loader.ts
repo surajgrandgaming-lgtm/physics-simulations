@@ -33,6 +33,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "inertia-nlm-1" || canonicalTopic === "inertia" || canonicalTopic === "asteroid-deflection") && (slug.includes("inertia") || t.topicId === "6")) return true;
     if ((canonicalTopic === "atwood-machines-nlm-2" || canonicalTopic === "atwood-machines" || canonicalTopic.includes("atwood")) && (slug.includes("atwood") || t.topicId === "8")) return true;
     if ((canonicalTopic === "friction-and-banking" || canonicalTopic === "friction-banking" || canonicalTopic.includes("banking") || canonicalTopic.includes("friction")) && (slug.includes("friction") || slug.includes("banking") || t.topicId === "9")) return true;
+    if ((canonicalTopic === "work-energy-theorem" || canonicalTopic === "work-energy" || canonicalTopic.includes("energy")) && (slug.includes("energy") || slug.includes("work") || t.topicId === "10")) return true;
     return false;
   });
 
@@ -68,6 +69,7 @@ export const getChallenge = cache(
     const isAtwood = canonicalTopic === "atwood-machines-nlm-2" || canonicalTopic === "atwood-machines" || canonicalTopic.includes("atwood") || foundTopic?.topicId === "8";
     const isFrictionBanking = canonicalTopic === "friction-and-banking" || canonicalTopic === "friction-banking" || canonicalTopic.includes("banking") || foundTopic?.topicId === "9";
     const isStaticBreakaway = canonicalTopic === "static-breakaway-nlm-1" || canonicalTopic === "static-breakaway" || canonicalTopic === "tablecloth-pull" || foundTopic?.topicId === "7";
+    const isWorkEnergy = canonicalTopic === "work-energy-theorem" || canonicalTopic === "work-energy" || canonicalTopic.includes("energy") || canonicalTopic.includes("bungee") || foundTopic?.topicId === "10";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -157,11 +159,21 @@ export const getChallenge = cache(
         clothLength: 1.4,
         tableEdgeX: 3.5,
       };
+    } else if (isWorkEnergy) {
+      sceneType = "bungee-drop";
+      parameters = {
+        mass: 80,
+        height: 60.0,
+        cordLength: 25.0,
+        rounds: 3,
+      };
     }
 
     const title =
       challengeData?.title ||
-      (isFrictionBanking
+      (isWorkEnergy
+        ? "Canyon Bungee Jump"
+        : isFrictionBanking
         ? "Cliffside Hauler: Mountain Ridge"
         : isAtwood
         ? "Futuristic Elevator Descent"
@@ -266,6 +278,7 @@ export function getModuleData(subject: string, moduleSlug: string) {
     else if (rawSlug.includes("friction") || rawSlug.includes("banking") || t.topicId === "9") slug = "friction-and-banking";
     else if (rawSlug.includes("static-breakaway") || rawSlug.includes("breakaway") || t.topicId === "7") slug = "static-breakaway-nlm-1";
     else if (rawSlug.includes("tablecloth-pull")) slug = "tablecloth-pull";
+    else if (rawSlug.includes("work-energy") || rawSlug.includes("energy") || t.topicId === "10") slug = "work-energy-theorem";
 
     const has3D =
       slug === "1d-motion-deceleration" ||
@@ -278,7 +291,7 @@ export function getModuleData(subject: string, moduleSlug: string) {
       slug === "friction-and-banking" ||
       slug === "static-breakaway-nlm-1" ||
       slug === "static-breakaway" ||
-      slug === "tablecloth-pull";
+      slug === "tablecloth-pull" || slug === "work-energy-theorem";
 
     return {
       id: t.topicId,

@@ -22,6 +22,17 @@ const LoadingFallback = () => (
   </div>
 );
 
+const BungeeDropScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/work-energy/BungeeDropScene"
+    ).then((mod) => mod.BungeeDropScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const MountainTruckScene = dynamic(
   () =>
     import(
@@ -204,6 +215,13 @@ interface Props {
 
 export default function CanvasClient({ config }: Props) {
   const sceneType = config?.sceneType;
+  if (sceneType === "bungee-drop") {
+    return (
+      <div className="w-full h-full">
+        <BungeeDropScene config={config} />
+      </div>
+    );
+  }
   if (sceneType === "mountain-truck") {
     return (
       <div className="w-full h-full">

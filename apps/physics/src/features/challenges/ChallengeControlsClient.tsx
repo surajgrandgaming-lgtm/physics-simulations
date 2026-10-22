@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import { BungeeDropControls } from "@/features/challenges/topics/physics/work-energy/BungeeDropControls";
 import { MountainTruckControls } from "@/features/challenges/topics/physics/friction-banking/MountainTruckControls";
 import { BankedCurveControls } from "@/features/challenges/topics/physics/friction-banking/BankedCurveControls";
 import { AtwoodElevatorControls } from "@/features/challenges/topics/physics/atwood-machine/AtwoodElevatorControls";
@@ -25,6 +26,9 @@ interface ChallengeControlsClientProps {
 export function ChallengeControlsClient({ config }: ChallengeControlsClientProps) {
   const sceneType = config?.sceneType;
 
+  if (sceneType === "bungee-drop") {
+    return <BungeeDropControls config={config} />;
+  }
   if (sceneType === "mountain-truck") {
     return <MountainTruckControls config={config} />;
   }
