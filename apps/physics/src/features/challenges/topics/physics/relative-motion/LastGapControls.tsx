@@ -131,8 +131,6 @@ export function LastGapControls({ config }: Props) {
       briefing={{
         target: "Cross the river and land safely on the opposite dock.",
         targetImageUrl: "https://topcoaching.b-cdn.net/Module%201/Topic%202/medium/target.png",
-        storyObjective:
-          "Steer upstream and set your speed to cancel river drift and hit the dock.",
         steps: [
           {
             step: 1,

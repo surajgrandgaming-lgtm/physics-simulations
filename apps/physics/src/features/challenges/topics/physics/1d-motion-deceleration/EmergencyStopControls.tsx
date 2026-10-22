@@ -218,8 +218,6 @@ export function EmergencyStopControls({ config }: Props) {
       briefing={{
         target: "Stop the car inside the target zone without crashing",
         targetImageUrl: "https://topcoaching.b-cdn.net/Module%201/Topic%201/easy/target.png",
-        storyObjective:
-          "Safely stop a 1200kg test car inside the Emerald Target Zone (55m - 59.8m) without crashing into the 60m barrier. Calculate the stopping distance across 3 distinct road conditions: Dry Asphalt (μ = 0.8), Wet Rain (μ = 0.4), and Slippery Black Ice (μ = 0.1).",
         steps: [
           {
             step: 1,

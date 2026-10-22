@@ -122,8 +122,6 @@ export function AirDropInterceptionControls({ config }: Props) {
       briefing={{
         target: "Drop cargo accurately onto the moving carrier flight deck.",
         targetImageUrl: "https://topcoaching.b-cdn.net/Module%201/Topic%202/advance/target.png",
-        storyObjective:
-          "Match carrier speed, correct for crosswind, and drop the container onto the deck.",
         steps: [
           {
             step: 1,

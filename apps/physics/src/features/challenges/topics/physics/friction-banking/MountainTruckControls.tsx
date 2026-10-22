@@ -261,7 +261,6 @@ export function MountainTruckControls({ config }: { config?: any }) {
       briefing={{
         target:
           "Deliver the 4-ton timber cargo up the mountain pass to the summit outpost without rolling back or spilling logs.",
-        storyObjective: "",
         steps: [
           {
             step: 1,

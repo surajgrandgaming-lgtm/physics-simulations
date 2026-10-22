@@ -161,8 +161,6 @@ export function MountainSummitControls({ config }: Props) {
       briefing={{
         target: `Crush the enemy outpost at ${stageConfig.targetDistance}m down the ${stageConfig.slopeAngleDeg}° mountain incline.`,
         targetImageUrl: "/images/inclined-projectiles/target.png",
-        storyObjective:
-          "Your siege cannon is stationed high on the mountain summit platform. An enemy war tent encampment guards the downhill slope below. Calibrate launch elevation and blast speed to exploit downhill incline physics and demolish their military tent.",
         steps: [
           {
             step: 1,

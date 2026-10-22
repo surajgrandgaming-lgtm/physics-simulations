@@ -155,8 +155,6 @@ export function DeceleratingBulletControls({ config }: Props) {
       }}
       briefing={{
         target: "Fire the bullet so it stops inside the target sensor zone",
-        storyObjective:
-          `A tungsten APFSDS sabot round is fired into a 2-layer composite target: Layer 1 (Ballistic Gel: ${layer1Thickness}m, β1=${layer1Beta}) and Layer 2 (Composite Armor: ${layer2Thickness}m, β2=${layer2Beta}). Adjust muzzle velocity (v0) using the tactile throttle and fire to lodge precisely in the Emerald Sensor Zone (${targetMinDepth}m - ${targetMaxDepth}m)!`,
         steps: [
           {
             step: 1,
@@ -203,8 +201,8 @@ export function DeceleratingBulletControls({ config }: Props) {
         failureReason: breachedLayer2
           ? `Overpenetration! Projectile punched through outer armor shield (${(actualPenetrationDepth ?? totalLength).toFixed(2)}m > ${totalLength}m).`
           : !breachedLayer1
-          ? `Underpenetration! Projectile halted inside Layer 1 at ${(actualPenetrationDepth ?? 0).toFixed(2)}m (Need > ${layer1Thickness}m).`
-          : `Lodged at ${actualPenetrationDepth !== null ? actualPenetrationDepth.toFixed(2) : "0.00"}m (Outside ${targetMinDepth}m - ${targetMaxDepth}m sensor zone).`,
+            ? `Underpenetration! Projectile halted inside Layer 1 at ${(actualPenetrationDepth ?? 0).toFixed(2)}m (Need > ${layer1Thickness}m).`
+            : `Lodged at ${actualPenetrationDepth !== null ? actualPenetrationDepth.toFixed(2) : "0.00"}m (Outside ${targetMinDepth}m - ${targetMaxDepth}m sensor zone).`,
         tip: "Use the master inversion formula v0 = 10 · exp(β1·d1 + β2·(x_target - d1)) to calculate exact velocity.",
         stats: [
           { label: "Depth Reached", value: actualPenetrationDepth !== null ? actualPenetrationDepth.toFixed(2) : "0.00", unit: "m" },
@@ -290,11 +288,10 @@ export function DeceleratingBulletControls({ config }: Props) {
               />
               {/* Predicted Lodgement Marker */}
               <div
-                className={`absolute top-0 bottom-0 w-1 z-20 transition-all duration-150 ${
-                  isPredictedInZone
+                className={`absolute top-0 bottom-0 w-1 z-20 transition-all duration-150 ${isPredictedInZone
                     ? "bg-emerald-300 shadow-[0_0_8px_rgba(16,185,129,1)]"
                     : "bg-rose-400 shadow-[0_0_6px_rgba(244,63,94,0.8)]"
-                }`}
+                  }`}
                 style={{
                   left: `${Math.min(99, Math.max(0, (predictedStopX / totalLength) * 100))}%`,
                 }}
@@ -374,7 +371,7 @@ export function DeceleratingBulletControls({ config }: Props) {
               </div>
 
               <MobileActionTrigger
-                onClick={() => {}}
+                onClick={() => { }}
                 disabled={true}
                 icon={Flame}
                 label="PENETRATING..."

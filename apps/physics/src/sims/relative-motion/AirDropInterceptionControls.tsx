@@ -127,9 +127,7 @@ export function AirDropInterceptionControls({ config }: Props) {
         </div>
       }
       briefing={{
-        target: "Drop the supply crate precisely onto the moving boat",
-        storyObjective:
-          `A supply helicopter at altitude h = ${roundCfg.altitude}m must release an emergency crate to land directly on the deck of an ally boat speeding down a rushing river in turbulent crosswinds! Solve the 2D relative kinematic drop equation to time your release with pinpoint accuracy.`,
+        target: "Drop the supply crate precisely onto the moving boat",
         steps: [
           {
             step: 1,

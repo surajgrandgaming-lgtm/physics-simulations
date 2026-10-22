@@ -36,7 +36,7 @@ export interface GameHUDContainerProps {
   topCenterHUD?: ReactNode;
   briefing: {
     target: string;
-    storyObjective: string;
+    storyObjective?: string;
     steps: MissionStep[];
     formulas?: MissionFormula[];
   };
@@ -255,7 +255,7 @@ export function GameHUDContainer({
         title={title}
         topicName={topicName}
         difficulty={difficulty}
-        storyObjective={briefing.storyObjective}
+        storyObjective={briefing.storyObjective || briefing.target}
         steps={briefing.steps}
         formulas={briefing.formulas}
         xpReward={xpReward}

@@ -104,8 +104,6 @@ export function GhostDriverControls({ config }: Props) {
       briefing={{
         target: "Catch the tanker and refuel your jet mid-air",
         targetImageUrl: "https://topcoaching.b-cdn.net/Module%201/Topic%202/easy/target.png",
-        storyObjective:
-          `Stage ${currentRound}: The KC-135 Stratotanker is cruising ahead at ${tankerSpeed} m/s with a ${stageInfo.initialDistance}m initial gap. Accelerate forward, match relative velocity to exactly ${tankerSpeed} m/s (v_rel = 0 m/s) inside the drogue basket, and hold probe lock for 5.0 seconds before fuel runs out!`,
         steps: [
           {
             step: 1,

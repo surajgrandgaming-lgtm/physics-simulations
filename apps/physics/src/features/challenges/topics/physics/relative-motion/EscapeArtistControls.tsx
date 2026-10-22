@@ -155,8 +155,6 @@ export function EscapeArtistControls({ config }: Props) {
       }
       briefing={{
         target: "Evade the patrol cutter and navigate to the extraction buoy",
-        storyObjective:
-          `Pilot an ultra-fast speedcraft through a ${roundCfg.riverCurrent.x} m/s river current while evading a relentless patrol cutter cruising at ${roundCfg.patrolSpeed} m/s! Calculate 2D relative velocity vectors and engage nitro boosters to cross the intercept cone and escape.`,
         steps: [
           {
             step: 1,

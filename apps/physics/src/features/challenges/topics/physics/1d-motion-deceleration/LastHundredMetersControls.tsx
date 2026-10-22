@@ -207,8 +207,6 @@ export function LastHundredMetersControls({ config }: Props) {
       briefing={{
         target: "Launch the jet and reach takeoff speed before the deck ends",
         targetImageUrl: "https://topcoaching.b-cdn.net/Module%201/Topic%201/medium/target.png",
-        storyObjective:
-          `A 15-ton naval fighter jet must accelerate from standstill (u = 0) to aerodynamic lift speed (v ≈ ${targetTakeoffSpeed} m/s) before running out of the ${deckLength}m aircraft carrier runway. Hold down the ACCELERATOR pedal to race down the deck, and hit TAKE OFF once lift speed is reached!`,
         steps: [
           {
             step: 1,

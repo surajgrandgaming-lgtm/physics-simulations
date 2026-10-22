@@ -199,8 +199,6 @@ export function AsteroidDeflectionControls({ config }: { config?: any }) {
       briefing={{
         target: `Navigate your ${stageConfig.massKg}kg rocket through ${stageConfig.walls.length} sequential asteroid barrier walls into the Warp Gate.`,
         targetImageUrl: "https://topcoaching.b-cdn.net/Module%202/Topic%201/medium/target.png",
-        storyObjective:
-          "Your scout vessel is crossing an impenetrable planetary asteroid belt. Under Newton's 1st Law of Motion, your rocket cruises at constant forward speed with zero net resistance. Use lateral RCS thrusters to guide your craft through illuminated safe passages, counter-thrusting to neutralize sideways momentum before impact!",
         steps: [
           {
             step: 1,

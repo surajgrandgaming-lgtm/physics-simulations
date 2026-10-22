@@ -54,7 +54,7 @@ export interface GameHUDContainerProps {
   briefing: {
     target: string;
     targetImageUrl?: string;
-    storyObjective: string;
+    storyObjective?: string;
     steps: MissionStep[];
     formulas?: MissionFormula[];
   };
@@ -264,12 +264,12 @@ export function GameHUDContainer({
                   {briefing.target}
                 </p>
 
-                {briefing.storyObjective && (
+                {briefing.storyObjective ? (
                   <div className="flex items-center justify-center gap-2 px-4 sm:px-6 py-2 rounded-full bg-slate-900/80 border border-white/20 text-slate-200 font-mono text-xs sm:text-sm max-w-2xl text-center shadow-lg backdrop-blur-md">
                     <span className="text-emerald-400 font-bold uppercase tracking-wider shrink-0">INSTRUCTIONS:</span>
                     <span>{briefing.storyObjective}</span>
                   </div>
-                )}
+                ) : null}
 
                 {briefing.targetImageUrl && (
                   <div className="relative my-1.5 sm:my-4 max-lg:landscape:my-1 max-w-xs sm:max-w-md w-full flex items-center justify-center">
@@ -415,7 +415,7 @@ export function GameHUDContainer({
         title={title}
         topicName={topicName}
         difficulty={difficulty}
-        storyObjective={briefing.storyObjective}
+        storyObjective={briefing.storyObjective || ""}
         steps={briefing.steps}
         formulas={briefing.formulas}
         xpReward={xpReward}

@@ -136,8 +136,6 @@ export function LastHundredMetersControls({ config }: Props) {
       }
       briefing={{
         target: "Launch the jet and reach takeoff speed before the deck ends",
-        storyObjective:
-          `A 15-ton naval fighter jet must accelerate from standstill (u = 0) to aerodynamic lift speed (v ≥ ${targetTakeoffSpeed} m/s) before running out of the ${deckLength}m aircraft carrier runway. Calculate the minimum catapult acceleration (a) and trigger pitch rotation at lift speed!`,
         steps: [
           {
             step: 1,

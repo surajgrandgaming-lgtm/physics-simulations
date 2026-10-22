@@ -104,9 +104,7 @@ export function LastGapControls({ config }: Props) {
         </div>
       }
       briefing={{
-        target: "Cross the river and dock at the opposite bank",
-        storyObjective:
-          `Navigate a getaway boat across a ${riverWidth}m wide river with a ${riverSpeed} m/s downstream current. You must calculate and set the exact upstream heading angle (θ) so that relative river drift is cancelled, docking cleanly at the emerald target pad directly opposite!`,
+        target: "Cross the river and dock at the opposite bank",
         steps: [
           {
             step: 1,

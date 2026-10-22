@@ -156,8 +156,6 @@ export function CastleSiegeControls({ config }: Props) {
       briefing={{
         target: `Clear the ${stageConfig.mountainPeakHeight}m mountain and demolish the wooden target tower at ${stageConfig.targetDistance}m.`,
         targetImageUrl: "https://topcoaching.b-cdn.net/Module%201/Topic%204/medium/target.png",
-        storyObjective:
-          "A hostile wooden tower sits across the valley behind a tall mountain ridge. Calculate a high-arc trajectory that safely vaults over the mountain summit and plunges down to demolish the target structure.",
         steps: [
           {
             step: 1,

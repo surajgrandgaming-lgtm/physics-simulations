@@ -261,8 +261,6 @@ export function UmbrellaTiltControls({ config }: Props) {
       briefing={{
         target: "Reach the Dry Shelter under the Wetness Limit",
         targetImageUrl: "https://topcoaching.b-cdn.net/Module%201/Topic%203/medium/target.png",
-        storyObjective:
-          "Rain clouds are gathered in the blue overcast sky, and rain is pouring down. Your task is to navigate your character along the sidewalk to the dry transit shelter. As you change your walking speed, the apparent direction of falling rain changes due to Galilean relative velocity. Keep your umbrella tilted at the optimal angle to stay dry!",
         steps: [
           {
             step: 1,

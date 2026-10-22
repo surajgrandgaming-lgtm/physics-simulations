@@ -183,8 +183,6 @@ export function AtwoodElevatorControls({ config }: { config?: any }) {
       briefing={{
         target: "Deliver the fragile quantum cargo safely to the bottom dock without shattering or crashing across all 3 test stages.",
         targetImageUrl: "https://topcoaching.b-cdn.net/Module%202/Topic%203/medium/target.png",
-        storyObjective:
-          "Calculate the exact counterweight mass so the elevator cabin accelerates downward at the safe rate.",
         steps: [
           {
             step: 1,

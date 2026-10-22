@@ -154,8 +154,6 @@ export function TableclothControls({ config }: { config?: any }) {
       briefing={{
         target: "Remove the tablecloth completely from the table without spilling soup or wine from the tableware across all 3 rounds.",
         targetImageUrl: "https://topcoaching.b-cdn.net/Module%202/Topic%202/medium/target.png",
-        storyObjective:
-          "Pull the cloth fast enough to break static grip so inertia keeps the dishes and liquid completely still.",
         steps: [
           {
             step: 1,
@@ -189,26 +187,26 @@ export function TableclothControls({ config }: { config?: any }) {
       result={
         (showResultModal && (isWon || isGameOver))
           ? {
-              isWon,
-              isGameOver,
-              onRetry: resetSimulation,
-              onNextTier: (isWon && currentRound < 3) ? nextRound : undefined,
-              nextTierLabel: currentRound < 3 ? "PROCEED TO STAGE " + (currentRound + 1) : "REPLAY CHALLENGE",
-              failureReason: isGameOver
-                ? crashReason || "Dishes disturbed or liquid spilled! Give enough acceleration to prevent drag and spillage."
-                : undefined,
-              tip: "Tactical Tip: Give enough snap acceleration so the cloth clears rapidly before dishes drag or liquids slosh!",
-              stats: [
-                { label: "Mission Status", value: isWon ? (currentRound === 3 ? "Grand Banquet Conquered! 🏆" : "Stage " + currentRound + " Cleared! 🍲🍷") : "Liquid Spilled! 💥" },
-                { label: "Current Stage", value: "Stage " + currentRound + " / 3" },
-                { label: "Pull Acceleration", value: pullAcceleration + " m/s²" },
-                { label: "Dishes Drift", value: (dishDisplacement * 100).toFixed(1) + " cm" },
-                { label: "Liquid Stability", value: liquidStabilityPct + "%" },
-                { label: "Stars", value: isWon ? stars + " / 3" : "0 / 3" },
-                { label: "Score", value: score },
-              ],
-              calculation: flightCalculation,
-            }
+            isWon,
+            isGameOver,
+            onRetry: resetSimulation,
+            onNextTier: (isWon && currentRound < 3) ? nextRound : undefined,
+            nextTierLabel: currentRound < 3 ? "PROCEED TO STAGE " + (currentRound + 1) : "REPLAY CHALLENGE",
+            failureReason: isGameOver
+              ? crashReason || "Dishes disturbed or liquid spilled! Give enough acceleration to prevent drag and spillage."
+              : undefined,
+            tip: "Tactical Tip: Give enough snap acceleration so the cloth clears rapidly before dishes drag or liquids slosh!",
+            stats: [
+              { label: "Mission Status", value: isWon ? (currentRound === 3 ? "Grand Banquet Conquered! 🏆" : "Stage " + currentRound + " Cleared! 🍲🍷") : "Liquid Spilled! 💥" },
+              { label: "Current Stage", value: "Stage " + currentRound + " / 3" },
+              { label: "Pull Acceleration", value: pullAcceleration + " m/s²" },
+              { label: "Dishes Drift", value: (dishDisplacement * 100).toFixed(1) + " cm" },
+              { label: "Liquid Stability", value: liquidStabilityPct + "%" },
+              { label: "Stars", value: isWon ? stars + " / 3" : "0 / 3" },
+              { label: "Score", value: score },
+            ],
+            calculation: flightCalculation,
+          }
           : undefined
       }
       bottomDock={
@@ -241,13 +239,12 @@ export function TableclothControls({ config }: { config?: any }) {
               type="button"
               onClick={executePull}
               disabled={isBusy}
-              className={`h-10 sm:h-11 px-5 sm:px-7 rounded-full font-mono text-xs sm:text-sm font-black uppercase tracking-wider flex items-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer ${
-                isBusy
+              className={`h-10 sm:h-11 px-5 sm:px-7 rounded-full font-mono text-xs sm:text-sm font-black uppercase tracking-wider flex items-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer ${isBusy
                   ? "bg-slate-800 text-slate-500 cursor-not-allowed"
                   : pullAcceleration <= aCrit
-                  ? "bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-[0_0_15px_rgba(245,158,11,0.4)]"
-                  : "bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white shadow-[0_0_20px_rgba(6,182,212,0.4)]"
-              }`}
+                    ? "bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-[0_0_15px_rgba(245,158,11,0.4)]"
+                    : "bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white shadow-[0_0_20px_rgba(6,182,212,0.4)]"
+                }`}
               title="Snap Tablecloth"
             >
               <Zap className="w-4 h-4 fill-current" />

@@ -155,8 +155,6 @@ export function DeceleratingBulletControls({ config }: Props) {
       }}
       briefing={{
         target: "Fire the bullet so it stops inside the target sensor zone",
-        storyObjective:
-          `A tungsten APFSDS sabot round is fired into a 2-layer composite target: Layer 1 (Ballistic Gel: ${layer1Thickness}m, β1=${layer1Beta}) and Layer 2 (Composite Armor: ${layer2Thickness}m, β2=${layer2Beta}). Adjust muzzle velocity (v0) using the tactile throttle and fire to lodge precisely in the Emerald Sensor Zone (${targetMinDepth}m - ${targetMaxDepth}m)!`,
         steps: [
           {
             step: 1,

@@ -174,8 +174,6 @@ export function BankedCurveControls({ config }: { config?: any }) {
       briefing={{
         target: "Pilot the volatile fusion transport safely across all 3 banked mountain curves without skidding off.",
         targetImageUrl: "https://topcoaching.b-cdn.net/Module%202/Topic%203/medium/target.png",
-        storyObjective:
-          "Calculate the safe speed envelope [v_min, v_max] and navigate the steeply tilted curve.",
         steps: [
           {
             step: 1,
