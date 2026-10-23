@@ -1,7 +1,6 @@
 "use client";
 
 import { create } from "zustand";
-import { challengeAudio } from "@/lib/audio/challengeAudio";
 
 export type SeesawStatus = "idle" | "testing" | "success" | "fail_left" | "fail_right";
 
@@ -206,14 +205,11 @@ export const useCyberSeesawStore = create<CyberSeesawState>((set, get) => {
         xCOM: com.xCOM,
         totalMass: com.totalMass,
       });
-      challengeAudio.playClick();
     },
 
     testBalance: () => {
       const state = get();
       if (state.status !== "idle") return;
-
-      challengeAudio.playLaunch();
       set({
         status: "testing",
         beamAngle: 0,
@@ -239,7 +235,6 @@ export const useCyberSeesawStore = create<CyberSeesawState>((set, get) => {
         crashReason: null,
         showResultModal: false,
       });
-      challengeAudio.playClick();
     },
 
     nextStage: () => {
@@ -260,7 +255,6 @@ export const useCyberSeesawStore = create<CyberSeesawState>((set, get) => {
         crashReason: null,
         showResultModal: false,
       });
-      challengeAudio.playSuccessFanfare();
     },
 
     tickPhysics: (dt: number) => {
@@ -320,7 +314,6 @@ export const useCyberSeesawStore = create<CyberSeesawState>((set, get) => {
       if (isBalanced) {
         if (elapsed > 1.8 && Math.abs(angle) < 0.03 && Math.abs(omega) < 0.04) {
           // Perfectly balanced!
-          challengeAudio.playSuccessFanfare();
           const dev = Math.abs(state.xCOM);
           const starsEarned = dev <= 0.03 ? 3 : dev <= 0.06 ? 2 : 1;
           const scoreEarned = 1000 * starsEarned - Math.round(elapsed * 20);
@@ -339,7 +332,6 @@ export const useCyberSeesawStore = create<CyberSeesawState>((set, get) => {
       } else {
         // Unbalanced: Beam tilts until hitting mechanical bumper stops
         if (angle <= -maxTilt) {
-          challengeAudio.playCrashImpact();
           const dev = Math.abs(state.xCOM);
           set({
             status: "fail_left",
@@ -352,7 +344,6 @@ export const useCyberSeesawStore = create<CyberSeesawState>((set, get) => {
           });
           return;
         } else if (angle >= maxTilt) {
-          challengeAudio.playCrashImpact();
           const dev = Math.abs(state.xCOM);
           set({
             status: "fail_right",

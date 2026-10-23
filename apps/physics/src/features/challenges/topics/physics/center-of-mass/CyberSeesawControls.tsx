@@ -3,11 +3,8 @@
 import React, { useMemo } from "react";
 import {
   RotateCcw,
-  Gauge,
   Play,
   Sliders,
-  Layers,
-  Scale,
 } from "lucide-react";
 import { GameHUDContainer } from "@/features/challenges/hud/GameHUDContainer";
 import {
@@ -36,77 +33,125 @@ export function CyberSeesawControls({ config }: { config?: any }) {
   const isWon = status === "success";
   const isGameOver = status === "fail_left" || status === "fail_right";
   const isTesting = status === "testing";
-  const isBalanced = Math.abs(xCOM) <= stage.targetTolerance;
 
-  // Derivation for explanation modal
+  // Comprehensive mathematical derivation and deep physics explanation
   const calculationDerivation = useMemo(() => {
     if (stage.stage === 1) {
       return {
+        title: "Alpine Test Bench: Two-Mass Centroid Equilibrium",
+        concept: "In static equilibrium, a system balances about a pivot if the net gravitational torque is zero (Σ τ = 0). Because gravity acts uniformly across all mass elements, the total gravitational torque about the fulcrum is τ_net = M_total · g · X_cm. Therefore, achieving horizontal balance is physically and mathematically identical to locating the system's Center of Mass directly on the vertical fulcrum axis (X_cm = 0.0m).",
         formula: "X_{\\text{cm}} = \\frac{m_1 x_1 + m_2 x_2}{m_1 + m_2} = 0 \\implies m_1 x_1 + m_2 x_2 = 0",
         steps: [
           {
-            title: "1. Payload Moment (Left of Pivot)",
-            math: "m_1 x_1 = (12\\text{ kg})(-3.5\\text{ m}) = -42\\text{ kg}\\cdot\\text{m}",
-            explanation: "The 12kg payload is positioned 3.5m to the left of the fulcrum (x₁ = -3.5m).",
+            step: 1,
+            title: "1. Coordinate Origin & Sign Convention",
+            math: "x_{\\text{pivot}} = 0 \\quad (x < 0 \\text{ is Left}, \\, x > 0 \\text{ is Right})",
+            explanation: "The central fulcrum is fixed at coordinate origin x = 0. All distances to the left are negative, and distances to the right are positive.",
           },
           {
-            title: "2. Counterweight Moment Condition",
-            math: "m_2 x_2 + (-42) = 0 \\implies (6\\text{ kg}) x_2 = 42\\text{ kg}\\cdot\\text{m}",
-            explanation: "For the center of mass to lie exactly at the fulcrum, net first moment of mass must equal zero.",
+            step: 2,
+            title: "2. Calculate Fixed Payload First Moment",
+            math: "m_1 x_1 = (12.0\\text{ kg})(-3.50\\text{ m}) = -42.0\\text{ kg}\\cdot\\text{m}",
+            explanation: "The 12kg science payload is clamped at x₁ = -3.50m, producing 42.0 kg·m of counter-clockwise (left-tilting) moment.",
           },
           {
-            title: "3. Theoretical Equilibrium Position",
-            math: "x_2 = \\frac{42}{6} = 7.00\\text{ m}",
-            explanation: "The 6kg sphere must be dialed exactly to +7.00m to balance the heavier 12kg mass.",
+            step: 3,
+            title: "3. Apply Center of Mass Equilibrium Condition",
+            math: "\\sum m_i x_i = 0 \\implies m_1 x_1 + m_2 x_2 = 0 \\implies (6.0\\text{ kg}) x_2 = 42.0\\text{ kg}\\cdot\\text{m}",
+            explanation: "For the center of mass to lie exactly over the fulcrum, the clockwise moment of the 6kg counterweight must cancel the left moment.",
+          },
+          {
+            step: 4,
+            title: "4. Solve for Equilibrium Counterweight Coordinate",
+            math: "x_2 = \\frac{42.0}{6.0} = +7.00\\text{ m}",
+            explanation: "Because the counterweight (6kg) is exactly half the payload mass (12kg), it must be placed at twice the distance (7.0m vs 3.5m).",
+          },
+          {
+            step: 5,
+            title: "5. Numerical Verification of Centroid",
+            math: "X_{\\text{cm}} = \\frac{12(-3.5) + 6(+7.0)}{12 + 6} = \\frac{-42 + 42}{18} = 0.000\\text{ m}",
+            explanation: "When dialed to +7.00m, the net gravitational torque is zero (τ = M_total · g · X_cm = 0), allowing the beam to settle level.",
           },
         ],
+        conclusion: "Center of Mass is an inverse mass-weighted average position. A lighter mass balances a heavier mass when their distances from the pivot are inversely proportional to their masses: x₂ / |x₁| = m₁ / m₂.",
       };
     } else if (stage.stage === 2) {
       return {
-        formula: "X_{\\text{cm}} = \\frac{\\sum m_i x_i}{\\sum m_i} = 0 \\implies m_1 x_1 + m_2 x_2 + m_3 x_3 = 0",
+        title: "Subterranean Foundry: Multi-Mass Composite System",
+        concept: "Superposition of multiple discrete mass moments balanced by a single counterweight across a central pivot.",
+        formula: "X_{\\text{cm}} = \\frac{\\sum_{i=1}^{n} m_i x_i}{\\sum_{i=1}^{n} m_i} = 0 \\implies \\sum m_i x_i = 0",
         steps: [
           {
-            title: "1. Sum of Left Moments",
-            math: "m_1 x_1 + m_2 x_2 = (10)(-4.0) + (6)(-1.5) = -40 - 9 = -49\\text{ kg}\\cdot\\text{m}",
-            explanation: "Sum the first moments of both fixed payloads on the left arm.",
+            step: 1,
+            title: "1. Payload 1 First Moment",
+            math: "m_1 x_1 = (10.0\\text{ kg})(-4.00\\text{ m}) = -40.0\\text{ kg}\\cdot\\text{m}",
+            explanation: "The primary 10kg crucible payload is clamped at x₁ = -4.00m.",
           },
           {
-            title: "2. Counterweight Balance Condition",
-            math: "m_3 x_3 = 49\\text{ kg}\\cdot\\text{m} \\implies (7\\text{ kg}) x_3 = 49",
-            explanation: "The single 7kg counterweight on the right must generate an opposing +49 kg·m moment.",
+            step: 2,
+            title: "2. Payload 2 First Moment",
+            math: "m_2 x_2 = (6.0\\text{ kg})(-1.50\\text{ m}) = -9.0\\text{ kg}\\cdot\\text{m}",
+            explanation: "The secondary 6kg auxiliary payload is clamped at x₂ = -1.50m.",
           },
           {
-            title: "3. Theoretical Equilibrium Position",
-            math: "x_3 = \\frac{49}{7} = 7.00\\text{ m}",
-            explanation: "Placing the 7kg counterweight at +7.00m balances the composite multi-mass system.",
+            step: 3,
+            title: "3. Total Left-Side Counter-Clockwise Moment",
+            math: "\\sum_{\\text{left}} m_i x_i = -40.0 + (-9.0) = -49.0\\text{ kg}\\cdot\\text{m}",
+            explanation: "By the principle of superposition, the net left-hand moment is the algebraic sum of the individual moments.",
+          },
+          {
+            step: 4,
+            title: "4. Counterweight Equilibrium Equation",
+            math: "m_3 x_3 + (-49.0) = 0 \\implies (7.0\\text{ kg}) x_3 = 49.0\\text{ kg}\\cdot\\text{m}",
+            explanation: "The single 7kg counterweight on the right rail must generate an equal and opposite +49.0 kg·m clockwise moment.",
+          },
+          {
+            step: 5,
+            title: "5. Solve for Target Counterweight Coordinate",
+            math: "x_3 = \\frac{49.0}{7.0} = +7.00\\text{ m}",
+            explanation: "Placing the 7kg counterweight at +7.00m brings the composite multi-mass system into exact horizontal equilibrium.",
           },
         ],
+        conclusion: "The Principle of Superposition: in any composite multi-body system, each body contributes independently to the first moment of mass (m_i · x_i). The counterweight must cancel the sum of all individual payload moments.",
       };
     } else {
       return {
+        title: "Orbital Gantry: Asymmetric Heavy Beam (The Classic JEE Trap)",
+        concept: "Accounting for the self-weight and off-center centroid of a distributed rigid body combined with discrete point masses.",
         formula: "X_{\\text{cm}} = \\frac{m_1 x_1 + M_{\\text{plank}} X_{\\text{plank}} + m_2 x_2}{m_1 + M_{\\text{plank}} + m_2} = 0",
         steps: [
           {
-            title: "1. The Plank's Own Mass Contribution (The Trap!)",
-            math: "M_{\\text{plank}} X_{\\text{plank}} = (20\\text{ kg})(-0.5\\text{ m}) = -10\\text{ kg}\\cdot\\text{m}",
-            explanation: "Because the fulcrum is shifted off-center, the plank's own 20kg mass acts at its geometric center (x = -0.5m)!",
+            step: 1,
+            title: "1. Locating the Beam's Own Center of Mass (The Trap!)",
+            math: "X_{\\text{plank}} = \\frac{x_{\\text{left}} + x_{\\text{right}}}{2} = \\frac{-7.50 + 6.50}{2} = -0.50\\text{ m}",
+            explanation: "The 14m beam spans from -7.5m (left) to +6.5m (right) relative to the pivot. Its geometric midpoint is shifted 0.50m to the left of the fulcrum!",
           },
           {
-            title: "2. Fixed Payload Moment",
-            math: "m_1 x_1 = (10\\text{ kg})(-4.5\\text{ m}) = -45\\text{ kg}\\cdot\\text{m}",
-            explanation: "Moment of the 10kg mass situated at -4.5m.",
+            step: 2,
+            title: "2. The Beam's Self-Weight Moment Contribution",
+            math: "M_{\\text{plank}} X_{\\text{plank}} = (20.0\\text{ kg})(-0.50\\text{ m}) = -10.0\\text{ kg}\\cdot\\text{m}",
+            explanation: "The beam itself acts as an extra 20kg mass concentrated at x = -0.50m, producing -10.0 kg·m of left-side moment.",
           },
           {
-            title: "3. Total Left Moment (Plank + Payload)",
-            math: "\\text{Total Left} = -45 + (-10) = -55\\text{ kg}\\cdot\\text{m}",
-            explanation: "Notice the plank adds an extra -10 kg·m of left-side downward moment.",
+            step: 3,
+            title: "3. Fixed Payload First Moment",
+            math: "m_1 x_1 = (10.0\\text{ kg})(-4.50\\text{ m}) = -45.0\\text{ kg}\\cdot\\text{m}",
+            explanation: "The 10kg quantum beacon at x₁ = -4.50m produces -45.0 kg·m of moment.",
           },
           {
-            title: "4. True vs Naive Counterweight Position",
-            math: "10 x_2 = 55 \\implies x_2 = 5.50\\text{ m} \\quad (\\text{Naive without plank: } 4.50\\text{ m})",
-            explanation: "Forgetting the beam's self-weight gives 4.5m, causing a violent leftward crash! True balance requires 5.50m.",
+            step: 4,
+            title: "4. Total Left-Side Moment (Beam + Payload)",
+            math: "\\text{Total Left Moment} = -45.0 + (-10.0) = -55.0\\text{ kg}\\cdot\\text{m}",
+            explanation: "Notice that the plank adds an extra -10.0 kg·m that naive students forget to include!",
+          },
+          {
+            step: 5,
+            title: "5. The Fatal JEE Student Trap vs True Solution",
+            math: "\\begin{aligned} \\text{Naive Trap (massless beam): } & 10 x_2 = 45 \\implies x_2 = 4.50\\text{ m} \\quad \\text{(Crashes left!)} \\\\ \\text{True Solution (with beam): } & 10 x_2 = 55 \\implies x_2 = +5.50\\text{ m} \\quad \\text{(Balances level!)} \\end{aligned}",
+            explanation: "Dialing 4.50m leaves the beam's own 10 kg·m moment uncompensated, causing a severe leftward crash! True equilibrium requires x₂ = +5.50m.",
           },
         ],
+        conclusion: "The #1 JEE Rotational Trap: Students routinely treat structural beams and planks as massless rods. Whenever a fulcrum is off-center, you MUST treat the rigid body as a concentrated point mass M located at its geometric centroid X_cm. Forgetting self-weight leads to disastrous balance failures!",
       };
     }
   }, [stage]);
@@ -126,31 +171,39 @@ export function CyberSeesawControls({ config }: { config?: any }) {
       calculation={calculationDerivation}
       briefing={{
         target: "Calibrate counterweight position x to align the system Center of Mass directly over the pivot (X_cm = 0.0m).",
+        targetImageUrl: "https://topcoaching.b-cdn.net/Module%203/Topic%201/medium/target.png",
         steps: [
           {
             step: 1,
             title: "Identify All Mass Coordinates",
-            description: "Note the position x_i of every payload and the plank's centroid relative to pivot x = 0.",
+            description: "Locate the coordinate x_i of every payload and the beam's own centroid relative to the fulcrum origin (x = 0).",
           },
           {
             step: 2,
             title: "Apply Center of Mass Equilibrium",
-            description: "Set Σ m_i x_i + M_plank X_plank = 0 to cancel all gravitational moments.",
+            description: "Set Σ m_i x_i + M_plank X_plank = 0 to cancel all clockwise and counter-clockwise first moments.",
           },
           {
             step: 3,
-            title: "Watch Out for Off-Center Fulcrums",
-            description: "In Stage 3, the beam's own 20kg mass acts at its centroid (-0.5m), not at the fulcrum!",
+            title: "Beware of Off-Center Fulcrums (JEE Trap)",
+            description: "In Stage 3, the beam's own 20kg mass acts at its physical centroid (-0.5m), not at the pivot!",
           },
         ],
         formulas: [
           {
-            label: "1. System Center of Mass",
-            formula: "X_{\\text{cm}} = \\frac{\\sum m_i x_i + M_{\\text{plank}} X_{\\text{plank}}}{\\sum m_i + M_{\\text{plank}}}",
+            label: "1. System Center of Mass Definition",
+            formula: "X_{\\text{cm}} = \\frac{\\sum_{i=1}^{n} m_i x_i + M_{\\text{plank}} X_{\\text{plank}}}{\\sum_{i=1}^{n} m_i + M_{\\text{plank}}}",
+            explanation: "Center of Mass is the mass-weighted average spatial coordinate of all discrete payloads and continuous structural elements.",
           },
           {
-            label: "2. Equilibrium Condition",
+            label: "2. Torque & Center of Mass Equivalence",
+            formula: "\\tau_{\\text{net}} = \\sum (x_i \\times m_i g) = g \\sum m_i x_i = M_{\\text{total}} \\, g \\, X_{\\text{cm}}",
+            explanation: "When X_cm = 0, the gravitational moment arm vanishes, guaranteeing zero net torque regardless of gravity g.",
+          },
+          {
+            label: "3. Zero-Torque Horizontal Equilibrium",
             formula: "\\sum m_i x_i + M_{\\text{plank}} X_{\\text{plank}} = 0",
+            explanation: "All clockwise moments on the right rail (x > 0) must exactly balance all counter-clockwise moments on the left rail (x < 0).",
           },
         ],
       }}
@@ -159,48 +212,22 @@ export function CyberSeesawControls({ config }: { config?: any }) {
         instructions: [
           {
             title: "Compute System Centroid",
-            description: "Sum the first moments (mass × distance) on both sides of the central fulcrum.",
+            description: "Sum the first moments of mass (m × x) on both sides of the fulcrum origin (x = 0).",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%203/Topic%201/medium/1.png",
           },
           {
             title: "Dial Position Slider",
-            description: "Adjust the counterweight position x using the slider and step buttons below.",
+            description: "Adjust the counterweight position x on the right rail using the slider and stepper buttons below.",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%203/Topic%201/medium/2.png",
           },
           {
             title: "Test Mechanical Balance",
-            description: "Click TEST BALANCE to retract the hydraulic jacks and observe if the beam stays horizontal.",
+            description: "Click TEST BALANCE to retract the hydraulic jacks and observe if the beam stays perfectly horizontal.",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%203/Topic%201/medium/3.png",
           },
         ],
         tip: "Tactical Tip: Always remember that mass to the left of the fulcrum has negative coordinates (x < 0)!",
       }}
-      topCenterHUD={
-        <div className="flex items-center gap-2 sm:gap-3 max-lg:landscape:gap-1.5 bg-white/95 backdrop-blur-xl border border-slate-300 px-3 sm:px-4 max-lg:landscape:px-2.5 py-1 sm:py-1.5 max-lg:landscape:py-0.5 rounded-full shadow-[0_4px_16px_rgba(0,0,0,0.1)] select-none font-mono text-xs max-lg:landscape:text-[10px]">
-          <span className="text-slate-800 font-bold tracking-wide">STAGE {currentStage}/3</span>
-          <span className="text-slate-300">|</span>
-          <span className="text-slate-700 font-semibold tracking-wide flex items-center gap-1">
-            <Scale className="w-3.5 h-3.5 max-lg:landscape:w-3 max-lg:landscape:h-3 text-cyan-600" />
-            <span>WEIGHT:</span>
-            <strong className="text-cyan-600 font-bold">{stage.targetMass.label}</strong>
-          </span>
-          <span className="text-slate-300">|</span>
-          <span className="text-slate-700 font-semibold tracking-wide flex items-center gap-1">
-            <Layers className="w-3.5 h-3.5 max-lg:landscape:w-3 max-lg:landscape:h-3 text-amber-600" />
-            <span>BEAM:</span>
-            <strong className="text-amber-600 font-bold">
-              {stage.plankMass > 0 ? stage.plankMass + "kg (x=-0.5m)" : "Symmetric"}
-            </strong>
-          </span>
-          <span className="text-slate-300">|</span>
-          <span
-            className={
-              "font-mono font-bold flex items-center gap-1 " +
-              (isBalanced ? "text-emerald-600 animate-pulse" : "text-blue-600")
-            }
-          >
-            <span>X_cm:</span>
-            <strong>{(xCOM >= 0 ? "+" : "") + xCOM.toFixed(2)}m</strong>
-          </span>
-        </div>
-      }
       bottomDock={
         <div className="flex flex-col items-center pointer-events-auto select-none w-full px-3 sm:px-4 pb-4 sm:pb-5 max-lg:landscape:pb-1 max-w-xl max-lg:landscape:max-w-lg mx-auto">
           {/* Main Controls Capsule - 2-Column Responsive Layout */}

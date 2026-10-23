@@ -415,9 +415,9 @@ export function MissionResultOverlay({
                         🎯 <span className="text-cyan-800 font-mono">Target:</span> {briefing.target}
                       </div>
                     )}
-                    {briefing?.storyObjective && (
+                    {(calculation?.concept || briefing?.storyObjective) && (
                       <p className="text-xs text-slate-600 leading-relaxed font-sans">
-                        {briefing.storyObjective}
+                        {calculation?.concept || briefing?.storyObjective}
                       </p>
                     )}
                   </div>
