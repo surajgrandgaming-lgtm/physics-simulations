@@ -448,6 +448,13 @@ export function GameHUDContainer({
         </div>
       )}
 
+      {/* ── TOP CENTER CANVAS: FLOATING STATUS HUD ── */}
+      {missionStarted && topCenterHUD && (
+        <div className="absolute top-2.5 sm:top-4 left-1/2 -translate-x-1/2 z-40 pointer-events-auto max-w-[calc(100vw-220px)] xs:max-w-none">
+          {topCenterHUD}
+        </div>
+      )}
+
       {/* ── TOP RIGHT CANVAS: EXPLANATION BUTTON (Always accessible during simulation) ── */}
       {missionStarted && (calculation || result?.calculation || briefing?.steps?.length > 0) && (
         <div className="absolute top-2.5 sm:top-4 right-2.5 sm:right-4 z-40 pointer-events-auto">
