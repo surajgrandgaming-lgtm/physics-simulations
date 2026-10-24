@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import { QuantumRailControls } from "@/features/challenges/topics/physics/collisions/QuantumRailControls";
 import { CyberSeesawControls } from "@/features/challenges/topics/physics/center-of-mass/CyberSeesawControls";
 import { BungeeDropControls } from "@/features/challenges/topics/physics/work-energy/BungeeDropControls";
 import { MountainTruckControls } from "@/features/challenges/topics/physics/friction-banking/MountainTruckControls";
@@ -27,6 +28,9 @@ interface ChallengeControlsClientProps {
 export function ChallengeControlsClient({ config }: ChallengeControlsClientProps) {
   const sceneType = config?.sceneType;
 
+  if (sceneType === "quantum-rail") {
+    return <QuantumRailControls config={config} />;
+  }
   if (sceneType === "cyber-seesaw") {
     return <CyberSeesawControls config={config} />;
   }

@@ -22,6 +22,17 @@ const LoadingFallback = () => (
   </div>
 );
 
+const QuantumRailScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/collisions/QuantumRailScene"
+    ).then((mod) => mod.QuantumRailScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CyberSeesawScene = dynamic(
   () =>
     import(
@@ -226,6 +237,13 @@ interface Props {
 
 export default function CanvasClient({ config }: Props) {
   const sceneType = config?.sceneType;
+  if (sceneType === "quantum-rail") {
+    return (
+      <div className="w-full h-full">
+        <QuantumRailScene config={config} />
+      </div>
+    );
+  }
   if (sceneType === "cyber-seesaw") {
     return (
       <div className="w-full h-full">

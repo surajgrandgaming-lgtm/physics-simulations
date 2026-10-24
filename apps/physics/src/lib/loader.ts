@@ -35,6 +35,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "friction-and-banking" || canonicalTopic === "friction-banking" || canonicalTopic.includes("banking") || canonicalTopic.includes("friction")) && (slug.includes("friction") || slug.includes("banking") || t.topicId === "9")) return true;
     if ((canonicalTopic === "work-energy-theorem" || canonicalTopic === "work-energy" || canonicalTopic.includes("energy")) && (slug.includes("energy") || slug.includes("work") || t.topicId === "10")) return true;
     if ((canonicalTopic === "center-of-mass-shift" || canonicalTopic === "center-of-mass" || canonicalTopic.includes("center-of-mass") || canonicalTopic.includes("seesaw")) && (slug.includes("center-of-mass") || slug.includes("mass") || t.topicId === "11")) return true;
+    if ((canonicalTopic === "1d-2d-collisions" || canonicalTopic === "collisions" || canonicalTopic.includes("collision") || canonicalTopic.includes("rail")) && (slug.includes("collision") || t.topicId === "12")) return true;
     return false;
   });
 
@@ -72,6 +73,7 @@ export const getChallenge = cache(
     const isStaticBreakaway = canonicalTopic === "static-breakaway-nlm-1" || canonicalTopic === "static-breakaway" || canonicalTopic === "tablecloth-pull" || foundTopic?.topicId === "7";
     const isWorkEnergy = canonicalTopic === "work-energy-theorem" || canonicalTopic === "work-energy" || canonicalTopic.includes("energy") || canonicalTopic.includes("bungee") || foundTopic?.topicId === "10";
     const isCenterOfMass = canonicalTopic === "center-of-mass-shift" || canonicalTopic === "center-of-mass" || canonicalTopic.includes("center-of-mass") || canonicalTopic.includes("seesaw") || foundTopic?.topicId === "11";
+    const isCollisions = canonicalTopic === "1d-2d-collisions" || canonicalTopic === "collisions" || canonicalTopic.includes("collision") || canonicalTopic.includes("rail") || foundTopic?.topicId === "12";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -161,6 +163,12 @@ export const getChallenge = cache(
         clothLength: 1.4,
         tableEdgeX: 3.5,
       };
+    } else if (isCollisions) {
+      sceneType = "quantum-rail";
+      parameters = {
+        rounds: 3,
+        trackLength: 40.0,
+      };
     } else if (isCenterOfMass) {
       sceneType = "cyber-seesaw";
       parameters = {
@@ -179,7 +187,9 @@ export const getChallenge = cache(
 
     const title =
       challengeData?.title ||
-      (isCenterOfMass
+      (isCollisions
+        ? "Quantum Rail: Collision & Impulse Dynamics"
+        : isCenterOfMass
         ? "Cyber-Seesaw: System Equilibrium"
         : isWorkEnergy
         ? "Canyon Bungee Jump"
@@ -290,6 +300,7 @@ export function getModuleData(subject: string, moduleSlug: string) {
     else if (rawSlug.includes("tablecloth-pull")) slug = "tablecloth-pull";
     else if (rawSlug.includes("work-energy") || rawSlug.includes("energy") || t.topicId === "10") slug = "work-energy-theorem";
     else if (rawSlug.includes("center-of-mass") || rawSlug.includes("mass") || t.topicId === "11") slug = "center-of-mass-shift";
+    else if (rawSlug.includes("collision") || t.topicId === "12") slug = "1d-2d-collisions";
 
     const has3D =
       slug === "1d-motion-deceleration" ||
@@ -302,7 +313,7 @@ export function getModuleData(subject: string, moduleSlug: string) {
       slug === "friction-and-banking" ||
       slug === "static-breakaway-nlm-1" ||
       slug === "static-breakaway" ||
-      slug === "tablecloth-pull" || slug === "work-energy-theorem" || slug === "center-of-mass-shift" || slug === "center-of-mass";
+      slug === "tablecloth-pull" || slug === "work-energy-theorem" || slug === "center-of-mass-shift" || slug === "center-of-mass" || slug === "1d-2d-collisions" || slug === "collisions";
 
     return {
       id: t.topicId,
