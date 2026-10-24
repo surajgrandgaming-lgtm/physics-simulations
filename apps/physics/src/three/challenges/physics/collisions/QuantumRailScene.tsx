@@ -112,10 +112,10 @@ function MagLevTrack({ stage }: { stage: (typeof COLLISION_STAGES)[0] }) {
             </mesh>
           ))}
 
-          {/* Friction Zone Label Badge */}
-          <Html position={[0, 0.6, -1.35]} center distanceFactor={24}>
-            <div className="px-2.5 py-0.5 rounded-full bg-white/95 border border-amber-400 text-amber-800 font-mono font-bold text-[10px] shadow-sm pointer-events-none select-none whitespace-nowrap">
-              HIGH-FRICTION BRAKING BAY (μ = 0.25)
+          {/* Simple Friction Zone Label */}
+          <Html position={[0, 0.6, -1.35]} center distanceFactor={32}>
+            <div className="px-2 py-0.5 rounded-full bg-white/90 border border-amber-300 text-amber-700 font-mono text-[9px] shadow-xs pointer-events-none select-none whitespace-nowrap">
+              Friction (μ = 0.25)
             </div>
           </Html>
         </group>
@@ -135,12 +135,7 @@ function MagLevTrack({ stage }: { stage: (typeof COLLISION_STAGES)[0] }) {
           <cylinderGeometry args={[0.015, 0.015, 2.5, 8]} />
           <meshBasicMaterial color="#06b6d4" transparent opacity={0.85} />
         </mesh>
-        {/* Impact point beacon */}
-        <Html position={[0, 1.45, 0]} center distanceFactor={22}>
-          <div className="px-2 py-0.5 rounded-md bg-white/95 border border-cyan-500 text-cyan-800 font-mono font-bold text-[10px] shadow-sm pointer-events-none select-none whitespace-nowrap">
-            IMPACT POINT • x = 0.0m
-          </div>
-        </Html>
+        
       </group>
 
       {/* Target Velocity Sensor Gate (Stages 1 & 2) */}
@@ -163,10 +158,10 @@ function MagLevTrack({ stage }: { stage: (typeof COLLISION_STAGES)[0] }) {
             <planeGeometry args={[0.02, 1.9]} />
             <meshBasicMaterial color="#10b981" transparent opacity={0.35} side={THREE.DoubleSide} />
           </mesh>
-          {/* Target Velocity Tag */}
-          <Html position={[0, 2.45, 0]} center distanceFactor={24}>
-            <div className="px-2.5 py-0.5 rounded-full bg-white/95 border border-emerald-500 text-emerald-800 font-mono font-bold text-[10px] shadow-sm pointer-events-none select-none whitespace-nowrap">
-              🎯 TARGET SENSOR GATE • REQUIRED: {stage.targetV2.toFixed(1)} m/s
+          {/* Simple Target Velocity Tag */}
+          <Html position={[0, 2.35, 0]} center distanceFactor={32}>
+            <div className="px-2 py-0.5 rounded-full bg-white/90 border border-emerald-400 text-emerald-700 font-mono font-medium text-[9px] shadow-xs pointer-events-none select-none whitespace-nowrap">
+              Target: {stage.targetV2.toFixed(1)} m/s
             </div>
           </Html>
         </group>
@@ -193,10 +188,10 @@ function MagLevTrack({ stage }: { stage: (typeof COLLISION_STAGES)[0] }) {
             <ringGeometry args={[0.6, 0.75, 32]} />
             <meshBasicMaterial color="#10b981" side={THREE.DoubleSide} />
           </mesh>
-          {/* Docking Target Tag */}
-          <Html position={[0, 1.6, 0]} center distanceFactor={22}>
-            <div className="px-2.5 py-0.5 rounded-full bg-white/95 border border-emerald-500 text-emerald-800 font-mono font-bold text-[10px] shadow-sm pointer-events-none select-none whitespace-nowrap">
-              🎯 RECOVERY DOCK • TARGET: {stage.dockingTargetX.toFixed(1)}m
+          {/* Simple Docking Target Tag */}
+          <Html position={[0, 1.45, 0]} center distanceFactor={32}>
+            <div className="px-2 py-0.5 rounded-full bg-white/90 border border-emerald-400 text-emerald-700 font-mono font-medium text-[9px] shadow-xs pointer-events-none select-none whitespace-nowrap">
+              Target: {stage.dockingTargetX.toFixed(1)}m
             </div>
           </Html>
         </group>
@@ -309,15 +304,13 @@ function LauncherCart({
         ))
       )}
 
-      {/* Cart 1 Telemetry Badge (Crisp Light Theme Pill) */}
-      <Html position={[0, 1.15, 0]} center distanceFactor={22}>
-        <div className="px-2.5 py-1 rounded-full bg-white/95 border border-orange-400 text-slate-800 font-mono font-bold text-[10px] shadow-md flex items-center gap-1.5 pointer-events-none select-none whitespace-nowrap backdrop-blur-sm">
-          <span className="w-2 h-2 rounded-full bg-orange-500 inline-block animate-pulse" />
-          <span>CART 1 (m₁ = {mass.toFixed(1)} kg)</span>
-          <span className="text-orange-600 font-black">
-            {velocity >= 0 ? "+" : ""}
-            {velocity.toFixed(1)} m/s
-          </span>
+      {/* Simple Cart 1 Badge */}
+      <Html position={[0, 1.05, 0]} center distanceFactor={32}>
+        <div className="px-2 py-0.5 rounded-full bg-white/90 border border-orange-300 text-slate-700 font-mono text-[9px] shadow-xs flex items-center gap-1 pointer-events-none select-none whitespace-nowrap">
+          <span className="font-semibold text-orange-600">Cart 1:</span>
+          <span>{mass.toFixed(0)}kg</span>
+          <span>·</span>
+          <span>{(velocity >= 0 ? "+" : "") + velocity.toFixed(1)} m/s</span>
         </div>
       </Html>
     </group>
@@ -412,15 +405,13 @@ function TargetCart({
         ))
       )}
 
-      {/* Cart 2 Telemetry Badge (Crisp Light Theme Pill) */}
-      <Html position={[0, 1.15, 0]} center distanceFactor={22}>
-        <div className="px-2.5 py-1 rounded-full bg-white/95 border border-cyan-400 text-slate-800 font-mono font-bold text-[10px] shadow-md flex items-center gap-1.5 pointer-events-none select-none whitespace-nowrap backdrop-blur-sm">
-          <span className="w-2 h-2 rounded-full bg-cyan-500 inline-block animate-pulse" />
-          <span>CART 2 (m₂ = {mass.toFixed(1)} kg)</span>
-          <span className="text-cyan-700 font-black">
-            {velocity >= 0 ? "+" : ""}
-            {velocity.toFixed(1)} m/s
-          </span>
+      {/* Simple Cart 2 Badge */}
+      <Html position={[0, 1.05, 0]} center distanceFactor={32}>
+        <div className="px-2 py-0.5 rounded-full bg-white/90 border border-cyan-400 text-slate-700 font-mono text-[9px] shadow-xs flex items-center gap-1 pointer-events-none select-none whitespace-nowrap">
+          <span className="font-semibold text-cyan-700">Cart 2:</span>
+          <span>{mass.toFixed(0)}kg</span>
+          <span>·</span>
+          <span>{(velocity >= 0 ? "+" : "") + velocity.toFixed(1)} m/s</span>
         </div>
       </Html>
     </group>

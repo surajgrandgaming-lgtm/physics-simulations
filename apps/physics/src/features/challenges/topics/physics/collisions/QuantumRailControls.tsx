@@ -5,7 +5,6 @@ import {
   RotateCcw,
   Play,
   Sliders,
-  Target,
 } from "lucide-react";
 import { GameHUDContainer } from "@/features/challenges/hud/GameHUDContainer";
 import {
@@ -187,49 +186,14 @@ export function QuantumRailControls({ config }: { config?: any }) {
       showExitButton={true}
       isLight={true}
       calculation={calculationDerivation}
-      topCenterHUD={
-        <div className="flex flex-col items-center pointer-events-auto">
-          <div className="px-3.5 py-1.5 rounded-full bg-white/95 border border-slate-300 shadow-md backdrop-blur-md flex items-center gap-2.5 sm:gap-3 text-slate-800">
-            {/* Stage Pill */}
-            <span className="px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-800 font-mono font-bold text-[10px] sm:text-xs tracking-wider uppercase">
-              STAGE {currentStage} / 3
-            </span>
-
-            {/* Target Goal */}
-            <div className="flex items-center gap-1.5 font-mono text-[11px] sm:text-xs font-bold text-slate-800">
-              <Target className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-              <span className="text-slate-500 font-normal">GOAL:</span>
-              <span className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                {stage.stage === 3
-                  ? "Dock Cart 2 at D = 10.0m"
-                  : "Cart 2 Speed v₂ = " + stage.targetV2.toFixed(1) + " m/s"}
-              </span>
-            </div>
-
-            {/* Given Parameters */}
-            <div className="hidden md:flex items-center gap-2 text-[10.5px] font-mono text-slate-600 border-l border-slate-200 pl-2.5">
-              <span>u₁ = {stage.u1.toFixed(1)} m/s</span>
-              <span>•</span>
-              <span>m₁ = {stage.m1.toFixed(0)} kg</span>
-              <span>•</span>
-              <span>m₂ = {stage.m2.toFixed(0)} kg</span>
-              {stage.stage === 3 && (
-                <>
-                  <span>•</span>
-                  <span>μ = 0.25</span>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      }
       briefing={{
+        targetImageUrl: "https://topcoaching.b-cdn.net/Module%203/Topic%202/medium/target.png",
         target:
           stage.stage === 3
             ? "Calibrate bumper restitution e so Cart 2 slides across the recovery bay and docks at D = 10.0 m."
             : "Calibrate restitution coefficient e so Target Cart 2 reaches the velocity sensor at exactly " +
-              stage.targetV2.toFixed(1) +
-              " m/s.",
+            stage.targetV2.toFixed(1) +
+            " m/s.",
         steps: [
           {
             step: 1,
@@ -272,45 +236,48 @@ export function QuantumRailControls({ config }: { config?: any }) {
             title: "Calculate Restitution Coefficient e",
             description:
               stage.stage === 3
-                ? "Solve v₂ = √(2 μ g D) then e = [v₂(m₁ + m₂) / (m₁ u₁)] - 1 to find restitution e."
-                : "Solve v₂ = [m₁(1 + e) / (m₁ + m₂)] u₁ to determine the exact restitution coefficient e.",
+                ? "Solve v₂ then e to find restitution e."
+                : "Solve v₂ = u₁ to determine the exact restitution coefficient e.",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%203/Topic%202/medium/1.png",
           },
           {
             title: "Tune Slider & Steppers",
             description: "Adjust the active restitution parameter on the slider control below.",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%203/Topic%202/medium/2.png",
           },
           {
             title: "Launch & Observe Collision",
-            description: "Click LAUNCH COLLISION to accelerate Cart 1 and observe real-time momentum transfer.",
+            description: "Click LAUNCH to accelerate Cart 1 and observe real-time momentum transfer.",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%203/Topic%202/medium/3.png",
           },
         ],
         tip: "Tactical Tip: In Stage 3, solve work-energy stopping distance v₂ = √(2 μ g D) first, then solve for restitution e!",
       }}
       bottomDock={
-        <div className="flex flex-col items-center pointer-events-auto select-none w-full px-3 sm:px-4 pb-4 sm:pb-5 max-lg:landscape:pb-1 max-w-xl max-lg:landscape:max-w-lg mx-auto">
-          {/* Main Controls Capsule */}
-          <div className="w-full py-1.5 px-3 sm:py-2 sm:px-4 max-lg:landscape:py-0.5 max-lg:landscape:px-2.5 rounded-2xl sm:rounded-full bg-white/95 backdrop-blur-2xl border border-slate-300/90 shadow-[0_4px_20px_rgba(0,0,0,0.1)] flex items-center justify-between gap-2.5 sm:gap-4 max-lg:landscape:gap-2">
+        <div className="flex flex-col items-center pointer-events-auto select-none w-full px-3 sm:px-4 pb-2 sm:pb-3.5 max-w-xl max-lg:landscape:max-w-xl mx-auto">
+          {/* Main Controls Capsule - Generous padding & comfortable touch targets for mobile landscape */}
+          <div className="w-full py-1.5 px-4 sm:py-2 sm:px-5 max-lg:landscape:py-1.5 max-lg:landscape:px-4 rounded-2xl sm:rounded-full bg-white/95 backdrop-blur-2xl border border-slate-300 shadow-[0_4px_25px_rgba(0,0,0,0.12)] flex items-center justify-between gap-3 sm:gap-5">
             {/* Left Column: Parameter Readout & Slider + Steppers */}
             <div className="flex flex-col flex-1 min-w-0 justify-center">
               {/* Header Badge above Slider */}
-              <div className="flex items-center gap-1.5 mb-1 max-lg:landscape:mb-0 px-0.5">
-                <Sliders className="w-3 h-3 max-lg:landscape:w-2.5 max-lg:landscape:h-2.5 text-cyan-600 shrink-0" />
-                <span className="text-[10px] sm:text-[11px] max-lg:landscape:text-[9px] font-mono font-bold text-slate-700 tracking-wider uppercase truncate">
+              <div className="flex items-center gap-2 mb-1 px-0.5">
+                <Sliders className="w-3.5 h-3.5 max-lg:landscape:w-3 max-lg:landscape:h-3 text-cyan-600 shrink-0" />
+                <span className="text-[11px] sm:text-xs max-lg:landscape:text-[10.5px] font-mono font-bold text-slate-700 tracking-wider uppercase truncate">
                   {stage.controlLabel}:
                 </span>
-                <span className="px-1.5 py-0.5 rounded bg-cyan-50 border border-cyan-200 text-cyan-700 font-mono font-black text-[11px] sm:text-xs max-lg:landscape:text-[9.5px] shadow-xs shrink-0">
+                <span className="px-2 py-0.5 rounded-md bg-cyan-50 border border-cyan-200 text-cyan-800 font-mono font-black text-xs sm:text-sm max-lg:landscape:text-xs shadow-xs shrink-0">
                   {"e = " + sliderValue.toFixed(2)}
                 </span>
               </div>
 
               {/* Stepper Buttons & Slider Bar */}
-              <div className="flex items-center gap-1 sm:gap-1.5 max-lg:landscape:gap-1">
+              <div className="flex items-center gap-1.5 sm:gap-2">
                 <button
                   type="button"
                   disabled={isRunning}
                   onClick={() => adjustSliderValue(-stepLarge)}
-                  className="w-6 h-6 sm:w-7 sm:h-7 max-lg:landscape:w-5 max-lg:landscape:h-5 flex items-center justify-center rounded bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 active:scale-95 transition-all text-[10px] sm:text-xs max-lg:landscape:text-[9px] font-bold shadow-xs cursor-pointer disabled:opacity-40 shrink-0"
-                  title={"Decrease 0.05"}
+                  className="w-7 h-7 sm:w-8 sm:h-8 max-lg:landscape:w-7 max-lg:landscape:h-7 flex items-center justify-center rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 active:scale-95 transition-all text-[11px] sm:text-xs max-lg:landscape:text-[10px] font-bold shadow-xs cursor-pointer disabled:opacity-40 shrink-0"
+                  title="Decrease 0.05"
                 >
                   -0.05
                 </button>
@@ -318,8 +285,8 @@ export function QuantumRailControls({ config }: { config?: any }) {
                   type="button"
                   disabled={isRunning}
                   onClick={() => adjustSliderValue(-stepSmall)}
-                  className="w-6 h-6 sm:w-7 sm:h-7 max-lg:landscape:w-5 max-lg:landscape:h-5 flex items-center justify-center rounded bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 active:scale-95 transition-all text-[10px] sm:text-xs max-lg:landscape:text-[9px] font-bold shadow-xs cursor-pointer disabled:opacity-40 shrink-0"
-                  title={"Decrease 0.01"}
+                  className="w-7 h-7 sm:w-8 sm:h-8 max-lg:landscape:w-7 max-lg:landscape:h-7 flex items-center justify-center rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 active:scale-95 transition-all text-[11px] sm:text-xs max-lg:landscape:text-[10px] font-bold shadow-xs cursor-pointer disabled:opacity-40 shrink-0"
+                  title="Decrease 0.01"
                 >
                   -0.01
                 </button>
@@ -332,15 +299,15 @@ export function QuantumRailControls({ config }: { config?: any }) {
                   step={stage.sliderStep}
                   value={sliderValue}
                   onChange={(e) => setSliderValue(parseFloat(e.target.value))}
-                  className="flex-1 accent-cyan-600 h-1.5 sm:h-2 max-lg:landscape:h-1 bg-slate-200 rounded-lg cursor-pointer border border-slate-300 disabled:opacity-40 mx-0.5 sm:mx-1 min-w-[45px]"
+                  className="flex-1 accent-cyan-600 h-2 sm:h-2.5 max-lg:landscape:h-2 bg-slate-200 rounded-lg cursor-pointer border border-slate-300 disabled:opacity-40 mx-1 sm:mx-1.5 min-w-[60px]"
                 />
 
                 <button
                   type="button"
                   disabled={isRunning}
                   onClick={() => adjustSliderValue(stepSmall)}
-                  className="w-6 h-6 sm:w-7 sm:h-7 max-lg:landscape:w-5 max-lg:landscape:h-5 flex items-center justify-center rounded bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 active:scale-95 transition-all text-[10px] sm:text-xs max-lg:landscape:text-[9px] font-bold shadow-xs cursor-pointer disabled:opacity-40 shrink-0"
-                  title={"Increase 0.01"}
+                  className="w-7 h-7 sm:w-8 sm:h-8 max-lg:landscape:w-7 max-lg:landscape:h-7 flex items-center justify-center rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 active:scale-95 transition-all text-[11px] sm:text-xs max-lg:landscape:text-[10px] font-bold shadow-xs cursor-pointer disabled:opacity-40 shrink-0"
+                  title="Increase 0.01"
                 >
                   +0.01
                 </button>
@@ -348,8 +315,8 @@ export function QuantumRailControls({ config }: { config?: any }) {
                   type="button"
                   disabled={isRunning}
                   onClick={() => adjustSliderValue(stepLarge)}
-                  className="w-6 h-6 sm:w-7 sm:h-7 max-lg:landscape:w-5 max-lg:landscape:h-5 flex items-center justify-center rounded bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 active:scale-95 transition-all text-[10px] sm:text-xs max-lg:landscape:text-[9px] font-bold shadow-xs cursor-pointer disabled:opacity-40 shrink-0"
-                  title={"Increase 0.05"}
+                  className="w-7 h-7 sm:w-8 sm:h-8 max-lg:landscape:w-7 max-lg:landscape:h-7 flex items-center justify-center rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 active:scale-95 transition-all text-[11px] sm:text-xs max-lg:landscape:text-[10px] font-bold shadow-xs cursor-pointer disabled:opacity-40 shrink-0"
+                  title="Increase 0.05"
                 >
                   +0.05
                 </button>
@@ -362,19 +329,19 @@ export function QuantumRailControls({ config }: { config?: any }) {
                 <button
                   type="button"
                   onClick={launchCollision}
-                  className="h-8 sm:h-9 max-lg:landscape:h-7 px-3 sm:px-5 max-lg:landscape:px-3 rounded-xl sm:rounded-full font-bold text-xs sm:text-sm max-lg:landscape:text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-md active:scale-95 transition-all cursor-pointer bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white shadow-cyan-500/25"
+                  className="h-9 sm:h-10 max-lg:landscape:h-9 px-4 sm:px-6 max-lg:landscape:px-4.5 rounded-xl sm:rounded-full font-bold text-xs sm:text-sm uppercase tracking-wider flex items-center gap-2 shadow-md active:scale-95 transition-all cursor-pointer bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white shadow-cyan-500/25 shrink-0"
                 >
-                  <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-white" />
-                  <span className="truncate">LAUNCH</span>
+                  <Play className="w-4 h-4 fill-white" />
+                  <span>LAUNCH</span>
                 </button>
               ) : (
                 <button
                   type="button"
                   onClick={resetSimulation}
-                  className="h-8 sm:h-9 max-lg:landscape:h-7 px-3 sm:px-5 max-lg:landscape:px-3 rounded-xl sm:rounded-full font-bold text-xs sm:text-sm max-lg:landscape:text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-md active:scale-95 transition-all cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 shadow-xs"
+                  className="h-9 sm:h-10 max-lg:landscape:h-9 px-4 sm:px-6 max-lg:landscape:px-4.5 rounded-xl sm:rounded-full font-bold text-xs sm:text-sm uppercase tracking-wider flex items-center gap-2 shadow-md active:scale-95 transition-all cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 shadow-xs shrink-0"
                 >
-                  <RotateCcw className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  <span className="truncate">RESET</span>
+                  <RotateCcw className="w-4 h-4" />
+                  <span>RESET</span>
                 </button>
               )}
             </div>
@@ -384,47 +351,47 @@ export function QuantumRailControls({ config }: { config?: any }) {
       result={
         showResultModal && (isWon || isGameOver)
           ? {
-              isWon,
-              isGameOver,
-              onRetry: resetSimulation,
-              onNextTier: isWon && currentStage < 3 ? nextStage : undefined,
-              nextTierLabel:
-                currentStage < 3
-                  ? "PROCEED TO STAGE " + (currentStage + 1)
-                  : "REPLAY CHALLENGE",
-              failureReason: isGameOver ? crashReason || "Simulation conditions not met." : undefined,
-              tip: stage.explanationTrap,
-              stats: [
-                {
-                  label: "Mission Status",
-                  value: isWon
-                    ? currentStage === 3
-                      ? "Master of Momentum & Restitution Achieved!"
-                      : "Stage " + currentStage + " Cleared!"
-                    : "Mission Incomplete",
-                },
-                {
-                  label: "Tuned Parameter",
-                  value: "e = " + sliderValue.toFixed(2),
-                },
-                {
-                  label: "Exact Target Parameter",
-                  value: "e = " + stage.exactTargetValue.toFixed(2),
-                },
-                {
-                  label: "Target Cart Speed (v₂)",
-                  value: v2.toFixed(2) + " m/s (Target: " + stage.targetV2.toFixed(2) + " m/s)",
-                },
-                {
-                  label: "Total Momentum",
-                  value: totalMomentum.toFixed(1) + " kg·m/s (Conserved)",
-                },
-                {
-                  label: "Kinetic Energy Loss (ΔK)",
-                  value: kineticEnergyLost.toFixed(1) + " J",
-                },
-              ],
-            }
+            isWon,
+            isGameOver,
+            onRetry: resetSimulation,
+            onNextTier: isWon && currentStage < 3 ? nextStage : undefined,
+            nextTierLabel:
+              currentStage < 3
+                ? "PROCEED TO STAGE " + (currentStage + 1)
+                : "REPLAY CHALLENGE",
+            failureReason: isGameOver ? crashReason || "Simulation conditions not met." : undefined,
+            tip: stage.explanationTrap,
+            stats: [
+              {
+                label: "Mission Status",
+                value: isWon
+                  ? currentStage === 3
+                    ? "Master of Momentum & Restitution Achieved!"
+                    : "Stage " + currentStage + " Cleared!"
+                  : "Mission Incomplete",
+              },
+              {
+                label: "Tuned Parameter",
+                value: "e = " + sliderValue.toFixed(2),
+              },
+              {
+                label: "Exact Target Parameter",
+                value: "e = " + stage.exactTargetValue.toFixed(2),
+              },
+              {
+                label: "Target Cart Speed (v₂)",
+                value: v2.toFixed(2) + " m/s (Target: " + stage.targetV2.toFixed(2) + " m/s)",
+              },
+              {
+                label: "Total Momentum",
+                value: totalMomentum.toFixed(1) + " kg·m/s (Conserved)",
+              },
+              {
+                label: "Kinetic Energy Loss (ΔK)",
+                value: kineticEnergyLost.toFixed(1) + " J",
+              },
+            ],
+          }
           : undefined
       }
     />
