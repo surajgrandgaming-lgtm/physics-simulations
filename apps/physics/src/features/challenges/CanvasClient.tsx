@@ -22,6 +22,17 @@ const LoadingFallback = () => (
   </div>
 );
 
+const CraneBoomScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/rotational-equilibrium/CraneBoomScene"
+    ).then((mod) => mod.CraneBoomScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const QuantumRailScene = dynamic(
   () =>
     import(
@@ -237,6 +248,13 @@ interface Props {
 
 export default function CanvasClient({ config }: Props) {
   const sceneType = config?.sceneType;
+  if (sceneType === "crane-boom") {
+    return (
+      <div className="w-full h-full">
+        <CraneBoomScene />
+      </div>
+    );
+  }
   if (sceneType === "quantum-rail") {
     return (
       <div className="w-full h-full">

@@ -36,6 +36,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "work-energy-theorem" || canonicalTopic === "work-energy" || canonicalTopic.includes("energy")) && (slug.includes("energy") || slug.includes("work") || t.topicId === "10")) return true;
     if ((canonicalTopic === "center-of-mass-shift" || canonicalTopic === "center-of-mass" || canonicalTopic.includes("center-of-mass") || canonicalTopic.includes("seesaw")) && (slug.includes("center-of-mass") || slug.includes("mass") || t.topicId === "11")) return true;
     if ((canonicalTopic === "1d-2d-collisions" || canonicalTopic === "collisions" || canonicalTopic.includes("collision") || canonicalTopic.includes("rail")) && (slug.includes("collision") || t.topicId === "12")) return true;
+    if ((canonicalTopic === "rotational-equilibrium" || canonicalTopic === "equilibrium" || canonicalTopic.includes("crane") || canonicalTopic.includes("rotational")) && (slug.includes("equilibrium") || slug.includes("rotational") || t.topicId === "13")) return true;
     return false;
   });
 
@@ -74,6 +75,7 @@ export const getChallenge = cache(
     const isWorkEnergy = canonicalTopic === "work-energy-theorem" || canonicalTopic === "work-energy" || canonicalTopic.includes("energy") || canonicalTopic.includes("bungee") || foundTopic?.topicId === "10";
     const isCenterOfMass = canonicalTopic === "center-of-mass-shift" || canonicalTopic === "center-of-mass" || canonicalTopic.includes("center-of-mass") || canonicalTopic.includes("seesaw") || foundTopic?.topicId === "11";
     const isCollisions = canonicalTopic === "1d-2d-collisions" || canonicalTopic === "collisions" || canonicalTopic.includes("collision") || canonicalTopic.includes("rail") || foundTopic?.topicId === "12";
+    const isRotationalEquilibrium = canonicalTopic === "rotational-equilibrium" || canonicalTopic.includes("equilibrium") || canonicalTopic.includes("rotational") || foundTopic?.topicId === "13";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -169,6 +171,12 @@ export const getChallenge = cache(
         rounds: 3,
         trackLength: 40.0,
       };
+    } else if (isRotationalEquilibrium) {
+      sceneType = "crane-boom";
+      parameters = {
+        rounds: 3,
+        boomLength: 8.0,
+      };
     } else if (isCenterOfMass) {
       sceneType = "cyber-seesaw";
       parameters = {
@@ -189,6 +197,8 @@ export const getChallenge = cache(
       challengeData?.title ||
       (isCollisions
         ? "Quantum Rail: Collision & Impulse Dynamics"
+        : isRotationalEquilibrium
+        ? "Crane Boom: Rotational Equilibrium"
         : isCenterOfMass
         ? "Cyber-Seesaw: System Equilibrium"
         : isWorkEnergy
