@@ -279,7 +279,7 @@ function BowlingBallMesh() {
   const { width, height } = useThree((s) => s.size);
   const screenScale = Math.min(1.0, Math.max(0.65, Math.min(width / 1100, height / 600)));
   const ballDf = 3.2 * screenScale;
-  const vectorDf = 2.4 * screenScale;
+  const vectorDf = 3.2 * screenScale;
 
   const posX = useSkidToRollStore((s) => s.posX);
   const velX = useSkidToRollStore((s) => s.velX);
@@ -356,7 +356,7 @@ function BowlingBallMesh() {
             <meshBasicMaterial color="#0284c7" />
           </mesh>
           <Html position={[vArrowLength, 0.05, 0.16]} center distanceFactor={vectorDf} style={{ pointerEvents: "none" }}>
-            <span className="px-1 py-0.2 rounded bg-sky-950/85 text-sky-200 font-mono text-[7.5px] font-bold shadow-xs whitespace-nowrap block">
+            <span className="px-2 py-0.5 rounded-full bg-sky-950/90 border border-sky-400/40 text-sky-200 font-mono text-[8.5px] font-bold shadow-xs whitespace-nowrap block">
               {"v = " + velX.toFixed(2) + " m/s"}
             </span>
           </Html>
@@ -374,7 +374,7 @@ function BowlingBallMesh() {
           <meshBasicMaterial color="#8b5cf6" />
         </mesh>
         <Html position={[rimArrowLength, 0.04, -0.16]} center distanceFactor={vectorDf} style={{ pointerEvents: "none" }}>
-          <span className="px-1 py-0.2 rounded bg-purple-950/85 text-purple-200 font-mono text-[7.5px] font-bold shadow-xs whitespace-nowrap block">
+          <span className="px-2 py-0.5 rounded-full bg-purple-950/90 border border-purple-400/40 text-purple-200 font-mono text-[8.5px] font-bold shadow-xs whitespace-nowrap block">
             {"Rω = " + rimVel.toFixed(2) + " m/s"}
           </span>
         </Html>
@@ -392,31 +392,29 @@ function BowlingBallMesh() {
             <meshBasicMaterial color="#f97316" />
           </mesh>
           <Html position={[-frictionArrowLength / 2, -0.06, 0]} center distanceFactor={vectorDf} style={{ pointerEvents: "none" }}>
-            <span className="px-1 py-0.2 rounded bg-amber-950/85 text-amber-300 font-mono text-[7.5px] font-bold shadow-xs whitespace-nowrap block">
+            <span className="px-2 py-0.5 rounded-full bg-amber-950/90 border border-amber-400/40 text-amber-300 font-mono text-[8.5px] font-bold shadow-xs whitespace-nowrap block">
               {"fk = " + frictionForce.toFixed(1) + " N"}
             </span>
           </Html>
         </group>
       )}
 
-      {/* Phase Status Floating Badge (Compact, proportional & dynamically scaled) */}
-      <Html position={[0, BALL_RADIUS + 0.25, 0]} center distanceFactor={ballDf} style={{ pointerEvents: "none" }}>
-        {isSkidding ? (
-          <div className="px-2 py-0.5 rounded-full bg-amber-500/95 text-amber-950 border border-amber-300 font-mono text-[8.5px] font-black tracking-wider uppercase shadow-xs flex items-center gap-1 whitespace-nowrap block animate-pulse">
-            <span className="w-1.5 h-1.5 rounded-full bg-red-600 inline-block" />
-            <span>{"SKIDDING · v_slip: " + slipVel.toFixed(2) + " m/s"}</span>
-          </div>
-        ) : isPureRolling ? (
-          <div className="px-2 py-0.5 rounded-full bg-emerald-500/95 text-white border border-emerald-300 font-mono text-[8.5px] font-black tracking-wider uppercase shadow-xs flex items-center gap-1 whitespace-nowrap block">
-            <span className="w-1.5 h-1.5 rounded-full bg-white inline-block animate-ping" />
-            <span>{"PURE ROLLING · v = " + velX.toFixed(2) + " m/s"}</span>
-          </div>
-        ) : (
-          <div className="px-2 py-0.5 rounded-full bg-slate-900/80 text-slate-200 border border-slate-700 font-mono text-[8px] font-bold tracking-wider uppercase shadow-xs whitespace-nowrap block">
-            READY TO LAUNCH
-          </div>
-        )}
-      </Html>
+      {/* Phase Status Floating Badge (Only shown while skidding or pure rolling; READY TO LAUNCH removed) */}
+      {(isSkidding || isPureRolling) && (
+        <Html position={[0, BALL_RADIUS + 0.25, 0]} center distanceFactor={ballDf} style={{ pointerEvents: "none" }}>
+          {isSkidding ? (
+            <div className="px-2 py-0.5 rounded-full bg-amber-500/95 text-amber-950 border border-amber-300 font-mono text-[8.5px] font-black tracking-wider uppercase shadow-xs flex items-center gap-1 whitespace-nowrap block animate-pulse">
+              <span className="w-1.5 h-1.5 rounded-full bg-red-600 inline-block" />
+              <span>{"SKIDDING · v_slip: " + slipVel.toFixed(2) + " m/s"}</span>
+            </div>
+          ) : (
+            <div className="px-2 py-0.5 rounded-full bg-emerald-500/95 text-white border border-emerald-300 font-mono text-[8.5px] font-black tracking-wider uppercase shadow-xs flex items-center gap-1 whitespace-nowrap block">
+              <span className="w-1.5 h-1.5 rounded-full bg-white inline-block animate-ping" />
+              <span>{"PURE ROLLING · v = " + velX.toFixed(2) + " m/s"}</span>
+            </div>
+          )}
+        </Html>
+      )}
     </group>
   );
 }
@@ -445,8 +443,8 @@ function CameraController({
     [targetDist]
   );
 
-  // Transition durations: Hold 2.0s on target after clicking PLAY, then 2.2s cinematic swoop back
-  const holdDuration = 2.0;
+  // Transition durations: Hold 1.5s on target after clicking PLAY/RETRY, then 2.2s cinematic swoop back
+  const holdDuration = 1.5;
   const travelDuration = 2.2;
   const totalIntro = holdDuration + travelDuration;
 
@@ -475,7 +473,7 @@ function CameraController({
     if (!controlsRef.current) return;
 
     // TPP Behind-the-Ball View
-    const tppCamPos = new THREE.Vector3(posX - 2.8, 1.25, 0.0);
+    const tppCamPos = new THREE.Vector3(posX - 2.8, 0.7, 1);
     const tppLookAt = new THREE.Vector3(posX + 4.5, 0.15, 0.0);
 
     // 1. Camera Transitions & OrbitControls Follow
@@ -488,7 +486,7 @@ function CameraController({
       const elapsed = (performance.now() - missionStartedAt) / 1000;
 
       if (elapsed <= holdDuration) {
-        // Hold on target area for 2.0s after clicking PLAY or RETRY
+        // Hold on target area for 1.5s after clicking PLAY or RETRY
         introCompletedRef.current = false;
         camera.position.copy(targetCamPos);
         controlsRef.current.target.copy(targetLookAt);
