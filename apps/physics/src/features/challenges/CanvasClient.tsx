@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 /**
  * CanvasClient.tsx — Client Component wrapper for the Three.js canvas.
  *
@@ -27,6 +27,17 @@ const CraneBoomScene = dynamic(
     import(
       "@/three/challenges/physics/rotational-equilibrium/CraneBoomScene"
     ).then((mod) => mod.CraneBoomScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
+const SkidToRollScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/pure-rolling/SkidToRollScene"
+    ).then((mod) => mod.SkidToRollScene),
   {
     ssr: false,
     loading: LoadingFallback,
@@ -255,6 +266,13 @@ export default function CanvasClient({ config }: Props) {
       </div>
     );
   }
+  if (sceneType === "skid-to-roll") {
+    return (
+      <div className="w-full h-full">
+        <SkidToRollScene config={config} />
+      </div>
+    );
+  }
   if (sceneType === "quantum-rail") {
     return (
       <div className="w-full h-full">
@@ -400,3 +418,4 @@ export default function CanvasClient({ config }: Props) {
     </div>
   );
 }
+
