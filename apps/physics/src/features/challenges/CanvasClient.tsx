@@ -33,6 +33,17 @@ const CraneBoomScene = dynamic(
   }
 );
 
+const SatelliteSpinScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/angular-momentum/SatelliteSpinScene"
+    ).then((mod) => mod.SatelliteSpinScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const SkidToRollScene = dynamic(
   () =>
     import(
@@ -263,6 +274,13 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <CraneBoomScene />
+      </div>
+    );
+  }
+  if (sceneType === "satellite-spin") {
+    return (
+      <div className="w-full h-full">
+        <SatelliteSpinScene config={config} />
       </div>
     );
   }

@@ -1,6 +1,7 @@
 "use client";
 
 import { CraneBoomControls } from "@/features/challenges/topics/physics/rotational-equilibrium/CraneBoomControls";
+import { SatelliteSpinControls } from "@/features/challenges/topics/physics/angular-momentum/SatelliteSpinControls";
 import { SkidToRollControls } from "@/features/challenges/topics/physics/pure-rolling/SkidToRollControls";
 import { QuantumRailControls } from "@/features/challenges/topics/physics/collisions/QuantumRailControls";
 import { CyberSeesawControls } from "@/features/challenges/topics/physics/center-of-mass/CyberSeesawControls";
@@ -32,6 +33,9 @@ export function ChallengeControlsClient({ config }: ChallengeControlsClientProps
 
   if (sceneType === "crane-boom") {
     return <CraneBoomControls config={config} />;
+  }
+  if (sceneType === "satellite-spin") {
+    return <SatelliteSpinControls config={config} />;
   }
   if (sceneType === "skid-to-roll") {
     return <SkidToRollControls config={config} />;

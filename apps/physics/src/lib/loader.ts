@@ -38,6 +38,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "1d-2d-collisions" || canonicalTopic === "collisions" || canonicalTopic.includes("collision") || canonicalTopic.includes("rail")) && (slug.includes("collision") || t.topicId === "12")) return true;
     if ((canonicalTopic === "rotational-equilibrium" || canonicalTopic === "equilibrium" || canonicalTopic.includes("crane") || canonicalTopic.includes("rotational")) && (slug.includes("equilibrium") || slug.includes("rotational") || t.topicId === "13")) return true;
     if ((canonicalTopic === "pure-rolling" || canonicalTopic === "rolling" || canonicalTopic.includes("rolling") || canonicalTopic.includes("skid")) && (slug.includes("rolling") || t.topicId === "14")) return true;
+    if ((canonicalTopic === "angular-momentum" || canonicalTopic === "momentum" || canonicalTopic.includes("momentum") || canonicalTopic.includes("satellite") || canonicalTopic.includes("spin")) && (slug.includes("momentum") || slug.includes("angular") || t.topicId === "15")) return true;
     return false;
   });
 
@@ -78,6 +79,7 @@ export const getChallenge = cache(
     const isCollisions = canonicalTopic === "1d-2d-collisions" || canonicalTopic === "collisions" || canonicalTopic.includes("collision") || canonicalTopic.includes("rail") || foundTopic?.topicId === "12";
     const isRotationalEquilibrium = canonicalTopic === "rotational-equilibrium" || canonicalTopic.includes("equilibrium") || canonicalTopic.includes("rotational") || foundTopic?.topicId === "13";
     const isPureRolling = canonicalTopic === "pure-rolling" || canonicalTopic === "rolling" || canonicalTopic.includes("rolling") || canonicalTopic.includes("skid") || foundTopic?.topicId === "14";
+    const isAngularMomentum = canonicalTopic === "angular-momentum" || canonicalTopic === "momentum" || canonicalTopic.includes("momentum") || canonicalTopic.includes("satellite") || canonicalTopic.includes("spin") || foundTopic?.topicId === "15";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -178,6 +180,11 @@ export const getChallenge = cache(
       parameters = {
         rounds: 3,
         boomLength: 8.0,
+      };
+    } else if (isAngularMomentum) {
+      sceneType = "satellite-spin";
+      parameters = {
+        rounds: 3,
       };
     } else if (isPureRolling) {
       sceneType = "skid-to-roll";
@@ -323,6 +330,7 @@ export function getModuleData(subject: string, moduleSlug: string) {
     else if (rawSlug.includes("collision") || t.topicId === "12") slug = "1d-2d-collisions";
     else if (rawSlug.includes("equilibrium") || rawSlug.includes("rotational") || t.topicId === "13") slug = "rotational-equilibrium";
     else if (rawSlug.includes("rolling") || t.topicId === "14") slug = "pure-rolling";
+    else if (rawSlug.includes("momentum") || rawSlug.includes("angular") || t.topicId === "15") slug = "angular-momentum";
 
     const has3D =
       slug === "1d-motion-deceleration" ||
@@ -335,7 +343,7 @@ export function getModuleData(subject: string, moduleSlug: string) {
       slug === "friction-and-banking" ||
       slug === "static-breakaway-nlm-1" ||
       slug === "static-breakaway" ||
-      slug === "tablecloth-pull" || slug === "work-energy-theorem" || slug === "center-of-mass-shift" || slug === "center-of-mass" || slug === "1d-2d-collisions" || slug === "collisions" || slug === "rotational-equilibrium" || slug === "pure-rolling";
+      slug === "tablecloth-pull" || slug === "work-energy-theorem" || slug === "center-of-mass-shift" || slug === "center-of-mass" || slug === "1d-2d-collisions" || slug === "collisions" || slug === "rotational-equilibrium" || slug === "pure-rolling" || slug === "angular-momentum";
 
     return {
       id: t.topicId,
@@ -440,6 +448,8 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
           ? "Castle Siege"
           : canonicalTopic === "rotational-equilibrium" || canonicalTopic.includes("equilibrium")
           ? "Crane Boom: Rotational Equilibrium"
+          : canonicalTopic === "angular-momentum" || canonicalTopic.includes("momentum") || canonicalTopic.includes("satellite")
+          ? "Angular Momentum: Orbital Satellite Docking"
           : canonicalTopic === "pure-rolling" || canonicalTopic.includes("rolling")
           ? "Pure Rolling: Bowling Skid-to-Roll"
           : canonicalTopic === "relative-motion"
@@ -448,7 +458,9 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
           ? "Tablecloth Pull (Loaded Stack)"
           : (foundTopic as any)?.challenges?.medium?.title || "Medium Challenge",
       description:
-        canonicalTopic === "pure-rolling" || canonicalTopic.includes("rolling")
+        canonicalTopic === "angular-momentum" || canonicalTopic.includes("momentum") || canonicalTopic.includes("satellite")
+          ? "Adjust motorized counterweights along radial rails to conserve angular momentum (L = Iω) and synchronize rotation for orbital docking."
+          : canonicalTopic === "pure-rolling" || canonicalTopic.includes("rolling")
           ? "Throw a bowling ball. Watch it slide initially (kinetic friction), then slowly gain spin until it transitions perfectly into pure rolling motion."
           : canonicalTopic === "1d-motion-deceleration"
           ? "Minimum acceleration a = v² / (2s) to launch a fighter jet from an aircraft carrier deck without stalling."
@@ -480,6 +492,8 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
           ? "umbrella-tilt"
           : canonicalTopic === "rotational-equilibrium" || canonicalTopic.includes("equilibrium")
           ? "crane-boom"
+          : canonicalTopic === "angular-momentum" || canonicalTopic.includes("momentum") || canonicalTopic.includes("satellite")
+          ? "satellite-spin"
           : canonicalTopic === "pure-rolling" || canonicalTopic.includes("rolling")
           ? "skid-to-roll"
           : canonicalTopic === "relative-motion"
