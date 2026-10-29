@@ -22,6 +22,17 @@ const LoadingFallback = () => (
   </div>
 );
 
+const GeoSyncScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/orbital-balance/GeoSyncScene"
+    ).then((mod) => mod.GeoSyncScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -270,6 +281,13 @@ interface Props {
 
 export default function CanvasClient({ config }: Props) {
   const sceneType = config?.sceneType;
+  if (sceneType === "geo-sync") {
+    return (
+      <div className="w-full h-full">
+        <GeoSyncScene />
+      </div>
+    );
+  }
   if (sceneType === "crane-boom") {
     return (
       <div className="w-full h-full">

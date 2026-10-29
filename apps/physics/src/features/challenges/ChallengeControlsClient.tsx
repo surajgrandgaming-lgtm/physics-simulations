@@ -1,5 +1,6 @@
 "use client";
 
+import { GeoSyncControls } from "@/features/challenges/topics/physics/orbital-balance/GeoSyncControls";
 import { CraneBoomControls } from "@/features/challenges/topics/physics/rotational-equilibrium/CraneBoomControls";
 import { SatelliteSpinControls } from "@/features/challenges/topics/physics/angular-momentum/SatelliteSpinControls";
 import { SkidToRollControls } from "@/features/challenges/topics/physics/pure-rolling/SkidToRollControls";
@@ -31,6 +32,9 @@ interface ChallengeControlsClientProps {
 export function ChallengeControlsClient({ config }: ChallengeControlsClientProps) {
   const sceneType = config?.sceneType;
 
+  if (sceneType === "geo-sync") {
+    return <GeoSyncControls config={config} />;
+  }
   if (sceneType === "crane-boom") {
     return <CraneBoomControls config={config} />;
   }

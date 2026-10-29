@@ -39,6 +39,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "rotational-equilibrium" || canonicalTopic === "equilibrium" || canonicalTopic.includes("crane") || canonicalTopic.includes("rotational")) && (slug.includes("equilibrium") || slug.includes("rotational") || t.topicId === "13")) return true;
     if ((canonicalTopic === "pure-rolling" || canonicalTopic === "rolling" || canonicalTopic.includes("rolling") || canonicalTopic.includes("skid")) && (slug.includes("rolling") || t.topicId === "14")) return true;
     if ((canonicalTopic === "angular-momentum" || canonicalTopic === "momentum" || canonicalTopic.includes("momentum") || canonicalTopic.includes("satellite") || canonicalTopic.includes("spin")) && (slug.includes("momentum") || slug.includes("angular") || t.topicId === "15")) return true;
+    if ((canonicalTopic === "orbital-balance" || canonicalTopic === "orbital" || canonicalTopic.includes("orbital") || canonicalTopic.includes("geo-sync")) && (slug.includes("orbital") || t.topicId === "16")) return true;
     return false;
   });
 
@@ -80,6 +81,7 @@ export const getChallenge = cache(
     const isRotationalEquilibrium = canonicalTopic === "rotational-equilibrium" || canonicalTopic.includes("equilibrium") || canonicalTopic.includes("rotational") || foundTopic?.topicId === "13";
     const isPureRolling = canonicalTopic === "pure-rolling" || canonicalTopic === "rolling" || canonicalTopic.includes("rolling") || canonicalTopic.includes("skid") || foundTopic?.topicId === "14";
     const isAngularMomentum = canonicalTopic === "angular-momentum" || canonicalTopic === "momentum" || canonicalTopic.includes("momentum") || canonicalTopic.includes("satellite") || canonicalTopic.includes("spin") || foundTopic?.topicId === "15";
+    const isOrbitalBalance = canonicalTopic === "orbital-balance" || canonicalTopic.includes("orbital") || canonicalTopic.includes("geo-sync") || foundTopic?.topicId === "16";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -206,11 +208,20 @@ export const getChallenge = cache(
         cordLength: 25.0,
         rounds: 3,
       };
+    } else if (isOrbitalBalance) {
+      sceneType = "geo-sync";
+      parameters = {
+        rounds: 3,
+        earthRadius: 6371,
+        geoRadius: 42164,
+      };
     }
 
     const title =
       challengeData?.title ||
-      (isCollisions
+      (isOrbitalBalance
+        ? "Geo-Sync: The Geosynchronous Lock"
+        : isCollisions
         ? "Quantum Rail: Collision & Impulse Dynamics"
         : isRotationalEquilibrium
         ? "Crane Boom: Rotational Equilibrium"
@@ -492,6 +503,8 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
           ? "umbrella-tilt"
           : canonicalTopic === "rotational-equilibrium" || canonicalTopic.includes("equilibrium")
           ? "crane-boom"
+          : canonicalTopic === "orbital-balance" || canonicalTopic.includes("orbital") || canonicalTopic.includes("geo-sync")
+          ? "geo-sync"
           : canonicalTopic === "angular-momentum" || canonicalTopic.includes("momentum") || canonicalTopic.includes("satellite")
           ? "satellite-spin"
           : canonicalTopic === "pure-rolling" || canonicalTopic.includes("rolling")
