@@ -82,6 +82,7 @@ export const getChallenge = cache(
     const isPureRolling = canonicalTopic === "pure-rolling" || canonicalTopic === "rolling" || canonicalTopic.includes("rolling") || canonicalTopic.includes("skid") || foundTopic?.topicId === "14";
     const isAngularMomentum = canonicalTopic === "angular-momentum" || canonicalTopic === "momentum" || canonicalTopic.includes("momentum") || canonicalTopic.includes("satellite") || canonicalTopic.includes("spin") || foundTopic?.topicId === "15";
     const isOrbitalBalance = canonicalTopic === "orbital-balance" || canonicalTopic.includes("orbital") || canonicalTopic.includes("geo-sync") || foundTopic?.topicId === "16";
+    const isEscapeVelocity = canonicalTopic === "escape-velocity" || canonicalTopic.includes("escape") || foundTopic?.topicId === "17";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -215,11 +216,20 @@ export const getChallenge = cache(
         earthRadius: 6371,
         geoRadius: 42164,
       };
+    } else if (isEscapeVelocity) {
+      sceneType = "escape-velocity";
+      parameters = {
+        rounds: 3,
+        earthRadius: 6371,
+        escapeVelocity: 11.18,
+      };
     }
 
     const title =
       challengeData?.title ||
-      (isOrbitalBalance
+      (isEscapeVelocity
+        ? "Escape Velocity: Gravity Well Threshold"
+        : isOrbitalBalance
         ? "Geo-Sync: The Geosynchronous Lock"
         : isCollisions
         ? "Quantum Rail: Collision & Impulse Dynamics"
@@ -342,6 +352,7 @@ export function getModuleData(subject: string, moduleSlug: string) {
     else if (rawSlug.includes("equilibrium") || rawSlug.includes("rotational") || t.topicId === "13") slug = "rotational-equilibrium";
     else if (rawSlug.includes("rolling") || t.topicId === "14") slug = "pure-rolling";
     else if (rawSlug.includes("momentum") || rawSlug.includes("angular") || t.topicId === "15") slug = "angular-momentum";
+    else if (rawSlug.includes("escape") || t.topicId === "17") slug = "escape-velocity";
 
     const has3D =
       slug === "1d-motion-deceleration" ||
@@ -354,7 +365,7 @@ export function getModuleData(subject: string, moduleSlug: string) {
       slug === "friction-and-banking" ||
       slug === "static-breakaway-nlm-1" ||
       slug === "static-breakaway" ||
-      slug === "tablecloth-pull" || slug === "work-energy-theorem" || slug === "center-of-mass-shift" || slug === "center-of-mass" || slug === "1d-2d-collisions" || slug === "collisions" || slug === "rotational-equilibrium" || slug === "pure-rolling" || slug === "angular-momentum";
+      slug === "tablecloth-pull" || slug === "work-energy-theorem" || slug === "center-of-mass-shift" || slug === "center-of-mass" || slug === "1d-2d-collisions" || slug === "collisions" || slug === "rotational-equilibrium" || slug === "pure-rolling" || slug === "angular-momentum" || slug === "orbital-balance" || slug === "escape-velocity";
 
     return {
       id: t.topicId,
@@ -505,6 +516,8 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
           ? "crane-boom"
           : canonicalTopic === "orbital-balance" || canonicalTopic.includes("orbital") || canonicalTopic.includes("geo-sync")
           ? "geo-sync"
+          : canonicalTopic === "escape-velocity" || canonicalTopic.includes("escape")
+          ? "escape-velocity"
           : canonicalTopic === "angular-momentum" || canonicalTopic.includes("momentum") || canonicalTopic.includes("satellite")
           ? "satellite-spin"
           : canonicalTopic === "pure-rolling" || canonicalTopic.includes("rolling")

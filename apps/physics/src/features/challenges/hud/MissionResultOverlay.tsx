@@ -439,7 +439,7 @@ export function MissionResultOverlay({
                             <span className="text-[10px] font-mono uppercase text-cyan-800 font-bold tracking-wider">
                               {f.label}
                             </span>
-                            <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 text-xs sm:text-sm overflow-x-auto flex items-center justify-center shadow-inner">
+                            <div className="py-3 px-4 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 text-sm overflow-x-auto flex items-center justify-center shadow-inner my-0.5">
                               <SafeFormula formula={f.formula} isLight={true} />
                             </div>
                             {f.explanation && (

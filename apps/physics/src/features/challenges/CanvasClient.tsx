@@ -33,6 +33,17 @@ const GeoSyncScene = dynamic(
   }
 );
 
+const EscapeVelocityScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/escape-velocity/EscapeVelocityScene"
+    ).then((mod) => mod.EscapeVelocityScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -281,6 +292,13 @@ interface Props {
 
 export default function CanvasClient({ config }: Props) {
   const sceneType = config?.sceneType;
+  if (sceneType === "escape-velocity") {
+    return (
+      <div className="w-full h-full">
+        <EscapeVelocityScene />
+      </div>
+    );
+  }
   if (sceneType === "geo-sync") {
     return (
       <div className="w-full h-full">

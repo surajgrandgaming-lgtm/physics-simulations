@@ -1,5 +1,6 @@
 "use client";
 
+import { EscapeVelocityControls } from "@/features/challenges/topics/physics/escape-velocity/EscapeVelocityControls";
 import { GeoSyncControls } from "@/features/challenges/topics/physics/orbital-balance/GeoSyncControls";
 import { CraneBoomControls } from "@/features/challenges/topics/physics/rotational-equilibrium/CraneBoomControls";
 import { SatelliteSpinControls } from "@/features/challenges/topics/physics/angular-momentum/SatelliteSpinControls";
@@ -32,6 +33,9 @@ interface ChallengeControlsClientProps {
 export function ChallengeControlsClient({ config }: ChallengeControlsClientProps) {
   const sceneType = config?.sceneType;
 
+  if (sceneType === "escape-velocity") {
+    return <EscapeVelocityControls config={config} />;
+  }
   if (sceneType === "geo-sync") {
     return <GeoSyncControls config={config} />;
   }
