@@ -48,79 +48,72 @@ function createSunCanvasTexture(): THREE.CanvasTexture {
   return texture;
 }
 
-// ─── Camera Controller with 1.5s Close-Up on Target on Play ────────────────────
+// ─── Camera Controller (Shows Target for 1.5s on Initial Load / Retry, then Zooms Out) ────
 function CameraController() {
-  const { camera } = useThree();
   const controlsRef = useRef<any>(null);
-
   const currentStage = useKeplerSecondLawStore((s) => s.currentStage);
-  const status = useKeplerSecondLawStore((s) => s.status);
-  const cameraIntroActive = useKeplerSecondLawStore((s) => s.cameraIntroActive);
-  const setCameraIntroState = useKeplerSecondLawStore((s) => s.setCameraIntroState);
-
+  const introKey = useKeplerSecondLawStore((s) => s.introKey);
   const stageCfg = KEPLER_STAGES[currentStage - 1];
 
-  // Target close-up focal point (at perihelion or observation gate)
-  const targetFocusPos = useMemo(() => {
+  const startTimeRef = useRef<number | null>(null);
+  const transitionCompletedRef = useRef(false);
+
+  // Focus directly on perihelion target area
+  const targetCamPos = useMemo(() => {
     const perihelionX = stageCfg.perihelionAU * SCENE_SCALE_AU;
-    return new THREE.Vector3(perihelionX, 1.2, 3.5);
+    return new THREE.Vector3(perihelionX + 1.2, 1.2, 3.2);
   }, [stageCfg]);
 
-  const targetLookAt = useMemo(() => {
+  const targetLook = useMemo(() => {
     const perihelionX = stageCfg.perihelionAU * SCENE_SCALE_AU;
     return new THREE.Vector3(perihelionX, 0, 0);
   }, [stageCfg]);
 
-  // Global overview position
-  const overviewPos = useMemo(() => new THREE.Vector3(0, 24, 28), []);
-  const overviewLookAt = useMemo(() => new THREE.Vector3(0, 0, 0), []);
+  // Overall wide view
+  const overviewCamPos = useMemo(() => new THREE.Vector3(0, 16, 20), []);
+  const overviewLook = useMemo(() => new THREE.Vector3(0, 0, 0), []);
 
-  const introStartTimeRef = useRef<number | null>(null);
+  const holdDuration = 1.5;   // 1.5 seconds hold on target on load / retry
+  const travelDuration = 1.8; // 1.8 seconds smooth zoom out
 
+  // Reset transition whenever introKey changes (load, retry, or stage switch)
   useEffect(() => {
-    if (status === "idle") {
-      // In idle state, camera sits at standard pleasant overview
-      camera.position.set(0, 24, 28);
-      camera.lookAt(0, 0, 0);
-      if (controlsRef.current) {
-        controlsRef.current.target.set(0, 0, 0);
+    startTimeRef.current = null;
+    transitionCompletedRef.current = false;
+  }, [introKey, currentStage]);
+
+  useFrame((state) => {
+    if (!controlsRef.current) return;
+
+    if (!transitionCompletedRef.current) {
+      if (startTimeRef.current === null) {
+        startTimeRef.current = state.clock.getElapsedTime();
+      }
+      const elapsed = state.clock.getElapsedTime() - startTimeRef.current;
+
+      if (elapsed <= holdDuration) {
+        // Hold on target
+        controlsRef.current.enabled = false;
+        state.camera.position.copy(targetCamPos);
+        controlsRef.current.target.copy(targetLook);
+        controlsRef.current.update();
+      } else if (elapsed < holdDuration + travelDuration) {
+        // Smooth zoom out
+        controlsRef.current.enabled = false;
+        const progress = (elapsed - holdDuration) / travelDuration;
+        const rawT = Math.min(1, Math.max(0, progress));
+        const t = THREE.MathUtils.smoothstep(rawT, 0, 1);
+
+        state.camera.position.lerpVectors(targetCamPos, overviewCamPos, t);
+        controlsRef.current.target.lerpVectors(targetLook, overviewLook, t);
+        controlsRef.current.update();
+      } else {
+        // Finished: unlock OrbitControls for user
+        transitionCompletedRef.current = true;
+        state.camera.position.copy(overviewCamPos);
+        controlsRef.current.target.copy(overviewLook);
         controlsRef.current.enabled = true;
         controlsRef.current.update();
-      }
-      introStartTimeRef.current = null;
-    }
-  }, [status, camera]);
-
-  useFrame((state, delta) => {
-    if (cameraIntroActive) {
-      if (introStartTimeRef.current === null) {
-        introStartTimeRef.current = state.clock.getElapsedTime();
-      }
-      const elapsed = state.clock.getElapsedTime() - introStartTimeRef.current;
-      const INTRO_CLOSEUP_TIME = 1.5; // 1.5s target close-up
-      const ZOOMOUT_TIME = 1.8; // smooth glide back
-
-      if (elapsed < INTRO_CLOSEUP_TIME) {
-        // Holding close-up on target
-        if (controlsRef.current) controlsRef.current.enabled = false;
-        camera.position.lerp(targetFocusPos, 0.08);
-        camera.lookAt(targetLookAt);
-        setCameraIntroState(true, elapsed / (INTRO_CLOSEUP_TIME + ZOOMOUT_TIME));
-      } else if (elapsed < INTRO_CLOSEUP_TIME + ZOOMOUT_TIME) {
-        // Zooming out to overview
-        const t = (elapsed - INTRO_CLOSEUP_TIME) / ZOOMOUT_TIME;
-        const smoothT = THREE.MathUtils.smoothstep(t, 0, 1);
-        camera.position.lerpVectors(targetFocusPos, overviewPos, smoothT);
-        const curLook = new THREE.Vector3().lerpVectors(targetLookAt, overviewLookAt, smoothT);
-        camera.lookAt(curLook);
-        setCameraIntroState(true, (INTRO_CLOSEUP_TIME + elapsed - INTRO_CLOSEUP_TIME) / (INTRO_CLOSEUP_TIME + ZOOMOUT_TIME));
-      } else {
-        // Finished intro transition
-        setCameraIntroState(false, 1.0);
-        if (controlsRef.current) {
-          controlsRef.current.enabled = true;
-          controlsRef.current.target.set(0, 0, 0);
-        }
       }
     }
   });
@@ -131,7 +124,7 @@ function CameraController() {
       enableDamping
       dampingFactor={0.06}
       maxDistance={90}
-      minDistance={6}
+      minDistance={4}
       maxPolarAngle={Math.PI / 2 - 0.02} // stay above ground horizon
     />
   );
@@ -469,7 +462,7 @@ export function KeplerSecondLawScene() {
   return (
     <div className="w-full h-full relative bg-[#f1f5f9] select-none overflow-hidden">
       <Canvas
-        camera={{ position: [0, 24, 28], fov: 45 }}
+        camera={{ position: [0, 24, 28], fov: 12 }}
         gl={{ antialias: true, alpha: true }}
       >
         {/* Ambient & Studio Daylight lighting */}

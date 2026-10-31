@@ -146,6 +146,7 @@ interface KeplerSecondLawState {
   // Failure / success info
   failureReason: string;
   showResultModal: boolean;
+  introKey: number; // incremented on initial mount, retry, or stage switch to trigger intro transition
 
   // Camera transition state
   cameraIntroActive: boolean;
@@ -192,6 +193,7 @@ export const useKeplerSecondLawStore = create<KeplerSecondLawState>((set, get) =
 
     failureReason: "",
     showResultModal: false,
+    introKey: 1,
 
     cameraIntroActive: false,
     cameraIntroProgress: 0,
@@ -213,14 +215,13 @@ export const useKeplerSecondLawStore = create<KeplerSecondLawState>((set, get) =
       const { status } = get();
       if (status === "launching") return;
 
-      // Start camera intro transition
       set({
         status: "launching",
         showResultModal: false,
         failureReason: "",
         orbitProgress: 0,
-        cameraIntroActive: true,
-        cameraIntroProgress: 0,
+        cameraIntroActive: false,
+        cameraIntroProgress: 1,
       });
     },
 
@@ -236,8 +237,9 @@ export const useKeplerSecondLawStore = create<KeplerSecondLawState>((set, get) =
         aphelionAreaAU2: 0,
         showResultModal: false,
         failureReason: "",
+        introKey: get().introKey + 1,
         cameraIntroActive: false,
-        cameraIntroProgress: 1,
+        cameraIntroProgress: 0,
       });
     },
 
@@ -256,6 +258,7 @@ export const useKeplerSecondLawStore = create<KeplerSecondLawState>((set, get) =
         aphelionAreaAU2: 0,
         showResultModal: false,
         failureReason: "",
+        introKey: get().introKey + 1,
         cameraIntroActive: false,
         cameraIntroProgress: 0,
       });
@@ -276,6 +279,7 @@ export const useKeplerSecondLawStore = create<KeplerSecondLawState>((set, get) =
         aphelionAreaAU2: 0,
         showResultModal: false,
         failureReason: "",
+        introKey: get().introKey + 1,
         cameraIntroActive: false,
         cameraIntroProgress: 0,
       });
