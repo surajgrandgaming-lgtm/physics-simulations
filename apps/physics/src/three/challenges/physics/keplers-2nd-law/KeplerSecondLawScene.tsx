@@ -245,13 +245,13 @@ function KeplerOrbitsModel() {
   const radiusVectorRef = useRef<THREE.ArrowHelper>(null);
 
   useFrame((state, delta) => {
-    // Orbital propagation speed
-    const simSpeed = status === "launching" ? 1.0 : 0.4;
-    // Mean motion n = 2π / T
-    const n = (Math.PI * 2) / 6.0; // 6 seconds per full orbit visually
+    // True velocity magnitude via Vis-Viva: v² = GM * (2/r - 1/a)
+    const GM = 132712; // AU³-scaled
 
-    if (status === "launching" || status === "idle") {
-      meanAnomalyRef.current = (meanAnomalyRef.current + n * delta * simSpeed) % (Math.PI * 2);
+    if (status === "launching") {
+      // Mean motion n = 2π / T
+      const n = (Math.PI * 2) / 6.0; // 6 seconds per full orbit visually
+      meanAnomalyRef.current = (meanAnomalyRef.current + n * delta) % (Math.PI * 2);
 
       // Solve Kepler's Equation: M = E - e * sin(E) for Eccentric Anomaly E
       let M = meanAnomalyRef.current;
@@ -272,14 +272,11 @@ function KeplerOrbitsModel() {
         planetRef.current.position.set(x, 0.25, z);
       }
 
-      // True velocity magnitude via Vis-Viva: v² = GM * (2/r - 1/a)
-      // Scaled to real physical units km/s
-      const GM = 132712; // AU³-scaled
       const vKms = Math.sqrt(Math.max(1, (2.0 / radiusAU - 1.0 / aAU) * 440));
       const angMom = radiusAU * vKms * Math.sin(Math.acos(Math.min(1, Math.abs(x) / rVis)));
       const arealVel = (0.5 * radiusAU * vKms) / 100;
 
-      // Calculate swept sector areas (approximate analytic area for display)
+      // Calculate swept sector areas
       const baseArea = Math.PI * aAU * bAU;
       const sweptArea1 = baseArea * ((sector1End - sector1Start) / (Math.PI * 2)) * 1.15;
       const sweptArea2 = baseArea * ((sector2End - sector2Start) / (Math.PI * 2)) * (1.0 / Math.max(0.2, (1 - e)));
@@ -296,24 +293,29 @@ function KeplerOrbitsModel() {
       });
 
       // Verification trigger after 1 full cycle during "launching"
-      if (status === "launching") {
-        if (meanAnomalyRef.current > Math.PI * 1.95 && orbitCompletedRoundsRef.current === 0) {
-          orbitCompletedRoundsRef.current = 1;
+      if (meanAnomalyRef.current > Math.PI * 1.95 && orbitCompletedRoundsRef.current === 0) {
+        orbitCompletedRoundsRef.current = 1;
 
-          // Check user value against target
-          const diff = Math.abs(sliderValue - stageCfg.targetValue);
-          const isSuccess = diff <= stageCfg.tolerance;
+        // Check user value against target
+        const diff = Math.abs(sliderValue - stageCfg.targetValue);
+        const isSuccess = diff <= stageCfg.tolerance;
 
-          if (isSuccess) {
-            finishSimulation(true, "Orbit Verified: Areal Velocity is perfectly conserved!");
-          } else {
-            const reason =
-              sliderValue > stageCfg.targetValue
-                ? `Velocity/Eccentricity too high (${sliderValue}). Angular momentum exceeded stable bounds!`
-                : `Velocity/Eccentricity too low (${sliderValue}). Insufficient areal sweep to close orbit!`;
-            finishSimulation(false, reason);
-          }
+        if (isSuccess) {
+          finishSimulation(true, "Orbit Verified: Areal Velocity is perfectly conserved!");
+        } else {
+          const reason =
+            sliderValue > stageCfg.targetValue
+              ? `Velocity/Eccentricity too high (${sliderValue}). Angular momentum exceeded stable bounds!`
+              : `Velocity/Eccentricity too low (${sliderValue}). Insufficient areal sweep to close orbit!`;
+          finishSimulation(false, reason);
         }
+      }
+    } else {
+      // In idle state, planet stays perched at perihelion (start line)
+      const x = ellipseCenterX + semiA;
+      const z = 0;
+      if (planetRef.current) {
+        planetRef.current.position.set(x, 0.25, z);
       }
     }
   });

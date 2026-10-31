@@ -176,7 +176,6 @@ export function KeplerSecondLawControls({ config }: { config?: any }) {
       difficulty="medium"
       xpReward={400}
       onReset={resetSimulation}
-      onMissionStart={launchSimulation}
       hideTopBar={true}
       hideEyeButton={true}
       hideRestartButton={false}
