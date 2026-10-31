@@ -44,6 +44,17 @@ const EscapeVelocityScene = dynamic(
   }
 );
 
+const KeplerSecondLawScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/keplers-2nd-law/KeplerSecondLawScene"
+    ).then((mod) => mod.KeplerSecondLawScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -296,6 +307,13 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <EscapeVelocityScene />
+      </div>
+    );
+  }
+  if (sceneType === "keplers-2nd-law") {
+    return (
+      <div className="w-full h-full">
+        <KeplerSecondLawScene />
       </div>
     );
   }

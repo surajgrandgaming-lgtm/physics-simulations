@@ -1,5 +1,6 @@
 "use client";
 
+import { KeplerSecondLawControls } from "@/features/challenges/topics/physics/keplers-2nd-law/KeplerSecondLawControls";
 import { EscapeVelocityControls } from "@/features/challenges/topics/physics/escape-velocity/EscapeVelocityControls";
 import { GeoSyncControls } from "@/features/challenges/topics/physics/orbital-balance/GeoSyncControls";
 import { CraneBoomControls } from "@/features/challenges/topics/physics/rotational-equilibrium/CraneBoomControls";
@@ -35,6 +36,9 @@ export function ChallengeControlsClient({ config }: ChallengeControlsClientProps
 
   if (sceneType === "escape-velocity") {
     return <EscapeVelocityControls config={config} />;
+  }
+  if (sceneType === "keplers-2nd-law") {
+    return <KeplerSecondLawControls config={config} />;
   }
   if (sceneType === "geo-sync") {
     return <GeoSyncControls config={config} />;
