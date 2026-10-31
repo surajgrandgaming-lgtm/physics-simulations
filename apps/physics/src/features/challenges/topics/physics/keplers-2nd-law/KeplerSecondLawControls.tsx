@@ -30,6 +30,7 @@ export function KeplerSecondLawControls({ config }: { config?: any }) {
   const adjustSliderValue = useKeplerSecondLawStore((s) => s.adjustSliderValue);
   const launchSimulation = useKeplerSecondLawStore((s) => s.launchSimulation);
   const resetSimulation = useKeplerSecondLawStore((s) => s.resetSimulation);
+  const startMission = useKeplerSecondLawStore((s) => s.startMission);
   const nextStage = useKeplerSecondLawStore((s) => s.nextStage);
   const closeResultModal = useKeplerSecondLawStore((s) => s.closeResultModal);
 
@@ -176,6 +177,7 @@ export function KeplerSecondLawControls({ config }: { config?: any }) {
       difficulty="medium"
       xpReward={400}
       onReset={resetSimulation}
+      onMissionStart={startMission}
       hideTopBar={true}
       hideEyeButton={true}
       hideRestartButton={false}
@@ -232,18 +234,21 @@ export function KeplerSecondLawControls({ config }: { config?: any }) {
         title: "HOW TO PLAY & INSTRUCTIONS",
         instructions: [
           {
-            title: "Observe Variable Orbital Speed",
-            description: "Watch how a planet accelerates rapidly at perihelion and slows down at aphelion.",
+            title: "Calculate Target Parameter",
+            description:
+              currentStage === 2
+                ? "Calculate or match the target eccentricity e to equalize swept areas."
+                : "Calculate required aphelion velocity: v_a = v_p · (r_p / r_a).",
             imageUrl: "https://topcoaching.b-cdn.net/Module%204/Topic%203/medium/1.png",
           },
           {
-            title: "Measure Equal Swept Areas",
-            description: "Notice that over equal time intervals, the short-wide wedge matches the long-narrow wedge.",
+            title: "Adjust Slider to Set Value",
+            description: "Use the slider and stepper buttons to dial in your calculated value.",
             imageUrl: "https://topcoaching.b-cdn.net/Module%204/Topic%203/medium/2.png",
           },
           {
-            title: "Conserve Angular Momentum",
-            description: "Calculate and set the exact aphelion velocity or eccentricity to maintain a stable closed orbit.",
+            title: "Click on Play Button",
+            description: "Click the Play button to launch the orbiter and verify areal velocity conservation.",
             imageUrl: "https://topcoaching.b-cdn.net/Module%204/Topic%203/medium/3.png",
           },
         ],
@@ -252,38 +257,38 @@ export function KeplerSecondLawControls({ config }: { config?: any }) {
       result={
         showResultModal && (isWon || isGameOver)
           ? {
-              isWon,
-              isGameOver,
-              onRetry: resetSimulation,
-              onNextTier: isWon && currentStage < 3 ? nextStage : undefined,
-              nextTierLabel:
-                currentStage < 3
-                  ? "PROCEED TO STAGE " + (currentStage + 1)
-                  : "REPLAY CHALLENGE",
-              failureReason: isGameOver
-                ? failureReason || "Orbital parameters out of balance."
-                : undefined,
-              tip: stage.explanationTrap,
-              calculation: calculationDerivation,
-              stats: [
-                {
-                  label: stage.controlLabel,
-                  value: displayParamValue,
-                },
-                {
-                  label: "Orbital Speed",
-                  value: currentVelocityKms.toFixed(1) + " km/s",
-                },
-                {
-                  label: "Angular Momentum (L/m)",
-                  value: currentAngularMomentum.toFixed(1) + " AU·km/s",
-                },
-                {
-                  label: "Areal Velocity (dA/dt)",
-                  value: arealVelocityAU2PerDay.toFixed(3) + " AU²/day",
-                },
-              ],
-            }
+            isWon,
+            isGameOver,
+            onRetry: resetSimulation,
+            onNextTier: isWon && currentStage < 3 ? nextStage : undefined,
+            nextTierLabel:
+              currentStage < 3
+                ? "PROCEED TO STAGE " + (currentStage + 1)
+                : "REPLAY CHALLENGE",
+            failureReason: isGameOver
+              ? failureReason || "Orbital parameters out of balance."
+              : undefined,
+            tip: stage.explanationTrap,
+            calculation: calculationDerivation,
+            stats: [
+              {
+                label: stage.controlLabel,
+                value: displayParamValue,
+              },
+              {
+                label: "Orbital Speed",
+                value: currentVelocityKms.toFixed(1) + " km/s",
+              },
+              {
+                label: "Angular Momentum (L/m)",
+                value: currentAngularMomentum.toFixed(1) + " AU·km/s",
+              },
+              {
+                label: "Areal Velocity (dA/dt)",
+                value: arealVelocityAU2PerDay.toFixed(3) + " AU²/day",
+              },
+            ],
+          }
           : undefined
       }
       bottomDock={

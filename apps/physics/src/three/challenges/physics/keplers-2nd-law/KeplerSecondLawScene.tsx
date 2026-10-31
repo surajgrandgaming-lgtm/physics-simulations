@@ -48,14 +48,15 @@ function createSunCanvasTexture(): THREE.CanvasTexture {
   return texture;
 }
 
-// ─── Camera Controller (Shows Target for 1.5s on Initial Load / Retry, then Zooms Out) ────
+// ─── Camera Controller (Holds Target until Play clicked on Instructions, then 1.5s hold + smooth zoom out) ────
 function CameraController() {
   const controlsRef = useRef<any>(null);
   const currentStage = useKeplerSecondLawStore((s) => s.currentStage);
   const introKey = useKeplerSecondLawStore((s) => s.introKey);
+  const isMissionStarted = useKeplerSecondLawStore((s) => s.isMissionStarted);
+  const missionStartedAt = useKeplerSecondLawStore((s) => s.missionStartedAt);
   const stageCfg = KEPLER_STAGES[currentStage - 1];
 
-  const startTimeRef = useRef<number | null>(null);
   const transitionCompletedRef = useRef(false);
 
   // Focus directly on perihelion target area
@@ -73,32 +74,38 @@ function CameraController() {
   const overviewCamPos = useMemo(() => new THREE.Vector3(0, 16, 20), []);
   const overviewLook = useMemo(() => new THREE.Vector3(0, 0, 0), []);
 
-  const holdDuration = 1.5;   // 1.5 seconds hold on target on load / retry
+  const holdDuration = 1.5;   // 1.5 seconds hold on target after user clicks Play on instructions page
   const travelDuration = 1.8; // 1.8 seconds smooth zoom out
 
-  // Reset transition whenever introKey changes (load, retry, or stage switch)
+  // Reset transition whenever introKey changes
   useEffect(() => {
-    startTimeRef.current = null;
     transitionCompletedRef.current = false;
   }, [introKey, currentStage]);
 
   useFrame((state) => {
     if (!controlsRef.current) return;
 
-    if (!transitionCompletedRef.current) {
-      if (startTimeRef.current === null) {
-        startTimeRef.current = state.clock.getElapsedTime();
-      }
-      const elapsed = state.clock.getElapsedTime() - startTimeRef.current;
+    // While instruction/briefing overlay is open before user clicks Play:
+    // keep camera focused on the target perihelion area
+    if (!isMissionStarted || missionStartedAt === null) {
+      controlsRef.current.enabled = false;
+      state.camera.position.copy(targetCamPos);
+      controlsRef.current.target.copy(targetLook);
+      controlsRef.current.update();
+      return;
+    }
 
+    const elapsed = (performance.now() - missionStartedAt) / 1000;
+
+    if (!transitionCompletedRef.current) {
       if (elapsed <= holdDuration) {
-        // Hold on target
+        // Phase 1: Hold on target for 1.5s after clicking Play
         controlsRef.current.enabled = false;
         state.camera.position.copy(targetCamPos);
         controlsRef.current.target.copy(targetLook);
         controlsRef.current.update();
       } else if (elapsed < holdDuration + travelDuration) {
-        // Smooth zoom out
+        // Phase 2: Smooth cinematic zoom out to full system overview
         controlsRef.current.enabled = false;
         const progress = (elapsed - holdDuration) / travelDuration;
         const rawT = Math.min(1, Math.max(0, progress));
@@ -108,7 +115,7 @@ function CameraController() {
         controlsRef.current.target.lerpVectors(targetLook, overviewLook, t);
         controlsRef.current.update();
       } else {
-        // Finished: unlock OrbitControls for user
+        // Phase 3: Transition complete! Hand over control to user OrbitControls
         transitionCompletedRef.current = true;
         state.camera.position.copy(overviewCamPos);
         controlsRef.current.target.copy(overviewLook);

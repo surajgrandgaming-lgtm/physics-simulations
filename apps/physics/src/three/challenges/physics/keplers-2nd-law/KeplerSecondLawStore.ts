@@ -147,12 +147,15 @@ interface KeplerSecondLawState {
   failureReason: string;
   showResultModal: boolean;
   introKey: number; // incremented on initial mount, retry, or stage switch to trigger intro transition
+  isMissionStarted: boolean; // set true when user clicks Play on the instructions page
+  missionStartedAt: number | null;
 
   // Camera transition state
   cameraIntroActive: boolean;
   cameraIntroProgress: number; // 0 (target close-up) -> 1 (wide zoom)
 
   // Actions
+  startMission: () => void;
   setSliderValue: (val: number) => void;
   adjustSliderValue: (delta: number) => void;
   launchSimulation: () => void;
@@ -194,9 +197,18 @@ export const useKeplerSecondLawStore = create<KeplerSecondLawState>((set, get) =
     failureReason: "",
     showResultModal: false,
     introKey: 1,
+    isMissionStarted: false,
+    missionStartedAt: null,
 
     cameraIntroActive: false,
     cameraIntroProgress: 0,
+
+    startMission: () => {
+      set({
+        isMissionStarted: true,
+        missionStartedAt: performance.now(),
+      });
+    },
 
     setSliderValue: (val: number) => {
       const cfg = KEPLER_STAGES[get().currentStage - 1];
@@ -238,8 +250,10 @@ export const useKeplerSecondLawStore = create<KeplerSecondLawState>((set, get) =
         showResultModal: false,
         failureReason: "",
         introKey: get().introKey + 1,
+        isMissionStarted: true,
+        missionStartedAt: performance.now(),
         cameraIntroActive: false,
-        cameraIntroProgress: 0,
+        cameraIntroProgress: 1,
       });
     },
 
