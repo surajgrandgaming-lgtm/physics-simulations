@@ -55,6 +55,17 @@ const KeplerSecondLawScene = dynamic(
   }
 );
 
+const GravitationalFieldsScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/gravitational-fields/GravitationalFieldsScene"
+    ).then((mod) => mod.GravitationalFieldsScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -314,6 +325,13 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <KeplerSecondLawScene />
+      </div>
+    );
+  }
+  if (sceneType === "gravitational-fields") {
+    return (
+      <div className="w-full h-full">
+        <GravitationalFieldsScene />
       </div>
     );
   }

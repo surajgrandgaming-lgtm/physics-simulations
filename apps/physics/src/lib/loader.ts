@@ -42,6 +42,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "orbital-balance" || canonicalTopic === "orbital" || canonicalTopic.includes("orbital") || canonicalTopic.includes("geo-sync")) && (slug.includes("orbital") || t.topicId === "16")) return true;
     if ((canonicalTopic === "escape-velocity" || canonicalTopic === "escape" || canonicalTopic.includes("escape")) && (slug.includes("escape") || t.topicId === "17")) return true;
     if ((canonicalTopic === "keplers-2nd-law" || canonicalTopic === "kepler" || canonicalTopic.includes("kepler") || canonicalTopic.includes("areal")) && (slug.includes("kepler") || slug.includes("areal") || t.topicId === "18")) return true;
+    if ((canonicalTopic === "gravitational-fields" || canonicalTopic === "fields" || canonicalTopic.includes("field") || canonicalTopic.includes("gravity-mapper")) && (slug.includes("field") || slug.includes("mapper") || t.topicId === "19")) return true;
     return false;
   });
 
@@ -86,6 +87,7 @@ export const getChallenge = cache(
     const isOrbitalBalance = canonicalTopic === "orbital-balance" || canonicalTopic.includes("orbital") || canonicalTopic.includes("geo-sync") || foundTopic?.topicId === "16";
     const isEscapeVelocity = canonicalTopic === "escape-velocity" || canonicalTopic.includes("escape") || foundTopic?.topicId === "17";
     const isKeplerSecondLaw = canonicalTopic === "keplers-2nd-law" || canonicalTopic.includes("kepler") || canonicalTopic.includes("areal") || foundTopic?.topicId === "18";
+    const isGravitationalFields = canonicalTopic === "gravitational-fields" || canonicalTopic.includes("field") || canonicalTopic.includes("mapper") || foundTopic?.topicId === "19";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -231,11 +233,20 @@ export const getChallenge = cache(
       parameters = {
         rounds: 3,
       };
+    } else if (isGravitationalFields) {
+      sceneType = "gravitational-fields";
+      parameters = {
+        rounds: 3,
+        earthRadius: 6371,
+        surfaceGravity: 9.81,
+      };
     }
 
     const title =
       challengeData?.title ||
-      (isKeplerSecondLaw
+      (isGravitationalFields
+        ? "Gravitational Fields: Earth Core Probe"
+        : isKeplerSecondLaw
         ? "Kepler's 2nd Law: The Area Sweeper"
         : isEscapeVelocity
         ? "Escape Velocity: Gravity Well Threshold"
@@ -364,6 +375,7 @@ export function getModuleData(subject: string, moduleSlug: string) {
     else if (rawSlug.includes("momentum") || rawSlug.includes("angular") || t.topicId === "15") slug = "angular-momentum";
     else if (rawSlug.includes("escape") || t.topicId === "17") slug = "escape-velocity";
     else if (rawSlug.includes("kepler") || rawSlug.includes("areal") || t.topicId === "18") slug = "keplers-2nd-law";
+    else if (rawSlug.includes("field") || rawSlug.includes("mapper") || t.topicId === "19") slug = "gravitational-fields";
 
     const has3D =
       slug === "1d-motion-deceleration" ||
@@ -376,7 +388,7 @@ export function getModuleData(subject: string, moduleSlug: string) {
       slug === "friction-and-banking" ||
       slug === "static-breakaway-nlm-1" ||
       slug === "static-breakaway" ||
-      slug === "tablecloth-pull" || slug === "work-energy-theorem" || slug === "center-of-mass-shift" || slug === "center-of-mass" || slug === "1d-2d-collisions" || slug === "collisions" || slug === "rotational-equilibrium" || slug === "pure-rolling" || slug === "angular-momentum" || slug === "orbital-balance" || slug === "escape-velocity" || slug === "keplers-2nd-law";
+      slug === "tablecloth-pull" || slug === "work-energy-theorem" || slug === "center-of-mass-shift" || slug === "center-of-mass" || slug === "1d-2d-collisions" || slug === "collisions" || slug === "rotational-equilibrium" || slug === "pure-rolling" || slug === "angular-momentum" || slug === "orbital-balance" || slug === "escape-velocity" || slug === "keplers-2nd-law" || slug === "gravitational-fields";
 
     return {
       id: t.topicId,
@@ -531,6 +543,8 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
           ? "escape-velocity"
           : canonicalTopic === "keplers-2nd-law" || canonicalTopic.includes("kepler") || canonicalTopic.includes("areal")
           ? "keplers-2nd-law"
+          : canonicalTopic === "gravitational-fields" || canonicalTopic.includes("field") || canonicalTopic.includes("mapper")
+          ? "gravitational-fields"
           : canonicalTopic === "angular-momentum" || canonicalTopic.includes("momentum") || canonicalTopic.includes("satellite")
           ? "satellite-spin"
           : canonicalTopic === "pure-rolling" || canonicalTopic.includes("rolling")
