@@ -43,6 +43,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "escape-velocity" || canonicalTopic === "escape" || canonicalTopic.includes("escape")) && (slug.includes("escape") || t.topicId === "17")) return true;
     if ((canonicalTopic === "keplers-2nd-law" || canonicalTopic === "kepler" || canonicalTopic.includes("kepler") || canonicalTopic.includes("areal")) && (slug.includes("kepler") || slug.includes("areal") || t.topicId === "18")) return true;
     if ((canonicalTopic === "gravitational-fields" || canonicalTopic === "fields" || canonicalTopic.includes("field") || canonicalTopic.includes("gravity-mapper")) && (slug.includes("field") || slug.includes("mapper") || t.topicId === "19")) return true;
+    if ((canonicalTopic === "hohmann-transfers" || canonicalTopic === "hohmann" || canonicalTopic.includes("hohmann") || canonicalTopic.includes("transfer")) && (slug.includes("hohmann") || slug.includes("transfer") || t.topicId === "20")) return true;
     return false;
   });
 
@@ -88,6 +89,7 @@ export const getChallenge = cache(
     const isEscapeVelocity = canonicalTopic === "escape-velocity" || canonicalTopic.includes("escape") || foundTopic?.topicId === "17";
     const isKeplerSecondLaw = canonicalTopic === "keplers-2nd-law" || canonicalTopic.includes("kepler") || canonicalTopic.includes("areal") || foundTopic?.topicId === "18";
     const isGravitationalFields = canonicalTopic === "gravitational-fields" || canonicalTopic.includes("field") || canonicalTopic.includes("mapper") || foundTopic?.topicId === "19";
+    const isHohmannTransfers = canonicalTopic === "hohmann-transfers" || canonicalTopic.includes("hohmann") || canonicalTopic.includes("transfer") || foundTopic?.topicId === "20";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -240,11 +242,18 @@ export const getChallenge = cache(
         earthRadius: 6371,
         surfaceGravity: 9.81,
       };
+    } else if (isHohmannTransfers) {
+      sceneType = "hohmann-transfers";
+      parameters = {
+        rounds: 3,
+      };
     }
 
     const title =
       challengeData?.title ||
-      (isGravitationalFields
+      (isHohmannTransfers
+        ? "Hohmann Transfers: Orbital Transfer Mechanics"
+        : isGravitationalFields
         ? "Gravitational Fields: Earth Core Probe"
         : isKeplerSecondLaw
         ? "Kepler's 2nd Law: The Area Sweeper"
@@ -376,6 +385,7 @@ export function getModuleData(subject: string, moduleSlug: string) {
     else if (rawSlug.includes("escape") || t.topicId === "17") slug = "escape-velocity";
     else if (rawSlug.includes("kepler") || rawSlug.includes("areal") || t.topicId === "18") slug = "keplers-2nd-law";
     else if (rawSlug.includes("field") || rawSlug.includes("mapper") || t.topicId === "19") slug = "gravitational-fields";
+    else if (rawSlug.includes("hohmann") || rawSlug.includes("transfer") || t.topicId === "20") slug = "hohmann-transfers";
 
     const has3D =
       slug === "1d-motion-deceleration" ||
@@ -388,7 +398,7 @@ export function getModuleData(subject: string, moduleSlug: string) {
       slug === "friction-and-banking" ||
       slug === "static-breakaway-nlm-1" ||
       slug === "static-breakaway" ||
-      slug === "tablecloth-pull" || slug === "work-energy-theorem" || slug === "center-of-mass-shift" || slug === "center-of-mass" || slug === "1d-2d-collisions" || slug === "collisions" || slug === "rotational-equilibrium" || slug === "pure-rolling" || slug === "angular-momentum" || slug === "orbital-balance" || slug === "escape-velocity" || slug === "keplers-2nd-law" || slug === "gravitational-fields";
+      slug === "tablecloth-pull" || slug === "work-energy-theorem" || slug === "center-of-mass-shift" || slug === "center-of-mass" || slug === "1d-2d-collisions" || slug === "collisions" || slug === "rotational-equilibrium" || slug === "pure-rolling" || slug === "angular-momentum" || slug === "orbital-balance" || slug === "escape-velocity" || slug === "keplers-2nd-law" || slug === "gravitational-fields" || slug === "hohmann-transfers";
 
     return {
       id: t.topicId,
@@ -545,6 +555,8 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
           ? "keplers-2nd-law"
           : canonicalTopic === "gravitational-fields" || canonicalTopic.includes("field") || canonicalTopic.includes("mapper")
           ? "gravitational-fields"
+          : canonicalTopic === "hohmann-transfers" || canonicalTopic.includes("hohmann") || canonicalTopic.includes("transfer")
+          ? "hohmann-transfers"
           : canonicalTopic === "angular-momentum" || canonicalTopic.includes("momentum") || canonicalTopic.includes("satellite")
           ? "satellite-spin"
           : canonicalTopic === "pure-rolling" || canonicalTopic.includes("rolling")

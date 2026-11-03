@@ -1,6 +1,7 @@
 "use client";
 
 import { GravitationalFieldsControls } from "@/features/challenges/topics/physics/gravitational-fields/GravitationalFieldsControls";
+import HohmannTransfersControls from "@/features/challenges/topics/physics/hohmann-transfers/HohmannTransfersControls";
 import { KeplerSecondLawControls } from "@/features/challenges/topics/physics/keplers-2nd-law/KeplerSecondLawControls";
 import { EscapeVelocityControls } from "@/features/challenges/topics/physics/escape-velocity/EscapeVelocityControls";
 import { GeoSyncControls } from "@/features/challenges/topics/physics/orbital-balance/GeoSyncControls";
@@ -43,6 +44,9 @@ export function ChallengeControlsClient({ config }: ChallengeControlsClientProps
   }
   if (sceneType === "gravitational-fields") {
     return <GravitationalFieldsControls config={config} />;
+  }
+  if (sceneType === "hohmann-transfers") {
+    return <HohmannTransfersControls />;
   }
   if (sceneType === "geo-sync") {
     return <GeoSyncControls config={config} />;

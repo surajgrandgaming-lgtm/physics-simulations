@@ -66,6 +66,17 @@ const GravitationalFieldsScene = dynamic(
   }
 );
 
+const HohmannTransfersScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/hohmann-transfers/HohmannTransfersScene"
+    ),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -332,6 +343,13 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <GravitationalFieldsScene />
+      </div>
+    );
+  }
+  if (sceneType === "hohmann-transfers") {
+    return (
+      <div className="w-full h-full">
+        <HohmannTransfersScene />
       </div>
     );
   }
