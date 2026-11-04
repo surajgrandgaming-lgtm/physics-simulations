@@ -77,6 +77,17 @@ const HohmannTransfersScene = dynamic(
   }
 );
 
+const CalorimetryScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/calorimetry/CalorimetryScene"
+    ),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -350,6 +361,13 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <HohmannTransfersScene />
+      </div>
+    );
+  }
+  if (sceneType === "calorimetry") {
+    return (
+      <div className="w-full h-full">
+        <CalorimetryScene />
       </div>
     );
   }
