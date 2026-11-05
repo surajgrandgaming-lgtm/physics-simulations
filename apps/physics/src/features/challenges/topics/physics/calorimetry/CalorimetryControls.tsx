@@ -87,7 +87,7 @@ export function CalorimetryControls({ config }: { config?: any }) {
       briefing={{
         target: stage.missionObjective,
         storyObjective: stage.missionQuestion,
-        targetImageUrl: `/images/calorimetry/stage-${currentStage}/target.png`,
+        targetImageUrl: `https://topcoaching.b-cdn.net/Module%206/Topic%201/medium/Stage%20${currentStage}/target.png`,
         steps: [
           {
             step: 1,
@@ -96,8 +96,8 @@ export function CalorimetryControls({ config }: { config?: any }) {
               currentStage === 1
                 ? "Sub-zero ice must warm to 0°C (c_ice=0.50), melt at 0°C (Lf=80), then warm to Teq (c_w=1.0)."
                 : currentStage === 2
-                ? "Calorimeter copper vessel has water equivalent W = 10 g. Total absorbing mass is 160 g."
-                : "Steam condenses at 100°C (Lv=540) and cools to 40°C, releasing 600 cal/g total.",
+                  ? "Calorimeter copper vessel has water equivalent W = 10 g. Total absorbing mass is 160 g."
+                  : "Steam condenses at 100°C (Lv=540) and cools to 40°C, releasing 600 cal/g total.",
           },
           {
             step: 2,
@@ -123,19 +123,19 @@ export function CalorimetryControls({ config }: { config?: any }) {
               currentStage === 1
                 ? "Compute final equilibrium temperature: 10,000 - 200·Teq = 250 + 4,000 + 50·Teq."
                 : currentStage === 2
-                ? "Calculate specific heat: 160 g × 1.0 × 10°C = 200 g × c_metal × 70°C."
-                : "Compute steam mass: m_steam × 600 cal/g = 100 g × (80 + 40) cal.",
-            imageUrl: `/images/calorimetry/stage-${currentStage}/1.png`,
+                  ? "Calculate specific heat: 160 g × 1.0 × 10°C = 200 g × c_metal × 70°C."
+                  : "Compute steam mass: m_steam × 600 cal/g = 100 g × (80 + 40) cal.",
+            imageUrl: `https://topcoaching.b-cdn.net/Module%206/Topic%201/medium/Stage%20${currentStage}/1.png`,
           },
           {
             title: "2. Dial in Parameter on Slider",
             description: `Use the slider and ±${stepLarge} / ±${stepSmall} steppers to tune your calculated value.`,
-            imageUrl: `/images/calorimetry/stage-${currentStage}/2.png`,
+            imageUrl: `https://topcoaching.b-cdn.net/Module%206/Topic%201/medium/Stage%20${currentStage}/2.png`,
           },
           {
             title: "3. Click on Play Button",
             description: "Click EQUILIBRATE to run the thermal exchange and verify final chamber conditions.",
-            imageUrl: `/images/calorimetry/stage-${currentStage}/3.png`,
+            imageUrl: `https://topcoaching.b-cdn.net/Module%206/Topic%201/medium/Stage%20${currentStage}/3.png`,
           },
         ],
         tip: stage.explanationTrap,
@@ -143,36 +143,36 @@ export function CalorimetryControls({ config }: { config?: any }) {
       result={
         showResultModal && (isWon || isGameOver)
           ? {
-              isWon,
-              isGameOver,
-              onRetry: resetSimulation,
-              onNextTier: isWon && currentStage < 3 ? nextStage : undefined,
-              nextTierLabel:
-                currentStage < 3
-                  ? `PROCEED TO STAGE ${currentStage + 1}`
-                  : "REPLAY CALORIMETRY CHALLENGE",
-              failureReason: isGameOver ? failureReason : undefined,
-              tip: stage.explanationTrap,
-              calculation: calculationDerivation,
-              stats: [
-                {
-                  label: stage.paramName,
-                  value: displayParamValue,
-                },
-                {
-                  label: "Theoretical Target",
-                  value: `${stage.targetValue} ${stage.unit}`,
-                },
-                {
-                  label: "Final Water Temp",
-                  value: `${currentWaterTemp.toFixed(1)} °C`,
-                },
-                {
-                  label: "Heat Exchanged",
-                  value: `${Math.round(heatTransferredCal)} cal`,
-                },
-              ],
-            }
+            isWon,
+            isGameOver,
+            onRetry: resetSimulation,
+            onNextTier: isWon && currentStage < 3 ? nextStage : undefined,
+            nextTierLabel:
+              currentStage < 3
+                ? `PROCEED TO STAGE ${currentStage + 1}`
+                : "REPLAY CALORIMETRY CHALLENGE",
+            failureReason: isGameOver ? failureReason : undefined,
+            tip: stage.explanationTrap,
+            calculation: calculationDerivation,
+            stats: [
+              {
+                label: stage.paramName,
+                value: displayParamValue,
+              },
+              {
+                label: "Theoretical Target",
+                value: `${stage.targetValue} ${stage.unit}`,
+              },
+              {
+                label: "Final Water Temp",
+                value: `${currentWaterTemp.toFixed(1)} °C`,
+              },
+              {
+                label: "Heat Exchanged",
+                value: `${Math.round(heatTransferredCal)} cal`,
+              },
+            ],
+          }
           : undefined
       }
       topCenterHUD={

@@ -89,7 +89,7 @@ export function ThermalExpansionControls({ config }: { config?: any }) {
       briefing={{
         target: stage.missionObjective,
         storyObjective: stage.missionQuestion,
-        targetImageUrl: `https://topcoaching.b-cdn.net/Module%206/Topic%202/Stage%20${currentStage}/target.png`,
+        targetImageUrl: `https://topcoaching.b-cdn.net/Module%206/Topic%202/medium/Stage%20${currentStage}/target.png`,
         steps: [
           {
             step: 1,
@@ -128,24 +128,24 @@ export function ThermalExpansionControls({ config }: { config?: any }) {
         title: "HOW TO PLAY & THERMAL EXPANSION INSTRUCTIONS",
         instructions: [
           {
-            title: "1. Calculate Thermal Dimensional Change",
+            title: "1. Determine Thermal Expansion Requirement",
             description:
               currentStage === 1
-                ? "Calculate required expansion gap: ΔL = 20,000 mm × 1.2e-5 × 45°C = 10.8 mm."
+                ? "Find the joint gap needed to absorb full summer elongation (ΔL = L0 · α · ΔT) without inducing buckling stress."
                 : currentStage === 2
-                  ? "Calculate heating rise: ΔT = 2.0 / (2500 × 0.8e-5) = 50.0°C."
-                  : "Calculate final temperature: T = 20°C + (0.20 mm / (50 mm × 2e-5)) = 220.0°C.",
-            imageUrl: `https://topcoaching.b-cdn.net/Module%206/Topic%202/Stage%20${currentStage}/1.png`,
+                  ? "Determine the temperature rise needed to bend the differential strip into an arc that lifts the tip by 2.0 mm."
+                  : "Find the heating temperature where the hole expands like solid brass to provide 0.20 mm radial clearance.",
+            imageUrl: `https://topcoaching.b-cdn.net/Module%206/Topic%202/medium/Stage%20${currentStage}/1.png`,
           },
           {
             title: "2. Dial in Parameter on Slider",
             description: `Adjust the slider using ±${stepLarge} and ±${stepSmall} steppers to match your calculated value.`,
-            imageUrl: `https://topcoaching.b-cdn.net/Module%206/Topic%202/Stage%20${currentStage}/2.png`,
+            imageUrl: `https://topcoaching.b-cdn.net/Module%206/Topic%202/medium/Stage%20${currentStage}/2.png`,
           },
           {
             title: "3. Heat & Observe Physical Reaction",
             description: "Click HEAT / EXPAND to run the thermal cycle and verify safe, failure-free operation.",
-            imageUrl: `https://topcoaching.b-cdn.net/Module%206/Topic%202/Stage%20${currentStage}/3.png`,
+            imageUrl: `https://topcoaching.b-cdn.net/Module%206/Topic%202/medium/Stage%20${currentStage}/3.png`,
           },
         ],
         tip: stage.explanationTrap,
