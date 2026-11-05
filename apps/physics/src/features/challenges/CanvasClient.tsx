@@ -88,6 +88,17 @@ const CalorimetryScene = dynamic(
   }
 );
 
+const ThermalExpansionScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/thermal-expansion/ThermalExpansionScene"
+    ),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -368,6 +379,13 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <CalorimetryScene />
+      </div>
+    );
+  }
+  if (sceneType === "thermal-expansion") {
+    return (
+      <div className="w-full h-full">
+        <ThermalExpansionScene />
       </div>
     );
   }

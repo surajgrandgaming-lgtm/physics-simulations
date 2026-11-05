@@ -45,6 +45,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "gravitational-fields" || canonicalTopic === "fields" || canonicalTopic.includes("field") || canonicalTopic.includes("gravity-mapper")) && (slug.includes("field") || slug.includes("mapper") || t.topicId === "19")) return true;
     if ((canonicalTopic === "hohmann-transfers" || canonicalTopic === "hohmann" || canonicalTopic.includes("hohmann") || canonicalTopic.includes("transfer")) && (slug.includes("hohmann") || slug.includes("transfer") || t.topicId === "20")) return true;
     if ((canonicalTopic === "calorimetry" || canonicalTopic.includes("calorimet") || canonicalTopic.includes("phase-change")) && (slug.includes("calorimet") || t.topicId === "26")) return true;
+    if ((canonicalTopic === "thermal-expansion" || canonicalTopic.includes("thermal-expansion") || canonicalTopic.includes("expansion")) && (slug.includes("expansion") || t.topicId === "27")) return true;
     return false;
   });
 
@@ -92,6 +93,7 @@ export const getChallenge = cache(
     const isGravitationalFields = canonicalTopic === "gravitational-fields" || canonicalTopic.includes("field") || canonicalTopic.includes("mapper") || foundTopic?.topicId === "19";
     const isHohmannTransfers = canonicalTopic === "hohmann-transfers" || canonicalTopic.includes("hohmann") || canonicalTopic.includes("transfer") || foundTopic?.topicId === "20";
     const isCalorimetry = canonicalTopic === "calorimetry" || canonicalTopic.includes("calorimet") || foundTopic?.topicId === "26";
+    const isThermalExpansion = canonicalTopic === "thermal-expansion" || canonicalTopic.includes("expansion") || foundTopic?.topicId === "27";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -254,11 +256,18 @@ export const getChallenge = cache(
       parameters = {
         rounds: 3,
       };
+    } else if (isThermalExpansion) {
+      sceneType = "thermal-expansion";
+      parameters = {
+        rounds: 3,
+      };
     }
 
     const title =
       challengeData?.title ||
-      (isCalorimetry
+      (isThermalExpansion
+        ? "Thermal Expansion: Heat Strain & Dimensional Changes"
+        : isCalorimetry
         ? "Calorimetry: Thermal Equilibrium & Phase Transitions"
         : isHohmannTransfers
         ? "Hohmann Transfers: Orbital Transfer Mechanics"
@@ -566,6 +575,10 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
           ? "gravitational-fields"
           : canonicalTopic === "hohmann-transfers" || canonicalTopic.includes("hohmann") || canonicalTopic.includes("transfer")
           ? "hohmann-transfers"
+          : canonicalTopic === "calorimetry" || canonicalTopic.includes("calorimet")
+          ? "calorimetry"
+          : canonicalTopic === "thermal-expansion" || canonicalTopic.includes("expansion")
+          ? "thermal-expansion"
           : canonicalTopic === "angular-momentum" || canonicalTopic.includes("momentum") || canonicalTopic.includes("satellite")
           ? "satellite-spin"
           : canonicalTopic === "pure-rolling" || canonicalTopic.includes("rolling")
