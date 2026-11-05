@@ -68,8 +68,8 @@ export function ThermalExpansionControls({ config }: { config?: any }) {
     currentStage === 2
       ? sliderValue.toFixed(1) + " " + stage.unit
       : currentStage === 3
-      ? sliderValue.toFixed(1) + " " + stage.unit
-      : sliderValue.toFixed(1) + " " + stage.unit;
+        ? sliderValue.toFixed(1) + " " + stage.unit
+        : sliderValue.toFixed(1) + " " + stage.unit;
 
   return (
     <GameHUDContainer
@@ -89,7 +89,7 @@ export function ThermalExpansionControls({ config }: { config?: any }) {
       briefing={{
         target: stage.missionObjective,
         storyObjective: stage.missionQuestion,
-        targetImageUrl: "https://topcoaching.b-cdn.net/Module%206/Topic%202/medium/target.png",
+        targetImageUrl: `https://topcoaching.b-cdn.net/Module%206/Topic%202/Stage%20${currentStage}/target.png`,
         steps: [
           {
             step: 1,
@@ -98,8 +98,8 @@ export function ThermalExpansionControls({ config }: { config?: any }) {
               currentStage === 1
                 ? "Steel track is L0 = 20.0 m (20,000 mm). Total seasonal temperature swing is ΔT = 45.0°C."
                 : currentStage === 2
-                ? "Strip length L = 100 mm, thickness 2d = 2 mm. Differential expansion Δα = 0.80 × 10⁻⁵ /°C."
-                : "Cavity initial D0 = 50.00 mm. Target hole clearance with oversized steel ball is D_ball = 50.20 mm.",
+                  ? "Strip length L = 100 mm, thickness 2d = 2 mm. Differential expansion Δα = 0.80 × 10⁻⁵ /°C."
+                  : "Cavity initial D0 = 50.00 mm. Target hole clearance with oversized steel ball is D_ball = 50.20 mm.",
           },
           {
             step: 2,
@@ -108,8 +108,8 @@ export function ThermalExpansionControls({ config }: { config?: any }) {
               currentStage === 1
                 ? "Compute linear elongation: ΔL = L0 · α_steel · ΔT = 20,000 × 1.2e-5 × 45 = 10.8 mm."
                 : currentStage === 2
-                ? "Relate deflection δ = L² / (2R) to find required temperature rise: ΔT = 2d / (R · Δα) = 50.0°C."
-                : "Compute required diametric expansion: ΔD = D0 · α_brass · ΔT = 0.20 mm → ΔT = 200°C (T = 220°C).",
+                  ? "Relate deflection δ = L² / (2R) to find required temperature rise: ΔT = 2d / (R · Δα) = 50.0°C."
+                  : "Compute required diametric expansion: ΔD = D0 · α_brass · ΔT = 0.20 mm → ΔT = 200°C (T = 220°C).",
           },
           {
             step: 3,
@@ -118,8 +118,8 @@ export function ThermalExpansionControls({ config }: { config?: any }) {
               currentStage === 1
                 ? "Observe rails expanding under summer sun. If gap is correct, joint closes seamlessly with 0 buckle."
                 : currentStage === 2
-                ? "Observe bimetallic strip curling upward into a circular arc, closing contacts to activate the alarm."
-                : "Observe brass ring cavity expanding outward like a solid disc, allowing the bearing ball to drop through.",
+                  ? "Observe bimetallic strip curling upward into a circular arc, closing contacts to activate the alarm."
+                  : "Observe brass ring cavity expanding outward like a solid disc, allowing the bearing ball to drop through.",
           },
         ],
         formulas: stage.mathDerivation.formulas,
@@ -133,19 +133,19 @@ export function ThermalExpansionControls({ config }: { config?: any }) {
               currentStage === 1
                 ? "Calculate required expansion gap: ΔL = 20,000 mm × 1.2e-5 × 45°C = 10.8 mm."
                 : currentStage === 2
-                ? "Calculate heating rise: ΔT = 2.0 / (2500 × 0.8e-5) = 50.0°C."
-                : "Calculate final temperature: T = 20°C + (0.20 mm / (50 mm × 2e-5)) = 220.0°C.",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%206/Topic%202/medium/1.png",
+                  ? "Calculate heating rise: ΔT = 2.0 / (2500 × 0.8e-5) = 50.0°C."
+                  : "Calculate final temperature: T = 20°C + (0.20 mm / (50 mm × 2e-5)) = 220.0°C.",
+            imageUrl: `https://topcoaching.b-cdn.net/Module%206/Topic%202/Stage%20${currentStage}/1.png`,
           },
           {
             title: "2. Dial in Parameter on Slider",
             description: `Adjust the slider using ±${stepLarge} and ±${stepSmall} steppers to match your calculated value.`,
-            imageUrl: "https://topcoaching.b-cdn.net/Module%206/Topic%202/medium/2.png",
+            imageUrl: `https://topcoaching.b-cdn.net/Module%206/Topic%202/Stage%20${currentStage}/2.png`,
           },
           {
             title: "3. Heat & Observe Physical Reaction",
             description: "Click HEAT / EXPAND to run the thermal cycle and verify safe, failure-free operation.",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%206/Topic%202/medium/3.png",
+            imageUrl: `https://topcoaching.b-cdn.net/Module%206/Topic%202/Stage%20${currentStage}/3.png`,
           },
         ],
         tip: stage.explanationTrap,
@@ -153,46 +153,46 @@ export function ThermalExpansionControls({ config }: { config?: any }) {
       result={
         showResultModal && (isWon || isGameOver)
           ? {
-              isWon,
-              isGameOver,
-              onRetry: resetSimulation,
-              onNextTier: isWon && currentStage < 3 ? nextStage : undefined,
-              nextTierLabel:
-                currentStage < 3
-                  ? `PROCEED TO STAGE ${currentStage + 1}`
-                  : "REPLAY THERMAL EXPANSION LAB",
-              failureReason: isGameOver ? failureReason : undefined,
-              tip: stage.explanationTrap,
-              calculation: calculationDerivation,
-              stats: [
-                {
-                  label: stage.paramName,
-                  value: displayParamValue,
-                },
-                {
-                  label: "Target Value",
-                  value: `${stage.targetValue} ${stage.unit}`,
-                },
-                {
-                  label: "Chamber Temp",
-                  value: `${currentTemp.toFixed(1)} °C`,
-                },
-                {
-                  label:
-                    currentStage === 1
-                      ? "Track Elongation"
-                      : currentStage === 2
+            isWon,
+            isGameOver,
+            onRetry: resetSimulation,
+            onNextTier: isWon && currentStage < 3 ? nextStage : undefined,
+            nextTierLabel:
+              currentStage < 3
+                ? `PROCEED TO STAGE ${currentStage + 1}`
+                : "REPLAY THERMAL EXPANSION LAB",
+            failureReason: isGameOver ? failureReason : undefined,
+            tip: stage.explanationTrap,
+            calculation: calculationDerivation,
+            stats: [
+              {
+                label: stage.paramName,
+                value: displayParamValue,
+              },
+              {
+                label: "Target Value",
+                value: `${stage.targetValue} ${stage.unit}`,
+              },
+              {
+                label: "Chamber Temp",
+                value: `${currentTemp.toFixed(1)} °C`,
+              },
+              {
+                label:
+                  currentStage === 1
+                    ? "Track Elongation"
+                    : currentStage === 2
                       ? "Tip Deflection"
                       : "Ring Cavity Hole",
-                  value:
-                    currentStage === 1
-                      ? `${currentExpansionMm.toFixed(2)} mm`
-                      : currentStage === 2
+                value:
+                  currentStage === 1
+                    ? `${currentExpansionMm.toFixed(2)} mm`
+                    : currentStage === 2
                       ? `${currentTipDeflectionMm.toFixed(2)} mm`
                       : `${currentHoleDiameterMm.toFixed(2)} mm`,
-                },
-              ],
-            }
+              },
+            ],
+          }
           : undefined
       }
       bottomDock={
@@ -209,15 +209,15 @@ export function ThermalExpansionControls({ config }: { config?: any }) {
                 {currentStage === 1
                   ? "Elongation:"
                   : currentStage === 2
-                  ? "Deflection:"
-                  : "Aperture:"}
+                    ? "Deflection:"
+                    : "Aperture:"}
               </span>
               <span className="font-bold text-cyan-700">
                 {currentStage === 1
                   ? `+${currentExpansionMm.toFixed(2)} mm`
                   : currentStage === 2
-                  ? `${currentTipDeflectionMm.toFixed(2)} mm`
-                  : `${currentHoleDiameterMm.toFixed(2)} mm`}
+                    ? `${currentTipDeflectionMm.toFixed(2)} mm`
+                    : `${currentHoleDiameterMm.toFixed(2)} mm`}
               </span>
             </div>
           </div>

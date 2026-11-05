@@ -87,7 +87,7 @@ export function CalorimetryControls({ config }: { config?: any }) {
       briefing={{
         target: stage.missionObjective,
         storyObjective: stage.missionQuestion,
-        targetImageUrl: "https://topcoaching.b-cdn.net/Module%206/Topic%201/medium/target.png",
+        targetImageUrl: `/images/calorimetry/stage-${currentStage}/target.png`,
         steps: [
           {
             step: 1,
@@ -125,17 +125,17 @@ export function CalorimetryControls({ config }: { config?: any }) {
                 : currentStage === 2
                 ? "Calculate specific heat: 160 g × 1.0 × 10°C = 200 g × c_metal × 70°C."
                 : "Compute steam mass: m_steam × 600 cal/g = 100 g × (80 + 40) cal.",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%206/Topic%201/medium/1.png",
+            imageUrl: `/images/calorimetry/stage-${currentStage}/1.png`,
           },
           {
             title: "2. Dial in Parameter on Slider",
             description: `Use the slider and ±${stepLarge} / ±${stepSmall} steppers to tune your calculated value.`,
-            imageUrl: "https://topcoaching.b-cdn.net/Module%206/Topic%201/medium/2.png",
+            imageUrl: `/images/calorimetry/stage-${currentStage}/2.png`,
           },
           {
             title: "3. Click on Play Button",
             description: "Click EQUILIBRATE to run the thermal exchange and verify final chamber conditions.",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%206/Topic%201/medium/3.png",
+            imageUrl: `/images/calorimetry/stage-${currentStage}/3.png`,
           },
         ],
         tip: stage.explanationTrap,
