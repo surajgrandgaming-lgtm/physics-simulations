@@ -4,6 +4,7 @@ import { GravitationalFieldsControls } from "@/features/challenges/topics/physic
 import HohmannTransfersControls from "@/features/challenges/topics/physics/hohmann-transfers/HohmannTransfersControls";
 import { CalorimetryControls } from "@/features/challenges/topics/physics/calorimetry/CalorimetryControls";
 import { ThermalExpansionControls } from "@/features/challenges/topics/physics/thermal-expansion/ThermalExpansionControls";
+import { KineticTheoryControls } from "@/features/challenges/topics/physics/kinetic-theory/KineticTheoryControls";
 import { KeplerSecondLawControls } from "@/features/challenges/topics/physics/keplers-2nd-law/KeplerSecondLawControls";
 import { EscapeVelocityControls } from "@/features/challenges/topics/physics/escape-velocity/EscapeVelocityControls";
 import { GeoSyncControls } from "@/features/challenges/topics/physics/orbital-balance/GeoSyncControls";
@@ -55,6 +56,9 @@ export function ChallengeControlsClient({ config }: ChallengeControlsClientProps
   }
   if (sceneType === "thermal-expansion") {
     return <ThermalExpansionControls config={config} />;
+  }
+  if (sceneType === "kinetic-theory") {
+    return <KineticTheoryControls config={config} />;
   }
   if (sceneType === "geo-sync") {
     return <GeoSyncControls config={config} />;

@@ -46,6 +46,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "hohmann-transfers" || canonicalTopic === "hohmann" || canonicalTopic.includes("hohmann") || canonicalTopic.includes("transfer")) && (slug.includes("hohmann") || slug.includes("transfer") || t.topicId === "20")) return true;
     if ((canonicalTopic === "calorimetry" || canonicalTopic.includes("calorimet") || canonicalTopic.includes("phase-change")) && (slug.includes("calorimet") || t.topicId === "26")) return true;
     if ((canonicalTopic === "thermal-expansion" || canonicalTopic.includes("thermal-expansion") || canonicalTopic.includes("expansion")) && (slug.includes("expansion") || t.topicId === "27")) return true;
+    if ((canonicalTopic === "kinetic-theory-of-gases" || canonicalTopic === "kinetic-theory" || canonicalTopic.includes("kinetic") || canonicalTopic.includes("gas") || canonicalTopic.includes("ktg")) && (slug.includes("kinetic") || slug.includes("gas") || t.topicId === "28")) return true;
     return false;
   });
 
@@ -94,6 +95,7 @@ export const getChallenge = cache(
     const isHohmannTransfers = canonicalTopic === "hohmann-transfers" || canonicalTopic.includes("hohmann") || canonicalTopic.includes("transfer") || foundTopic?.topicId === "20";
     const isCalorimetry = canonicalTopic === "calorimetry" || canonicalTopic.includes("calorimet") || foundTopic?.topicId === "26";
     const isThermalExpansion = canonicalTopic === "thermal-expansion" || canonicalTopic.includes("expansion") || foundTopic?.topicId === "27";
+    const isKineticTheory = canonicalTopic === "kinetic-theory-of-gases" || canonicalTopic === "kinetic-theory" || canonicalTopic.includes("kinetic") || canonicalTopic.includes("gas") || canonicalTopic.includes("ktg") || foundTopic?.topicId === "28";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -261,11 +263,18 @@ export const getChallenge = cache(
       parameters = {
         rounds: 3,
       };
+    } else if (isKineticTheory) {
+      sceneType = "kinetic-theory";
+      parameters = {
+        rounds: 3,
+      };
     }
 
     const title =
       challengeData?.title ||
-      (isThermalExpansion
+      (isKineticTheory
+        ? "Kinetic Theory of Gases: The Molecular Piston Engine"
+        : isThermalExpansion
         ? "Thermal Expansion: Heat Strain & Dimensional Changes"
         : isCalorimetry
         ? "Calorimetry: Thermal Equilibrium & Phase Transitions"
@@ -579,6 +588,8 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
           ? "calorimetry"
           : canonicalTopic === "thermal-expansion" || canonicalTopic.includes("expansion")
           ? "thermal-expansion"
+          : canonicalTopic === "kinetic-theory-of-gases" || canonicalTopic === "kinetic-theory" || canonicalTopic.includes("kinetic") || canonicalTopic.includes("gas")
+          ? "kinetic-theory"
           : canonicalTopic === "angular-momentum" || canonicalTopic.includes("momentum") || canonicalTopic.includes("satellite")
           ? "satellite-spin"
           : canonicalTopic === "pure-rolling" || canonicalTopic.includes("rolling")

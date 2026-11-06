@@ -99,6 +99,17 @@ const ThermalExpansionScene = dynamic(
   }
 );
 
+const KineticTheoryScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/kinetic-theory/KineticTheoryScene"
+    ).then((mod) => mod.KineticTheoryScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -386,6 +397,13 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <ThermalExpansionScene />
+      </div>
+    );
+  }
+  if (sceneType === "kinetic-theory") {
+    return (
+      <div className="w-full h-full">
+        <KineticTheoryScene />
       </div>
     );
   }

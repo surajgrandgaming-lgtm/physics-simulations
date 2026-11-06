@@ -51,6 +51,7 @@ export interface GameHUDContainerProps {
     tip?: string;
   }
   | ReactNode;
+  skipPreMissionOverlay?: boolean;
   briefing: {
     target: string;
     targetImageUrl?: string;
@@ -91,13 +92,14 @@ export function GameHUDContainer({
   hideRestartButton = false,
   hideTopBar = false,
   instructionsOverlay,
+  skipPreMissionOverlay = false,
   briefing,
   result,
   calculation,
   isLight = false,
 }: GameHUDContainerProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const [missionStarted, setMissionStarted] = useState(false);
+  const [missionStarted, setMissionStarted] = useState(skipPreMissionOverlay);
   const [preMissionStep, setPreMissionStep] = useState<"target" | "instructions">("target");
   const [isBriefingOpen, setIsBriefingOpen] = useState(false);
   const [isExplanationOpen, setIsExplanationOpen] = useState(false);
@@ -106,11 +108,11 @@ export function GameHUDContainer({
 
   // Reset when challenge changes
   useEffect(() => {
-    setMissionStarted(false);
+    setMissionStarted(skipPreMissionOverlay);
     setIsBriefingOpen(false);
     setIsExplanationOpen(false);
     setPreMissionStep("target");
-  }, [title]);
+  }, [title, skipPreMissionOverlay]);
 
   useEffect(() => {
     const handleFullscreenChange = () => {

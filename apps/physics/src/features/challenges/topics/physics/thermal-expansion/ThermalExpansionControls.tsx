@@ -80,6 +80,7 @@ export function ThermalExpansionControls({ config }: { config?: any }) {
       xpReward={400}
       onReset={resetSimulation}
       onMissionStart={startMission}
+      skipPreMissionOverlay={currentStage > 1}
       hideTopBar={true}
       hideEyeButton={true}
       hideRestartButton={false}
