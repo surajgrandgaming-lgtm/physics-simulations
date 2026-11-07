@@ -110,6 +110,17 @@ const KineticTheoryScene = dynamic(
   }
 );
 
+const FirstLawScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/first-law/FirstLawScene"
+    ).then((mod) => mod.FirstLawScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -404,6 +415,13 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <KineticTheoryScene />
+      </div>
+    );
+  }
+  if (sceneType === "first-law") {
+    return (
+      <div className="w-full h-full">
+        <FirstLawScene />
       </div>
     );
   }

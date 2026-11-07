@@ -47,6 +47,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "calorimetry" || canonicalTopic.includes("calorimet") || canonicalTopic.includes("phase-change")) && (slug.includes("calorimet") || t.topicId === "26")) return true;
     if ((canonicalTopic === "thermal-expansion" || canonicalTopic.includes("thermal-expansion") || canonicalTopic.includes("expansion")) && (slug.includes("expansion") || t.topicId === "27")) return true;
     if ((canonicalTopic === "kinetic-theory-of-gases" || canonicalTopic === "kinetic-theory" || canonicalTopic.includes("kinetic") || canonicalTopic.includes("gas") || canonicalTopic.includes("ktg")) && (slug.includes("kinetic") || slug.includes("gas") || t.topicId === "28")) return true;
+    if ((canonicalTopic === "first-law-thermodynamics" || canonicalTopic === "first-law" || canonicalTopic === "1st-law-of-thermodynamics" || canonicalTopic.includes("first-law") || canonicalTopic.includes("1st-law") || canonicalTopic.includes("work-cycles")) && (slug.includes("first-law") || slug.includes("1st-law") || slug.includes("thermodynamics") || t.topicId === "29")) return true;
     return false;
   });
 
@@ -96,6 +97,7 @@ export const getChallenge = cache(
     const isCalorimetry = canonicalTopic === "calorimetry" || canonicalTopic.includes("calorimet") || foundTopic?.topicId === "26";
     const isThermalExpansion = canonicalTopic === "thermal-expansion" || canonicalTopic.includes("expansion") || foundTopic?.topicId === "27";
     const isKineticTheory = canonicalTopic === "kinetic-theory-of-gases" || canonicalTopic === "kinetic-theory" || canonicalTopic.includes("kinetic") || canonicalTopic.includes("gas") || canonicalTopic.includes("ktg") || foundTopic?.topicId === "28";
+    const isFirstLaw = canonicalTopic === "first-law-thermodynamics" || canonicalTopic === "first-law" || canonicalTopic === "1st-law-of-thermodynamics" || canonicalTopic.includes("first-law") || canonicalTopic.includes("1st-law") || canonicalTopic.includes("work-cycles") || foundTopic?.topicId === "29";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -268,11 +270,18 @@ export const getChallenge = cache(
       parameters = {
         rounds: 3,
       };
+    } else if (isFirstLaw) {
+      sceneType = "first-law";
+      parameters = {
+        rounds: 3,
+      };
     }
 
     const title =
       challengeData?.title ||
-      (isKineticTheory
+      (isFirstLaw
+        ? "1st Law of Thermodynamics: Isothermal Work & Heat Balance"
+        : isKineticTheory
         ? "Kinetic Theory of Gases: The Molecular Piston Engine"
         : isThermalExpansion
         ? "Thermal Expansion: Heat Strain & Dimensional Changes"
@@ -590,6 +599,8 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
           ? "thermal-expansion"
           : canonicalTopic === "kinetic-theory-of-gases" || canonicalTopic === "kinetic-theory" || canonicalTopic.includes("kinetic") || canonicalTopic.includes("gas")
           ? "kinetic-theory"
+          : canonicalTopic === "first-law-thermodynamics" || canonicalTopic === "first-law" || canonicalTopic === "1st-law-of-thermodynamics" || canonicalTopic.includes("first-law") || canonicalTopic.includes("1st-law")
+          ? "first-law"
           : canonicalTopic === "angular-momentum" || canonicalTopic.includes("momentum") || canonicalTopic.includes("satellite")
           ? "satellite-spin"
           : canonicalTopic === "pure-rolling" || canonicalTopic.includes("rolling")
