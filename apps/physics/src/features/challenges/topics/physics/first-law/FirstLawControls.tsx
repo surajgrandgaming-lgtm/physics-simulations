@@ -119,23 +119,18 @@ export function FirstLawControls({ config }: { config?: any }) {
         title: "HOW TO PLAY & FIRST LAW INSTRUCTIONS",
         instructions: [
           {
-            title: "1. Calculate Required Heat Energy (Q)",
-            description:
-              currentStage === 1
-                ? "Compute isothermal work: Q = W = n·R·T·ln(V₂/V₁) = 1.0 × 8.314 × 300 × ln(2) = 1,729 J."
-                : currentStage === 2
-                  ? "Compute actuator work: Q = W = 1.5 × 8.314 × 350 × ln(3) = 4,795 J."
-                  : "Compute power stroke work: Q = W = 2.0 × 8.314 × 450 × ln(5) = 12,043 J.",
+            title: "1. Calculate Heat Energy (Q)",
+            description: "Determine heat energy required for isothermal stroke.",
             imageUrl: "https://topcoaching.b-cdn.net/Module%206/Topic%204/medium/1.png",
           },
           {
             title: "2. Dial in Parameter on Slider",
-            description: `Adjust the slider using ±${stepLarge} and ±${stepSmall} steppers to match your calculated Joules.`,
+            description: `Set slider or click badge to enter calculated Joules.`,
             imageUrl: "https://topcoaching.b-cdn.net/Module%206/Topic%204/medium/2.png",
           },
           {
-            title: "3. Run Thermal Process & Verify Stroke",
-            description: "Click RUN to deliver heat, lift the piston to the target bracket, and verify P-V work area.",
+            title: "3. Run Thermal Process & Verify",
+            description: "Click RUN to expand piston to target bracket.",
             imageUrl: "https://topcoaching.b-cdn.net/Module%206/Topic%204/medium/3.png",
           },
         ],
