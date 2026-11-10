@@ -401,146 +401,140 @@ export function MissionResultOverlay({
               </div>
             </div>
 
-            {/* Scrollable Physics & Calculations Content - Wide 2-Column on LG */}
-            <div className="flex-1 overflow-y-auto p-4 sm:p-6 max-lg:landscape:p-2.5 max-lg:landscape:px-3.5 space-y-6 max-lg:landscape:space-y-3 text-left no-scrollbar bg-slate-100/60">
-              <div className="grid grid-cols-1 md:grid-cols-12 max-lg:landscape:grid-cols-12 gap-5 max-lg:landscape:gap-3 items-start">
+            {/* Scrollable Physics & Calculations Content - Full Width Single-Column Layout */}
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 max-lg:landscape:p-2.5 max-lg:landscape:px-3.5 space-y-6 max-lg:landscape:space-y-3 text-left no-scrollbar bg-slate-100/60">
+              <div className="w-full flex flex-col gap-6 max-lg:landscape:gap-3">
 
-                {/* Left Column (5 cols): Challenge Objective + Governing Formulas */}
-                <div className="md:col-span-5 max-lg:landscape:col-span-5 flex flex-col gap-4 max-lg:landscape:gap-2.5">
-                  {/* 1. Challenge & Mission Objective */}
-                  <div className="rounded-xl bg-white border border-slate-200/90 p-4 sm:p-5 flex flex-col gap-2.5 shadow-sm">
-                    <div className="flex items-center gap-2 text-xs font-mono font-bold text-cyan-800 uppercase tracking-wider">
-                      <Sparkles className="w-4 h-4 text-cyan-600" />
-                      <span>CHALLENGE OBJECTIVE</span>
-                    </div>
-                    {briefing?.target && (
-                      <div className="text-sm font-bold text-slate-900 leading-snug">
-                        🎯 <span className="text-cyan-800 font-mono">Target:</span> {briefing.target}
-                      </div>
-                    )}
-                    {(calculation?.concept || briefing?.storyObjective) && (
-                      <p className="text-xs text-slate-600 leading-relaxed font-sans">
-                        {calculation?.concept || briefing?.storyObjective}
-                      </p>
-                    )}
+                {/* 1. Challenge & Mission Objective */}
+                <div className="rounded-xl bg-white border border-slate-200/90 p-4 sm:p-5 flex flex-col gap-2.5 shadow-sm">
+                  <div className="flex items-center gap-2 text-xs font-mono font-bold text-cyan-800 uppercase tracking-wider">
+                    <Sparkles className="w-4 h-4 text-cyan-600" />
+                    <span>CHALLENGE OBJECTIVE</span>
                   </div>
-
-                  {/* 2. Governing Physics Formulas */}
-                  {formulasToDisplay.length > 0 && (
-                    <div className="flex flex-col gap-3">
-                      <div className="flex items-center gap-2 text-xs font-mono font-bold text-cyan-800 uppercase tracking-wider">
-                        <BookOpen className="w-4 h-4 text-cyan-600" />
-                        <span>GOVERNING PHYSICS FORMULAS</span>
-                      </div>
-
-                      <div className="flex flex-col gap-3">
-                        {formulasToDisplay.map((f, idx) => (
-                          <div
-                            key={idx}
-                            className="rounded-xl bg-white border border-slate-200 p-3.5 flex flex-col gap-2 shadow-sm hover:border-cyan-400/60 transition-all"
-                          >
-                            <span className="text-[10px] font-mono uppercase text-cyan-800 font-bold tracking-wider">
-                              {f.label}
-                            </span>
-                            <div className="py-3 px-4 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 text-sm overflow-x-auto flex items-center justify-center shadow-inner my-0.5">
-                              <SafeFormula formula={f.formula} isLight={true} />
-                            </div>
-                            {f.explanation && (
-                              <span className="text-[11px] text-slate-600 leading-relaxed font-sans">
-                                {f.explanation}
-                              </span>
-                            )}
-                          </div>
-                        ))}
-                      </div>
+                  {briefing?.target && (
+                    <div className="text-sm sm:text-base font-bold text-slate-900 leading-snug">
+                      🎯 <span className="text-cyan-800 font-mono">Target:</span> {briefing.target}
                     </div>
                   )}
-
-                  {/* 3. Physics Takeaway */}
-                  {calculation?.conclusion && (
-                    <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-4 text-xs text-emerald-900 leading-relaxed font-mono shadow-sm">
-                      💡 <strong className="text-emerald-800">Physics Takeaway:</strong>{" "}
-                      {calculation.conclusion}
-                    </div>
+                  {(calculation?.concept || briefing?.storyObjective) && (
+                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans">
+                      {calculation?.concept || briefing?.storyObjective}
+                    </p>
                   )}
                 </div>
 
-                {/* Right Column (7 cols): Step-by-Step Mathematical Derivation + Performance Stats */}
-                <div className="md:col-span-7 max-lg:landscape:col-span-7 flex flex-col gap-4 max-lg:landscape:gap-2.5">
-                  {/* Step-by-Step Mathematical Derivation */}
-                  {stepsToDisplay.length > 0 && (
-                    <div className="flex flex-col gap-3">
-                      <div className="flex items-center gap-2 text-xs font-mono font-bold text-emerald-800 uppercase tracking-wider">
-                        <Atom className="w-4 h-4 text-emerald-600" />
-                        <span>STEP-BY-STEP MATHEMATICAL DERIVATION</span>
-                      </div>
+                {/* 2. Governing Physics Formulas */}
+                {formulasToDisplay.length > 0 && (
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center gap-2 text-xs font-mono font-bold text-cyan-800 uppercase tracking-wider">
+                      <BookOpen className="w-4 h-4 text-cyan-600" />
+                      <span>GOVERNING PHYSICS FORMULAS</span>
+                    </div>
 
-                      <div className="space-y-3.5">
-                        {stepsToDisplay.map((step, idx) => (
-                          <div
-                            key={idx}
-                            className="rounded-xl bg-white border border-slate-200 hover:border-slate-300 p-4 flex flex-col gap-2.5 transition-all shadow-sm"
-                          >
-                            <div className="flex items-center gap-2.5">
-                              <span className="w-6 h-6 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-mono font-bold flex items-center justify-center shrink-0">
-                                {step.step || idx + 1}
+                    <div className="flex flex-col gap-3.5">
+                      {formulasToDisplay.map((f, idx) => (
+                        <div
+                          key={idx}
+                          className="rounded-xl bg-white border border-slate-200 p-3.5 sm:p-4 flex flex-col gap-2 shadow-sm hover:border-cyan-400/60 transition-all"
+                        >
+                          <span className="text-[10px] font-mono uppercase text-cyan-800 font-bold tracking-wider">
+                            {f.label}
+                          </span>
+                          <div className="py-3 px-4 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 text-sm overflow-x-auto flex items-center justify-center shadow-inner my-0.5">
+                            <SafeFormula formula={f.formula} isLight={true} />
+                          </div>
+                          {f.explanation && (
+                            <span className="text-[11px] sm:text-xs text-slate-600 leading-relaxed font-sans">
+                              {f.explanation}
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* 3. Step-by-Step Mathematical Derivation */}
+                {stepsToDisplay.length > 0 && (
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center gap-2 text-xs font-mono font-bold text-emerald-800 uppercase tracking-wider">
+                      <Atom className="w-4 h-4 text-emerald-600" />
+                      <span>STEP-BY-STEP MATHEMATICAL DERIVATION</span>
+                    </div>
+
+                    <div className="space-y-3.5">
+                      {stepsToDisplay.map((step, idx) => (
+                        <div
+                          key={idx}
+                          className="rounded-xl bg-white border border-slate-200 hover:border-slate-300 p-4 sm:p-5 flex flex-col gap-2.5 transition-all shadow-sm"
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <span className="w-6 h-6 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-mono font-bold flex items-center justify-center shrink-0">
+                              {step.step || idx + 1}
+                            </span>
+                            <span className="text-sm sm:text-base font-bold text-slate-900">
+                              {step.title}
+                            </span>
+                          </div>
+
+                          {/* Math equation box */}
+                          {step.math && (
+                            <div className="px-3.5 py-2.5 rounded-lg bg-cyan-50/70 border border-cyan-200 text-slate-900 font-mono text-xs sm:text-sm overflow-x-auto flex items-center gap-2.5 shadow-inner">
+                              <span className="text-cyan-700 text-[10px] uppercase font-mono font-bold">
+                                EQ:
                               </span>
-                              <span className="text-sm font-bold text-slate-900">
-                                {step.title}
-                              </span>
+                              <SafeFormula formula={step.math} isLight={true} />
                             </div>
+                          )}
 
-                            {/* Math equation box */}
-                            {step.math && (
-                              <div className="px-3.5 py-2.5 rounded-lg bg-cyan-50/70 border border-cyan-200 text-slate-900 font-mono text-xs sm:text-sm overflow-x-auto flex items-center gap-2.5 shadow-inner">
-                                <span className="text-cyan-700 text-[10px] uppercase font-mono font-bold">
-                                  EQ:
-                                </span>
-                                <SafeFormula formula={step.math} isLight={true} />
-                              </div>
-                            )}
-
-                            {/* Detailed derivation / calculation */}
-                            {step.calculation && (
-                              <div className="text-xs font-mono font-semibold text-slate-800 bg-slate-50 border border-slate-200/80 rounded-lg p-2.5 shadow-inner">
-                                {step.calculation}
-                              </div>
-                            )}
-                            {step.explanation && (
-                              <p className="text-xs text-slate-600 leading-relaxed font-sans pl-1">
-                                {step.explanation}
-                              </p>
-                            )}
-                          </div>
-                        ))}
-                      </div>
+                          {/* Detailed derivation / calculation */}
+                          {step.calculation && (
+                            <div className="text-xs font-mono font-semibold text-slate-800 bg-slate-50 border border-slate-200/80 rounded-lg p-2.5 shadow-inner">
+                              {step.calculation}
+                            </div>
+                          )}
+                          {step.explanation && (
+                            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans pl-1">
+                              {step.explanation}
+                            </p>
+                          )}
+                        </div>
+                      ))}
                     </div>
-                  )}
+                  </div>
+                )}
 
-                  {/* Telemetry recap */}
-                  {stats.length > 0 && (
-                    <div className="rounded-xl bg-white border border-slate-200 p-3.5 flex flex-col gap-2 shadow-sm">
-                      <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider font-bold">
-                        MISSION TELEMETRY METRICS
-                      </span>
-                      <div className="grid grid-cols-3 gap-2">
-                        {stats.map((s, idx) => (
-                          <div
-                            key={idx}
-                            className="bg-slate-50 rounded-lg p-2 border border-slate-200 flex flex-col items-center"
-                          >
-                            <span className="text-[9px] font-mono text-slate-500 uppercase">
-                              {s.label}
-                            </span>
-                            <span className="text-xs font-mono font-bold text-emerald-700">
-                              {s.value} {s.unit || ""}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
+                {/* 4. Physics Takeaway */}
+                {calculation?.conclusion && (
+                  <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-4 sm:p-5 text-xs sm:text-sm text-emerald-900 leading-relaxed font-mono shadow-sm">
+                    💡 <strong className="text-emerald-800">Physics Takeaway:</strong>{" "}
+                    {calculation.conclusion}
+                  </div>
+                )}
+
+                {/* 5. Telemetry recap */}
+                {stats.length > 0 && (
+                  <div className="rounded-xl bg-white border border-slate-200 p-4 flex flex-col gap-2.5 shadow-sm">
+                    <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider font-bold">
+                      MISSION TELEMETRY METRICS
+                    </span>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                      {stats.map((s, idx) => (
+                        <div
+                          key={idx}
+                          className="bg-slate-50 rounded-lg p-2.5 border border-slate-200 flex flex-col items-center"
+                        >
+                          <span className="text-[9px] font-mono text-slate-500 uppercase text-center">
+                            {s.label}
+                          </span>
+                          <span className="text-xs font-mono font-bold text-emerald-700">
+                            {s.value} {s.unit || ""}
+                          </span>
+                        </div>
+                      ))}
                     </div>
-                  )}
-                </div>
+                  </div>
+                )}
 
               </div>
             </div>
