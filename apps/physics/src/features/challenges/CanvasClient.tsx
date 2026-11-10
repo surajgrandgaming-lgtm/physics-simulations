@@ -121,6 +121,17 @@ const FirstLawScene = dynamic(
   }
 );
 
+const HeatTransferScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/heat-transfer/HeatTransferScene"
+    ).then((mod) => mod.HeatTransferScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -422,6 +433,13 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <FirstLawScene />
+      </div>
+    );
+  }
+  if (sceneType === "heat-transfer") {
+    return (
+      <div className="w-full h-full">
+        <HeatTransferScene />
       </div>
     );
   }

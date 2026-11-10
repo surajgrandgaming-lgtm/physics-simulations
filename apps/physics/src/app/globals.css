@@ -142,4 +142,9 @@
   box-sizing: border-box !important;
 }
 
-
+/* Ensure proper vertical separation and clean division line in KaTeX fractions */
+.katex .mfrac .frac-line {
+  margin-top: 0.12em !important;
+  margin-bottom: 0.12em !important;
+  border-bottom-width: 0.055em !important;
+}

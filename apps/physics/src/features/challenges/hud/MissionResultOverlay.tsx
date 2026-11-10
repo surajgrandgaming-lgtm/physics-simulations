@@ -64,14 +64,17 @@ export interface MissionResultOverlayProps {
 
 function SafeFormula({ formula, isLight = false }: { formula: string; isLight?: boolean }) {
   if (!formula) return null;
+  // Convert standard inline \frac to \dfrac to ensure proper vertical line clearance between numerator, vinculum, and denominator
+  const displayFormula = formula.replace(/\\frac(?![a-zA-Z])/g, "\\dfrac");
+
   return (
     <span
-      className={`text-xs sm:text-sm inline-flex items-center justify-center py-0.5 overflow-visible ${
+      className={`text-xs sm:text-sm inline-flex items-center justify-center py-1.5 overflow-visible ${
         isLight ? "text-slate-900 font-medium" : "text-cyan-300"
       }`}
     >
       <InlineMath
-        math={formula}
+        math={displayFormula}
         renderError={() => (
           <span
             className={`font-mono text-xs font-semibold ${
@@ -498,9 +501,14 @@ export function MissionResultOverlay({
                             )}
 
                             {/* Detailed derivation / calculation */}
-                            {(step.calculation || step.explanation) && (
+                            {step.calculation && (
+                              <div className="text-xs font-mono font-semibold text-slate-800 bg-slate-50 border border-slate-200/80 rounded-lg p-2.5 shadow-inner">
+                                {step.calculation}
+                              </div>
+                            )}
+                            {step.explanation && (
                               <p className="text-xs text-slate-600 leading-relaxed font-sans pl-1">
-                                {step.calculation || step.explanation}
+                                {step.explanation}
                               </p>
                             )}
                           </div>

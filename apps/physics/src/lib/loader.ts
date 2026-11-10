@@ -43,11 +43,12 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "escape-velocity" || canonicalTopic === "escape" || canonicalTopic.includes("escape")) && (slug.includes("escape") || t.topicId === "17")) return true;
     if ((canonicalTopic === "keplers-2nd-law" || canonicalTopic === "kepler" || canonicalTopic.includes("kepler") || canonicalTopic.includes("areal")) && (slug.includes("kepler") || slug.includes("areal") || t.topicId === "18")) return true;
     if ((canonicalTopic === "gravitational-fields" || canonicalTopic === "fields" || canonicalTopic.includes("field") || canonicalTopic.includes("gravity-mapper")) && (slug.includes("field") || slug.includes("mapper") || t.topicId === "19")) return true;
-    if ((canonicalTopic === "hohmann-transfers" || canonicalTopic === "hohmann" || canonicalTopic.includes("hohmann") || canonicalTopic.includes("transfer")) && (slug.includes("hohmann") || slug.includes("transfer") || t.topicId === "20")) return true;
+    if ((canonicalTopic === "hohmann-transfers" || canonicalTopic === "hohmann" || canonicalTopic.includes("hohmann")) && (slug.includes("hohmann") || t.topicId === "20")) return true;
     if ((canonicalTopic === "calorimetry" || canonicalTopic.includes("calorimet") || canonicalTopic.includes("phase-change")) && (slug.includes("calorimet") || t.topicId === "26")) return true;
     if ((canonicalTopic === "thermal-expansion" || canonicalTopic.includes("thermal-expansion") || canonicalTopic.includes("expansion")) && (slug.includes("expansion") || t.topicId === "27")) return true;
     if ((canonicalTopic === "kinetic-theory-of-gases" || canonicalTopic === "kinetic-theory" || canonicalTopic.includes("kinetic") || canonicalTopic.includes("gas") || canonicalTopic.includes("ktg")) && (slug.includes("kinetic") || slug.includes("gas") || t.topicId === "28")) return true;
     if ((canonicalTopic === "first-law-thermodynamics" || canonicalTopic === "first-law" || canonicalTopic === "1st-law-of-thermodynamics" || canonicalTopic.includes("first-law") || canonicalTopic.includes("1st-law") || canonicalTopic.includes("work-cycles")) && (slug.includes("first-law") || slug.includes("1st-law") || slug.includes("thermodynamics") || t.topicId === "29")) return true;
+    if ((canonicalTopic === "heat-transfer" || canonicalTopic === "thermal-conduction" || canonicalTopic.includes("heat-transfer") || canonicalTopic.includes("conduction")) && (slug.includes("heat-transfer") || slug.includes("conduction") || t.topicId === "30")) return true;
     return false;
   });
 
@@ -93,11 +94,12 @@ export const getChallenge = cache(
     const isEscapeVelocity = canonicalTopic === "escape-velocity" || canonicalTopic.includes("escape") || foundTopic?.topicId === "17";
     const isKeplerSecondLaw = canonicalTopic === "keplers-2nd-law" || canonicalTopic.includes("kepler") || canonicalTopic.includes("areal") || foundTopic?.topicId === "18";
     const isGravitationalFields = canonicalTopic === "gravitational-fields" || canonicalTopic.includes("field") || canonicalTopic.includes("mapper") || foundTopic?.topicId === "19";
-    const isHohmannTransfers = canonicalTopic === "hohmann-transfers" || canonicalTopic.includes("hohmann") || canonicalTopic.includes("transfer") || foundTopic?.topicId === "20";
+    const isHohmannTransfers = canonicalTopic === "hohmann-transfers" || canonicalTopic === "hohmann" || canonicalTopic.includes("hohmann") || foundTopic?.topicId === "20";
     const isCalorimetry = canonicalTopic === "calorimetry" || canonicalTopic.includes("calorimet") || foundTopic?.topicId === "26";
     const isThermalExpansion = canonicalTopic === "thermal-expansion" || canonicalTopic.includes("expansion") || foundTopic?.topicId === "27";
     const isKineticTheory = canonicalTopic === "kinetic-theory-of-gases" || canonicalTopic === "kinetic-theory" || canonicalTopic.includes("kinetic") || canonicalTopic.includes("gas") || canonicalTopic.includes("ktg") || foundTopic?.topicId === "28";
     const isFirstLaw = canonicalTopic === "first-law-thermodynamics" || canonicalTopic === "first-law" || canonicalTopic === "1st-law-of-thermodynamics" || canonicalTopic.includes("first-law") || canonicalTopic.includes("1st-law") || canonicalTopic.includes("work-cycles") || foundTopic?.topicId === "29";
+    const isHeatTransfer = canonicalTopic === "heat-transfer" || canonicalTopic === "thermal-conduction" || canonicalTopic.includes("heat-transfer") || canonicalTopic.includes("conduction") || foundTopic?.topicId === "30";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -275,11 +277,18 @@ export const getChallenge = cache(
       parameters = {
         rounds: 3,
       };
+    } else if (isHeatTransfer) {
+      sceneType = "heat-transfer";
+      parameters = {
+        rounds: 3,
+      };
     }
 
     const title =
       challengeData?.title ||
-      (isFirstLaw
+      (isHeatTransfer
+        ? "Heat Transfer: Thermal Conduction & Resistance Network"
+        : isFirstLaw
         ? "1st Law of Thermodynamics: Isothermal Work & Heat Balance"
         : isKineticTheory
         ? "Kinetic Theory of Gases: The Molecular Piston Engine"
@@ -601,6 +610,8 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
           ? "kinetic-theory"
           : canonicalTopic === "first-law-thermodynamics" || canonicalTopic === "first-law" || canonicalTopic === "1st-law-of-thermodynamics" || canonicalTopic.includes("first-law") || canonicalTopic.includes("1st-law")
           ? "first-law"
+          : canonicalTopic === "heat-transfer" || canonicalTopic === "thermal-conduction" || canonicalTopic.includes("heat-transfer") || canonicalTopic.includes("conduction")
+          ? "heat-transfer"
           : canonicalTopic === "angular-momentum" || canonicalTopic.includes("momentum") || canonicalTopic.includes("satellite")
           ? "satellite-spin"
           : canonicalTopic === "pure-rolling" || canonicalTopic.includes("rolling")
