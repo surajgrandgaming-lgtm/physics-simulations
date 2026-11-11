@@ -220,12 +220,12 @@ function SimpleHarmonicMotionContent({ controlsRef }: { controlsRef?: React.RefO
           ))}
 
           {/* Glider Mass Badge in 3D */}
-          <Html position={[0, 0.75, 0]} center transform scale={0.25}>
-            <div className="bg-white/95 border border-slate-300 rounded-lg px-2.5 py-1 text-center shadow-md backdrop-blur pointer-events-none select-none">
-              <div className="text-[10px] font-mono font-bold text-cyan-800">
+          <Html position={[0, 0.75, 0]} center>
+            <div className="bg-white/95 border border-slate-300 rounded-lg px-2.5 py-1 text-center shadow-md backdrop-blur pointer-events-none select-none whitespace-nowrap">
+              <div className="text-[11px] sm:text-xs font-mono font-bold text-cyan-800">
                 m = {stage.mass.toFixed(1)} kg
               </div>
-              <div className="text-[9px] font-mono font-semibold text-slate-600">
+              <div className="text-[10px] sm:text-[11px] font-mono font-semibold text-slate-600">
                 x = {currentX.toFixed(2)} m
               </div>
             </div>
@@ -281,12 +281,12 @@ function SimpleHarmonicMotionContent({ controlsRef }: { controlsRef?: React.RefO
           </mesh>
 
           {/* Photogate HUD Display Badge */}
-          <Html position={[0, 1.25, 0]} center transform scale={0.22}>
-            <div className="bg-white/95 border border-slate-300 rounded-lg px-3 py-1.5 text-center shadow-lg backdrop-blur-md pointer-events-none select-none">
-              <div className="text-[13px] font-mono font-black text-slate-900">
+          <Html position={[0, 1.25, 0]} center>
+            <div className="bg-white/95 border border-slate-300 rounded-lg px-3 py-1.5 text-center shadow-lg backdrop-blur-md pointer-events-none select-none whitespace-nowrap">
+              <div className="text-xs sm:text-sm font-mono font-black text-slate-900">
                 v = {Math.abs(currentV).toFixed(2)} m/s
               </div>
-              <div className="text-[9px] font-mono font-semibold text-emerald-700">
+              <div className="text-[10px] sm:text-xs font-mono font-bold text-emerald-700">
                 Target: {stage.targetVmax.toFixed(2)} m/s
               </div>
             </div>

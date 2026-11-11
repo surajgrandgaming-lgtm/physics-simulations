@@ -162,20 +162,20 @@ export function SimpleHarmonicMotionControls({ config }: { config?: any }) {
           : undefined
       }
       topCenterHUD={
-        <div className="flex items-center gap-2 sm:gap-3 bg-white/95 backdrop-blur-md px-3.5 sm:px-4 py-1.5 rounded-full border border-slate-300 shadow-[0_2px_12px_rgba(0,0,0,0.08)] font-mono text-[11px] sm:text-xs text-slate-700 pointer-events-auto select-none mt-2">
-          <div className="flex items-center gap-1">
-            <span className="text-slate-400">Mass m:</span>
-            <span className="font-bold text-slate-800">{stage.mass.toFixed(1)} kg</span>
+        <div className="flex items-center gap-2 sm:gap-3 bg-white/95 backdrop-blur-md px-3.5 sm:px-4 py-1.5 rounded-full border border-slate-300 shadow-[0_2px_12px_rgba(0,0,0,0.08)] font-mono text-[11px] sm:text-xs text-slate-700 pointer-events-auto select-none mt-2 whitespace-nowrap">
+          <div className="flex items-center gap-1 shrink-0 whitespace-nowrap">
+            <span className="text-slate-400">Mass:</span>
+            <span className="font-bold text-slate-800 whitespace-nowrap">{stage.mass.toFixed(1)}&nbsp;kg</span>
           </div>
           <span className="text-slate-300">|</span>
-          <div className="flex items-center gap-1">
-            <span className="text-slate-400">Amplitude A:</span>
-            <span className="font-bold text-slate-800">{stage.amplitude.toFixed(2)} m</span>
+          <div className="flex items-center gap-1 shrink-0 whitespace-nowrap">
+            <span className="text-slate-400">Amplitude:</span>
+            <span className="font-bold text-slate-800 whitespace-nowrap">{stage.amplitude.toFixed(2)}&nbsp;m</span>
           </div>
           <span className="text-slate-300">|</span>
-          <div className="flex items-center gap-1">
-            <span className="text-slate-400">Target v_max:</span>
-            <span className="font-bold text-emerald-600">{stage.targetVmax.toFixed(2)} m/s</span>
+          <div className="flex items-center gap-1 shrink-0 whitespace-nowrap">
+            <span className="text-slate-400">Target:</span>
+            <span className="font-bold text-emerald-600 whitespace-nowrap">{stage.targetVmax.toFixed(2)}&nbsp;m/s</span>
           </div>
         </div>
       }
