@@ -81,7 +81,7 @@ export function SimpleHarmonicMotionControls({ config }: { config?: any }) {
       briefing={{
         target: stage.missionObjective,
         storyObjective: stage.missionQuestion,
-        targetImageUrl: "https://topcoaching.b-cdn.net/Module%207/medium/target.png",
+        targetImageUrl: "https://topcoaching.b-cdn.net/Module%207/Topic%201/medium/target.png",
         steps: [
           {
             step: 1,
@@ -107,17 +107,17 @@ export function SimpleHarmonicMotionControls({ config }: { config?: any }) {
           {
             title: "1. Calculate Spring Stiffness",
             description: `Given mass m = ${stage.mass.toFixed(1)} kg, amplitude A = ${stage.amplitude.toFixed(2)} m, compute k = m·(v_max/A)².`,
-            imageUrl: "https://topcoaching.b-cdn.net/Module%207/medium/1.png",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%207/Topic%201/medium/1.png",
           },
           {
             title: "2. Dial in Spring Constant k",
             description: "Adjust slider or click the number badge to type directly.",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%207/medium/2.png",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%207/Topic%201/medium/2.png",
           },
           {
             title: "3. Release the Oscillator",
             description: `Click RELEASE to start the simulation.`,
-            imageUrl: "https://topcoaching.b-cdn.net/Module%207/medium/3.png",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%207/Topic%201/medium/3.png",
           },
         ],
         tip: stage.explanationTrap,

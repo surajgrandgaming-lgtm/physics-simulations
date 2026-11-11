@@ -132,6 +132,13 @@ const HeatTransferScene = dynamic(
   }
 );
 
+const GravityScannerScene = dynamic(
+  () =>
+    import("@/three/challenges/physics/simple-pendulum/GravityScannerScene")
+      .then((mod) => mod.GravityScannerScene),
+  { ssr: false, loading: LoadingFallback }
+);
+
 const SimpleHarmonicMotionScene = dynamic(
   () =>
     import(
@@ -451,6 +458,13 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <HeatTransferScene />
+      </div>
+    );
+  }
+  if (sceneType === "gravity-scanner") {
+    return (
+      <div className="w-full h-full">
+        <GravityScannerScene />
       </div>
     );
   }

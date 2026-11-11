@@ -285,6 +285,9 @@ export const getChallenge = cache(
       parameters = {
         rounds: 3,
       };
+    } else if (foundTopic?.topicId === "32" && difficulty === "medium") {
+      sceneType = "gravity-scanner";
+      parameters = { rounds: 3 };
     } else if (isSHM) {
       sceneType = "simple-harmonic-motion";
       parameters = {
