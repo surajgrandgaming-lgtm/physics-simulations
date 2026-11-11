@@ -14,13 +14,11 @@ const WORLD_SCALE = 1.8;
 
 function PendulumApparatus({
   length,
-  realLengthMeters,
   isReference = false,
   gravity,
   isRunning,
 }: {
   length: number;
-  realLengthMeters: number;
   isReference?: boolean;
   gravity: number;
   isRunning: boolean;
@@ -31,7 +29,7 @@ function PendulumApparatus({
 
   // Natural angular frequency omega = sqrt(g / L) where L is real length in meters
   // Period T = 2 * pi / omega = 2 * pi * sqrt(L / g)
-  const omega = Math.sqrt(Math.max(0.1, gravity) / Math.max(0.1, realLengthMeters));
+  const omega = Math.sqrt(Math.max(0.1, gravity) / Math.max(0.1, length / WORLD_SCALE));
 
   // Direct Three.js useFrame animation using the canvas clock
   useFrame((state) => {
@@ -64,10 +62,23 @@ function PendulumApparatus({
         <meshStandardMaterial color="#cbd5e1" metalness={0.6} roughness={0.3} />
       </mesh>
 
+      {/* Banner Label placed on the Front Face of the Bottom Base Block */}
+      <Html position={[0, -1.28, 0.72]} center>
+        <div
+          className={`px-3 py-1 rounded-full text-[11px] font-mono font-bold tracking-wider uppercase border shadow-md backdrop-blur-md select-none pointer-events-none whitespace-nowrap ${
+            isReference
+              ? "bg-amber-50/95 text-amber-800 border-amber-400 shadow-amber-500/10"
+              : "bg-cyan-50/95 text-cyan-800 border-cyan-400 shadow-cyan-500/10"
+          }`}
+        >
+          {labelText}
+        </div>
+      </Html>
+
       {/* Vertical Support Column */}
       <mesh position={[0, 0.25, -0.45]} castShadow>
         <boxGeometry args={[0.16, 3.2, 0.16]} />
-        <meshStandardMaterial color="#475569" metalness={0.7} roughness={0.3} />
+        <meshStandardMaterial color="#1e293b" metalness={0.8} roughness={0.2} />
       </mesh>
 
       {/* Top Overhead Cantilever Beam */}
@@ -81,28 +92,6 @@ function PendulumApparatus({
         <cylinderGeometry args={[0.06, 0.06, 0.28, 16]} />
         <meshStandardMaterial color="#64748b" metalness={0.9} roughness={0.2} />
       </mesh>
-
-      {/* Header Apparatus Label */}
-      <Html position={[0, 2.3, 0]} center>
-        <div
-          className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase border shadow-md backdrop-blur-md select-none pointer-events-none whitespace-nowrap ${
-            isReference
-              ? "bg-amber-50/95 text-amber-800 border-amber-300"
-              : "bg-cyan-50/95 text-cyan-800 border-cyan-300"
-          }`}
-        >
-          {labelText}
-        </div>
-      </Html>
-
-      {/* Length Dimension Indicator Badge on Model */}
-      <Html position={[isReference ? 0.45 : -0.45, pivotY - length / 2, 0]} center>
-        <div className="bg-white/95 border border-slate-300 rounded-md px-2 py-0.5 text-center shadow-sm backdrop-blur pointer-events-none select-none whitespace-nowrap">
-          <span className="text-[10px] font-mono font-bold text-slate-700">
-            L = {realLengthMeters.toFixed(2)} m
-          </span>
-        </div>
-      </Html>
 
       {/* Dynamic Swiveling Pendulum Arm */}
       <group ref={armRef} position={[0, pivotY, 0]} rotation={[0, 0, RELEASE_ANGLE]}>
@@ -147,6 +136,69 @@ function PendulumApparatus({
   );
 }
 
+// Center Reference Meter Scale Pillar standing between both pendulums
+// Center Reference Meter Scale standing cleanly between both pendulums
+function CenterMeterScale({
+  pivotY,
+  realLengthMeters,
+}: {
+  pivotY: number;
+  realLengthMeters: number;
+}) {
+  return (
+    <group position={[0, 0, 0]}>
+      {/* Delicate vertical ruler line with clean ticks and black numbers */}
+      <mesh position={[0, pivotY - 1.0 * WORLD_SCALE, -0.01]}>
+        <planeGeometry args={[0.006, 2.0 * WORLD_SCALE]} />
+        <meshBasicMaterial color="#94a3b8" />
+      </mesh>
+
+      {/* Graduation Marks & Numbers in bold black */}
+      {[0.0, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0].map((mVal) => {
+        const y = pivotY - mVal * WORLD_SCALE;
+        const isTargetMatch = Math.abs(mVal - realLengthMeters) < 0.05;
+
+        return (
+          <group key={mVal} position={[0, y, 0]}>
+            {/* Subtle horizontal tick cross */}
+            <mesh position={[0, 0, -0.005]}>
+              <planeGeometry args={[isTargetMatch ? 0.12 : 0.06, isTargetMatch ? 0.008 : 0.004]} />
+              <meshBasicMaterial color={isTargetMatch ? "#0284c7" : "#cbd5e1"} />
+            </mesh>
+
+            {/* Black text numeric label */}
+            <Html position={[0, 0, 0]} center distanceFactor={7.5} transform>
+              <div
+                className={`font-mono select-none pointer-events-none text-center whitespace-nowrap leading-none ${
+                  isTargetMatch
+                    ? "text-slate-950 text-[11px] font-black"
+                    : "text-slate-700 text-[9px] font-bold"
+                }`}
+              >
+                {mVal.toFixed(2)}m
+              </div>
+            </Html>
+          </group>
+        );
+      })}
+
+      {/* Minor subdivision ticks between major intervals */}
+      {Array.from({ length: 41 }).map((_, idx) => {
+        const mVal = idx * 0.05;
+        if (mVal % 0.25 === 0) return null;
+        const y = pivotY - mVal * WORLD_SCALE;
+
+        return (
+          <mesh key={`minor-${idx}`} position={[0, y, -0.005]}>
+            <planeGeometry args={[0.03, 0.002]} />
+            <meshBasicMaterial color="#cbd5e1" />
+          </mesh>
+        );
+      })}
+    </group>
+  );
+}
+
 function GravityScannerContent({ controlsRef }: { controlsRef?: React.RefObject<any> }) {
   const currentStage = useGravityScannerStore((s) => s.currentStage);
   const sliderValue = useGravityScannerStore((s) => s.sliderValue);
@@ -168,8 +220,8 @@ function GravityScannerContent({ controlsRef }: { controlsRef?: React.RefObject<
   const zoomedInCamPos = useMemo(() => new THREE.Vector3(0, 0.8, 3.2), []);
   const zoomedInTarget = useMemo(() => new THREE.Vector3(0, 0.5, 0), []);
 
-  // 2. Full overview wide angle
-  const fullModelCamPos = useMemo(() => new THREE.Vector3(0, 1.2, 7.8), []);
+  // 2. Full overview wide angle (comfortably zoomed out for landscape mobile & desktop)
+  const fullModelCamPos = useMemo(() => new THREE.Vector3(0, 1.4, 9.6), []);
   const fullModelTarget = useMemo(() => new THREE.Vector3(0, 0.2, 0), []);
 
   const holdDuration = 0.5;
@@ -261,10 +313,15 @@ function GravityScannerContent({ controlsRef }: { controlsRef?: React.RefObject<
       <gridHelper args={[30, 30, "#94a3b8", "#cbd5e1"]} position={[0, -1.41, 0]} />
 
       <group position={[0, 0, 0]}>
+        {/* Single Center Reference Scale Column placed symmetrically between the two pendulums */}
+        <CenterMeterScale
+          pivotY={1.8}
+          realLengthMeters={stage.length}
+        />
+
         {/* Planet Pendulum (Left: Cyan) - always swinging continuously on the stage's targetGravity */}
         <PendulumApparatus
           length={length}
-          realLengthMeters={stage.length}
           isReference={false}
           gravity={stage.targetGravity}
           isRunning={true}
@@ -273,7 +330,6 @@ function GravityScannerContent({ controlsRef }: { controlsRef?: React.RefObject<
         {/* User's Reference Estimator Pendulum (Right: Amber) - starts swinging when RUN is clicked */}
         <PendulumApparatus
           length={length}
-          realLengthMeters={stage.length}
           isReference={true}
           gravity={sliderValue}
           isRunning={isSimulating}
@@ -301,7 +357,7 @@ export function GravityScannerScene() {
           maxPolarAngle={Math.PI / 2 - 0.05}
           minPolarAngle={Math.PI / 6}
           minDistance={3.5}
-          maxDistance={12}
+          maxDistance={15}
         />
       </Canvas>
     </div>

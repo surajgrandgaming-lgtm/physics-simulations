@@ -13,7 +13,7 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { StatStrip } from "@/components/ui/StatStrip";
-import { moduleSlug, subjectFromParam, titleCaseSlug, topicSlug } from "@/lib/theme";
+import { findModuleBySlug, moduleSlug, subjectFromParam, titleCaseSlug, topicSlug } from "@/lib/theme";
 import { ACCENT, SUBJECT_META } from "@/lib/theme";
 
 interface Props {
@@ -27,7 +27,7 @@ export default async function ModulePage({ params }: Props) {
   const accent = ACCENT[meta.accent];
   const displayModule = titleCaseSlug(module);
 
-  const moduleData = physicsData.modules.find((m) => moduleSlug(m.moduleName) === module);
+  const moduleData = findModuleBySlug(module, physicsData.modules);
   const topics = moduleData?.topics ?? [];
   const progress = topics.length ? 40 : 0;
 

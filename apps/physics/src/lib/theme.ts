@@ -102,7 +102,43 @@ export function titleCaseSlug(slug: string) {
 }
 
 export function moduleSlug(name: string) {
-  return name.toLowerCase().replace(/\s+/g, "-");
+  return name
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+export function findModuleBySlug<T extends { moduleId: string; moduleName: string }>(
+  slugOrId: string,
+  modules: T[]
+): T | undefined {
+  if (!slugOrId) return undefined;
+  let decoded = slugOrId.toLowerCase();
+  try {
+    decoded = decodeURIComponent(slugOrId).toLowerCase();
+  } catch { }
+
+  const norm = decoded.replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  const normRaw = decoded.replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+  return modules.find((m) => {
+    const mName = m.moduleName.toLowerCase();
+    const mSlug = moduleSlug(m.moduleName);
+    const mOldSlug = mName.replace(/\s+/g, "-");
+    const mNormRaw = mName.replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    return (
+      m.moduleId.toLowerCase() === decoded ||
+      m.moduleId.toLowerCase() === `m${decoded}` ||
+      mSlug === decoded ||
+      mSlug === norm ||
+      mOldSlug === decoded ||
+      mNormRaw === normRaw ||
+      mSlug === normRaw ||
+      mNormRaw === norm ||
+      (norm.includes("oscillation") && m.moduleId === "M7")
+    );
+  });
 }
 
 export function topicSlug(name: string) {
