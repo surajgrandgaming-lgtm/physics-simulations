@@ -7,6 +7,7 @@ import { ThermalExpansionControls } from "@/features/challenges/topics/physics/t
 import { KineticTheoryControls } from "@/features/challenges/topics/physics/kinetic-theory/KineticTheoryControls";
 import { FirstLawControls } from "@/features/challenges/topics/physics/first-law/FirstLawControls";
 import { HeatTransferControls } from "@/features/challenges/topics/physics/heat-transfer/HeatTransferControls";
+import { SimpleHarmonicMotionControls } from "@/features/challenges/topics/physics/simple-harmonic-motion/SimpleHarmonicMotionControls";
 import { KeplerSecondLawControls } from "@/features/challenges/topics/physics/keplers-2nd-law/KeplerSecondLawControls";
 import { EscapeVelocityControls } from "@/features/challenges/topics/physics/escape-velocity/EscapeVelocityControls";
 import { GeoSyncControls } from "@/features/challenges/topics/physics/orbital-balance/GeoSyncControls";
@@ -67,6 +68,9 @@ export function ChallengeControlsClient({ config }: ChallengeControlsClientProps
   }
   if (sceneType === "heat-transfer") {
     return <HeatTransferControls config={config} />;
+  }
+  if (sceneType === "simple-harmonic-motion") {
+    return <SimpleHarmonicMotionControls config={config} />;
   }
   if (sceneType === "geo-sync") {
     return <GeoSyncControls config={config} />;

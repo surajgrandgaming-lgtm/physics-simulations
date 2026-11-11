@@ -487,12 +487,6 @@ export function MissionResultOverlay({
                             </div>
                           )}
 
-                          {/* Detailed derivation / calculation */}
-                          {step.calculation && (
-                            <div className="text-xs font-mono font-semibold text-slate-800 bg-slate-50 border border-slate-200/80 rounded-lg p-2.5 shadow-inner">
-                              {step.calculation}
-                            </div>
-                          )}
                           {step.explanation && (
                             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans pl-1">
                               {step.explanation}

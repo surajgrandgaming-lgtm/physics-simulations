@@ -132,6 +132,17 @@ const HeatTransferScene = dynamic(
   }
 );
 
+const SimpleHarmonicMotionScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/simple-harmonic-motion/SimpleHarmonicMotionScene"
+    ).then((mod) => mod.SimpleHarmonicMotionScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -440,6 +451,13 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <HeatTransferScene />
+      </div>
+    );
+  }
+  if (sceneType === "simple-harmonic-motion") {
+    return (
+      <div className="w-full h-full">
+        <SimpleHarmonicMotionScene />
       </div>
     );
   }

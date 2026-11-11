@@ -12,6 +12,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
       return (
         modSlug === normalizedModule ||
         m.moduleId.toLowerCase() === normalizedModule ||
+        (normalizedModule.includes("oscillation") && m.moduleId === "M7") ||
         (normalizedModule === "dynamics" && m.moduleId === "M2") ||
         (normalizedModule.includes("kinematics") && m.moduleId === "M1")
       );
@@ -49,6 +50,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "kinetic-theory-of-gases" || canonicalTopic === "kinetic-theory" || canonicalTopic.includes("kinetic") || canonicalTopic.includes("gas") || canonicalTopic.includes("ktg")) && (slug.includes("kinetic") || slug.includes("gas") || t.topicId === "28")) return true;
     if ((canonicalTopic === "first-law-thermodynamics" || canonicalTopic === "first-law" || canonicalTopic === "1st-law-of-thermodynamics" || canonicalTopic.includes("first-law") || canonicalTopic.includes("1st-law") || canonicalTopic.includes("work-cycles")) && (slug.includes("first-law") || slug.includes("1st-law") || slug.includes("thermodynamics") || t.topicId === "29")) return true;
     if ((canonicalTopic === "heat-transfer" || canonicalTopic === "thermal-conduction" || canonicalTopic.includes("heat-transfer") || canonicalTopic.includes("conduction")) && (slug.includes("heat-transfer") || slug.includes("conduction") || t.topicId === "30")) return true;
+    if ((canonicalTopic === "simple-harmonic-motion" || canonicalTopic === "shm" || canonicalTopic.includes("harmonic") || canonicalTopic.includes("oscillation")) && (slug.includes("harmonic") || slug.includes("oscillation") || t.topicId === "31")) return true;
     return false;
   });
 
@@ -100,6 +102,7 @@ export const getChallenge = cache(
     const isKineticTheory = canonicalTopic === "kinetic-theory-of-gases" || canonicalTopic === "kinetic-theory" || canonicalTopic.includes("kinetic") || canonicalTopic.includes("gas") || canonicalTopic.includes("ktg") || foundTopic?.topicId === "28";
     const isFirstLaw = canonicalTopic === "first-law-thermodynamics" || canonicalTopic === "first-law" || canonicalTopic === "1st-law-of-thermodynamics" || canonicalTopic.includes("first-law") || canonicalTopic.includes("1st-law") || canonicalTopic.includes("work-cycles") || foundTopic?.topicId === "29";
     const isHeatTransfer = canonicalTopic === "heat-transfer" || canonicalTopic === "thermal-conduction" || canonicalTopic.includes("heat-transfer") || canonicalTopic.includes("conduction") || foundTopic?.topicId === "30";
+    const isSHM = canonicalTopic === "simple-harmonic-motion" || canonicalTopic === "shm" || canonicalTopic.includes("harmonic") || canonicalTopic.includes("oscillation") || foundTopic?.topicId === "31";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -282,11 +285,18 @@ export const getChallenge = cache(
       parameters = {
         rounds: 3,
       };
+    } else if (isSHM) {
+      sceneType = "simple-harmonic-motion";
+      parameters = {
+        rounds: 3,
+      };
     }
 
     const title =
       challengeData?.title ||
-      (isHeatTransfer
+      (isSHM
+        ? "Simple Harmonic Motion: Spring-Mass Oscillator & Velocity Target"
+        : isHeatTransfer
         ? "Heat Transfer: Thermal Conduction & Resistance Network"
         : isFirstLaw
         ? "1st Law of Thermodynamics: Isothermal Work & Heat Balance"
