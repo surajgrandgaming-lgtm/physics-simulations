@@ -50,7 +50,9 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "kinetic-theory-of-gases" || canonicalTopic === "kinetic-theory" || canonicalTopic.includes("kinetic") || canonicalTopic.includes("gas") || canonicalTopic.includes("ktg")) && (slug.includes("kinetic") || slug.includes("gas") || t.topicId === "28")) return true;
     if ((canonicalTopic === "first-law-thermodynamics" || canonicalTopic === "first-law" || canonicalTopic === "1st-law-of-thermodynamics" || canonicalTopic.includes("first-law") || canonicalTopic.includes("1st-law") || canonicalTopic.includes("work-cycles")) && (slug.includes("first-law") || slug.includes("1st-law") || slug.includes("thermodynamics") || t.topicId === "29")) return true;
     if ((canonicalTopic === "heat-transfer" || canonicalTopic === "thermal-conduction" || canonicalTopic.includes("heat-transfer") || canonicalTopic.includes("conduction")) && (slug.includes("heat-transfer") || slug.includes("conduction") || t.topicId === "30")) return true;
-    if ((canonicalTopic === "simple-harmonic-motion" || canonicalTopic === "shm" || canonicalTopic.includes("harmonic") || canonicalTopic.includes("oscillation")) && (slug.includes("harmonic") || slug.includes("oscillation") || t.topicId === "31")) return true;
+    if ((canonicalTopic === "simple-harmonic-motion" || canonicalTopic === "shm" || canonicalTopic.includes("harmonic")) && (slug.includes("harmonic") || t.topicId === "31")) return true;
+    if ((canonicalTopic === "simple-pendulum" || canonicalTopic === "pendulum" || canonicalTopic.includes("pendulum")) && (slug.includes("pendulum") || t.topicId === "32")) return true;
+    if ((canonicalTopic === "damped-oscillations" || canonicalTopic === "damping" || canonicalTopic.includes("damped")) && (slug.includes("damped") || t.topicId === "33")) return true;
     return false;
   });
 
@@ -102,7 +104,8 @@ export const getChallenge = cache(
     const isKineticTheory = canonicalTopic === "kinetic-theory-of-gases" || canonicalTopic === "kinetic-theory" || canonicalTopic.includes("kinetic") || canonicalTopic.includes("gas") || canonicalTopic.includes("ktg") || foundTopic?.topicId === "28";
     const isFirstLaw = canonicalTopic === "first-law-thermodynamics" || canonicalTopic === "first-law" || canonicalTopic === "1st-law-of-thermodynamics" || canonicalTopic.includes("first-law") || canonicalTopic.includes("1st-law") || canonicalTopic.includes("work-cycles") || foundTopic?.topicId === "29";
     const isHeatTransfer = canonicalTopic === "heat-transfer" || canonicalTopic === "thermal-conduction" || canonicalTopic.includes("heat-transfer") || canonicalTopic.includes("conduction") || foundTopic?.topicId === "30";
-    const isSHM = canonicalTopic === "simple-harmonic-motion" || canonicalTopic === "shm" || canonicalTopic.includes("harmonic") || canonicalTopic.includes("oscillation") || foundTopic?.topicId === "31";
+    const isSHM = canonicalTopic === "simple-harmonic-motion" || canonicalTopic === "shm" || canonicalTopic.includes("harmonic") || foundTopic?.topicId === "31";
+    const isDampedOscillations = canonicalTopic === "damped-oscillations" || canonicalTopic === "damping" || canonicalTopic.includes("damped") || foundTopic?.topicId === "33";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -288,6 +291,9 @@ export const getChallenge = cache(
     } else if (foundTopic?.topicId === "32" && difficulty === "medium") {
       sceneType = "gravity-scanner";
       parameters = { rounds: 3 };
+    } else if (isDampedOscillations && difficulty === "medium") {
+      sceneType = "damped-oscillations";
+      parameters = { rounds: 3 };
     } else if (isSHM) {
       sceneType = "simple-harmonic-motion";
       parameters = {
@@ -300,52 +306,52 @@ export const getChallenge = cache(
       (isSHM
         ? "Simple Harmonic Motion: Spring-Mass Oscillator & Velocity Target"
         : isHeatTransfer
-        ? "Heat Transfer: Thermal Conduction & Resistance Network"
-        : isFirstLaw
-        ? "1st Law of Thermodynamics: Isothermal Work & Heat Balance"
-        : isKineticTheory
-        ? "Kinetic Theory of Gases: The Molecular Piston Engine"
-        : isThermalExpansion
-        ? "Thermal Expansion: Heat Strain & Dimensional Changes"
-        : isCalorimetry
-        ? "Calorimetry: Thermal Equilibrium & Phase Transitions"
-        : isHohmannTransfers
-        ? "Hohmann Transfers: Orbital Transfer Mechanics"
-        : isGravitationalFields
-        ? "Gravitational Fields: Earth Core Probe"
-        : isKeplerSecondLaw
-        ? "Kepler's 2nd Law: The Area Sweeper"
-        : isEscapeVelocity
-        ? "Escape Velocity: Gravity Well Threshold"
-        : isOrbitalBalance
-        ? "Geo-Sync: The Geosynchronous Lock"
-        : isCollisions
-        ? "Quantum Rail: Collision & Impulse Dynamics"
-        : isRotationalEquilibrium
-        ? "Crane Boom: Rotational Equilibrium"
-        : isPureRolling
-        ? "Pure Rolling: Bowling Skid-to-Roll"
-        : isCenterOfMass
-        ? "Cyber-Seesaw: System Equilibrium"
-        : isWorkEnergy
-        ? "Canyon Bungee Jump"
-        : isFrictionBanking
-        ? "Cliffside Hauler: Mountain Ridge"
-        : isAtwood
-        ? "Futuristic Elevator Descent"
-        : isInertia
-        ? "Asteroid Deflection"
-        : isInclinedProjectiles
-        ? "Mountain Summit Siege"
-        : isProjectiles
-        ? "Castle Siege"
-        : isStaticBreakaway
-        ? "The Grand Banquet Tablecloth Snatch"
-        : difficulty === "easy"
-        ? "Operation Falcon Refuel (Mid-Air Rendezvous)"
-        : difficulty === "medium"
-        ? "Precision Landing (Boss Fight)"
-        : "The Air-Drop Interception");
+          ? "Heat Transfer: Thermal Conduction & Resistance Network"
+          : isFirstLaw
+            ? "1st Law of Thermodynamics: Isothermal Work & Heat Balance"
+            : isKineticTheory
+              ? "Kinetic Theory of Gases: The Molecular Piston Engine"
+              : isThermalExpansion
+                ? "Thermal Expansion: Heat Strain & Dimensional Changes"
+                : isCalorimetry
+                  ? "Calorimetry: Thermal Equilibrium & Phase Transitions"
+                  : isHohmannTransfers
+                    ? "Hohmann Transfers: Orbital Transfer Mechanics"
+                    : isGravitationalFields
+                      ? "Gravitational Fields: Earth Core Probe"
+                      : isKeplerSecondLaw
+                        ? "Kepler's 2nd Law: The Area Sweeper"
+                        : isEscapeVelocity
+                          ? "Escape Velocity: Gravity Well Threshold"
+                          : isOrbitalBalance
+                            ? "Geo-Sync: The Geosynchronous Lock"
+                            : isCollisions
+                              ? "Quantum Rail: Collision & Impulse Dynamics"
+                              : isRotationalEquilibrium
+                                ? "Crane Boom: Rotational Equilibrium"
+                                : isPureRolling
+                                  ? "Pure Rolling: Bowling Skid-to-Roll"
+                                  : isCenterOfMass
+                                    ? "Cyber-Seesaw: System Equilibrium"
+                                    : isWorkEnergy
+                                      ? "Canyon Bungee Jump"
+                                      : isFrictionBanking
+                                        ? "Cliffside Hauler: Mountain Ridge"
+                                        : isAtwood
+                                          ? "Futuristic Elevator Descent"
+                                          : isInertia
+                                            ? "Asteroid Deflection"
+                                            : isInclinedProjectiles
+                                              ? "Mountain Summit Siege"
+                                              : isProjectiles
+                                                ? "Castle Siege"
+                                                : isStaticBreakaway
+                                                  ? "The Grand Banquet Tablecloth Snatch"
+                                                  : difficulty === "easy"
+                                                    ? "Operation Falcon Refuel (Mid-Air Rendezvous)"
+                                                    : difficulty === "medium"
+                                                      ? "Precision Landing (Boss Fight)"
+                                                      : "The Air-Drop Interception");
 
     const description = challengeData?.description || `Interact with 3D parameters to solve the ${difficulty} challenge.`;
 
@@ -524,24 +530,24 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
         canonicalTopic === "1d-motion-deceleration"
           ? "Emergency Stop & Road Grip"
           : canonicalTopic === "relative-motion"
-          ? "Ghost Driver (Mid-Air Refuel)"
-          : canonicalTopic === "tablecloth-pull"
-          ? "Tablecloth Pull (Gentle Jerk)"
-          : (foundTopic as any)?.challenges?.easy?.title || "Easy Challenge",
+            ? "Ghost Driver (Mid-Air Refuel)"
+            : canonicalTopic === "tablecloth-pull"
+              ? "Tablecloth Pull (Gentle Jerk)"
+              : (foundTopic as any)?.challenges?.easy?.title || "Easy Challenge",
       description:
         canonicalTopic === "1d-motion-deceleration"
           ? "Stopping distance s = u² / (2µg) across Dry, Wet, and Icy surfaces before the 60m barrier."
           : canonicalTopic === "relative-motion"
-          ? "Match velocity with the lead tanker aircraft (v_rel = 0 m/s) and lock onto the trailing drogue basket."
-          : canonicalTopic === "tablecloth-pull"
-          ? "Calculate minimum jerk speed so tablecloth slides out without overturning the dish stack."
-          : (foundTopic as any)?.challenges?.easy?.description || "Basic introductory 3D challenge.",
+            ? "Match velocity with the lead tanker aircraft (v_rel = 0 m/s) and lock onto the trailing drogue basket."
+            : canonicalTopic === "tablecloth-pull"
+              ? "Calculate minimum jerk speed so tablecloth slides out without overturning the dish stack."
+              : (foundTopic as any)?.challenges?.easy?.description || "Basic introductory 3D challenge.",
       sceneType:
         canonicalTopic === "1d-motion-deceleration"
           ? "emergency-stop"
           : canonicalTopic === "relative-motion"
-          ? "ghost-driver"
-          : "tablecloth-pull",
+            ? "ghost-driver"
+            : "tablecloth-pull",
       isAvailable: true,
     },
     {
@@ -550,88 +556,88 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
         canonicalTopic === "1d-motion-deceleration"
           ? "Carrier Catapult & Runway Kinematics"
           : canonicalTopic === "friction-and-banking" || canonicalTopic.includes("banking")
-          ? "Cliffside Hauler: Mountain Ridge"
-          : canonicalTopic === "atwood-machines-nlm-2" || canonicalTopic.includes("atwood")
-          ? "Futuristic Elevator Descent"
-          : canonicalTopic === "inertia-nlm-1" || canonicalTopic === "inertia"
-          ? "Asteroid Deflection"
-          : canonicalTopic === "inclined-projectiles"
-          ? "Mountain Summit Siege"
-          : canonicalTopic === "2d-projectiles"
-          ? "Castle Siege"
-          : canonicalTopic === "rotational-equilibrium" || canonicalTopic.includes("equilibrium")
-          ? "Crane Boom: Rotational Equilibrium"
-          : canonicalTopic === "angular-momentum" || canonicalTopic.includes("momentum") || canonicalTopic.includes("satellite")
-          ? "Angular Momentum: Orbital Satellite Docking"
-          : canonicalTopic === "pure-rolling" || canonicalTopic.includes("rolling")
-          ? "Pure Rolling: Bowling Skid-to-Roll"
-          : canonicalTopic === "relative-motion"
-          ? "The Last Gap (River Crossing)"
-          : canonicalTopic === "tablecloth-pull"
-          ? "Tablecloth Pull (Loaded Stack)"
-          : (foundTopic as any)?.challenges?.medium?.title || "Medium Challenge",
+            ? "Cliffside Hauler: Mountain Ridge"
+            : canonicalTopic === "atwood-machines-nlm-2" || canonicalTopic.includes("atwood")
+              ? "Futuristic Elevator Descent"
+              : canonicalTopic === "inertia-nlm-1" || canonicalTopic === "inertia"
+                ? "Asteroid Deflection"
+                : canonicalTopic === "inclined-projectiles"
+                  ? "Mountain Summit Siege"
+                  : canonicalTopic === "2d-projectiles"
+                    ? "Castle Siege"
+                    : canonicalTopic === "rotational-equilibrium" || canonicalTopic.includes("equilibrium")
+                      ? "Crane Boom: Rotational Equilibrium"
+                      : canonicalTopic === "angular-momentum" || canonicalTopic.includes("momentum") || canonicalTopic.includes("satellite")
+                        ? "Angular Momentum: Orbital Satellite Docking"
+                        : canonicalTopic === "pure-rolling" || canonicalTopic.includes("rolling")
+                          ? "Pure Rolling: Bowling Skid-to-Roll"
+                          : canonicalTopic === "relative-motion"
+                            ? "The Last Gap (River Crossing)"
+                            : canonicalTopic === "tablecloth-pull"
+                              ? "Tablecloth Pull (Loaded Stack)"
+                              : (foundTopic as any)?.challenges?.medium?.title || "Medium Challenge",
       description:
         canonicalTopic === "angular-momentum" || canonicalTopic.includes("momentum") || canonicalTopic.includes("satellite")
           ? "Adjust motorized counterweights along radial rails to conserve angular momentum (L = Iω) and synchronize rotation for orbital docking."
           : canonicalTopic === "pure-rolling" || canonicalTopic.includes("rolling")
-          ? "Throw a bowling ball. Watch it slide initially (kinetic friction), then slowly gain spin until it transitions perfectly into pure rolling motion."
-          : canonicalTopic === "1d-motion-deceleration"
-          ? "Minimum acceleration a = v² / (2s) to launch a fighter jet from an aircraft carrier deck without stalling."
-          : canonicalTopic === "inertia-nlm-1" || canonicalTopic === "inertia"
-          ? "In deep space, an asteroid coasts with constant velocity. Use limited thruster impulse J = m*Δv to alter its straight-line trajectory, bypassing planetary collision hazard zones and reaching the safe warp gate."
-          : canonicalTopic === "inclined-projectiles"
-          ? "Downhill slope projectile kinematics from mountain summit. Optimize launch angle (45° - β/2) to obliterate the outpost."
-          : canonicalTopic === "2d-projectiles"
-          ? "High-arc rainbow lob over a mountain ridge to destroy the enemy target tower."
-          : canonicalTopic === "relative-motion"
-          ? "Compensate for river current by aiming upstream to land directly on the opposite slipway."
-          : canonicalTopic === "tablecloth-pull"
-          ? "Manage heavier ceramic stacks and reduced surface contact area."
-          : (foundTopic as any)?.challenges?.medium?.description || "Intermediate challenge with multi-variable physics.",
+            ? "Throw a bowling ball. Watch it slide initially (kinetic friction), then slowly gain spin until it transitions perfectly into pure rolling motion."
+            : canonicalTopic === "1d-motion-deceleration"
+              ? "Minimum acceleration a = v² / (2s) to launch a fighter jet from an aircraft carrier deck without stalling."
+              : canonicalTopic === "inertia-nlm-1" || canonicalTopic === "inertia"
+                ? "In deep space, an asteroid coasts with constant velocity. Use limited thruster impulse J = m*Δv to alter its straight-line trajectory, bypassing planetary collision hazard zones and reaching the safe warp gate."
+                : canonicalTopic === "inclined-projectiles"
+                  ? "Downhill slope projectile kinematics from mountain summit. Optimize launch angle (45° - β/2) to obliterate the outpost."
+                  : canonicalTopic === "2d-projectiles"
+                    ? "High-arc rainbow lob over a mountain ridge to destroy the enemy target tower."
+                    : canonicalTopic === "relative-motion"
+                      ? "Compensate for river current by aiming upstream to land directly on the opposite slipway."
+                      : canonicalTopic === "tablecloth-pull"
+                        ? "Manage heavier ceramic stacks and reduced surface contact area."
+                        : (foundTopic as any)?.challenges?.medium?.description || "Intermediate challenge with multi-variable physics.",
       sceneType:
         canonicalTopic === "1d-motion-deceleration"
           ? "last-hundred-meters"
           : canonicalTopic === "friction-and-banking" || canonicalTopic.includes("banking")
-          ? "mountain-truck"
-          : canonicalTopic === "atwood-machines-nlm-2" || canonicalTopic.includes("atwood")
-          ? "atwood-elevator"
-          : canonicalTopic === "inertia-nlm-1" || canonicalTopic === "inertia"
-          ? "asteroid-deflection"
-          : canonicalTopic === "inclined-projectiles"
-          ? "mountain-summit-siege"
-          : canonicalTopic === "2d-projectiles"
-          ? "castle-siege"
-          : canonicalTopic === "vectors-river-rain"
-          ? "umbrella-tilt"
-          : canonicalTopic === "rotational-equilibrium" || canonicalTopic.includes("equilibrium")
-          ? "crane-boom"
-          : canonicalTopic === "orbital-balance" || canonicalTopic.includes("orbital") || canonicalTopic.includes("geo-sync")
-          ? "geo-sync"
-          : canonicalTopic === "escape-velocity" || canonicalTopic.includes("escape")
-          ? "escape-velocity"
-          : canonicalTopic === "keplers-2nd-law" || canonicalTopic.includes("kepler") || canonicalTopic.includes("areal")
-          ? "keplers-2nd-law"
-          : canonicalTopic === "gravitational-fields" || canonicalTopic.includes("field") || canonicalTopic.includes("mapper")
-          ? "gravitational-fields"
-          : canonicalTopic === "hohmann-transfers" || canonicalTopic.includes("hohmann") || canonicalTopic.includes("transfer")
-          ? "hohmann-transfers"
-          : canonicalTopic === "calorimetry" || canonicalTopic.includes("calorimet")
-          ? "calorimetry"
-          : canonicalTopic === "thermal-expansion" || canonicalTopic.includes("expansion")
-          ? "thermal-expansion"
-          : canonicalTopic === "kinetic-theory-of-gases" || canonicalTopic === "kinetic-theory" || canonicalTopic.includes("kinetic") || canonicalTopic.includes("gas")
-          ? "kinetic-theory"
-          : canonicalTopic === "first-law-thermodynamics" || canonicalTopic === "first-law" || canonicalTopic === "1st-law-of-thermodynamics" || canonicalTopic.includes("first-law") || canonicalTopic.includes("1st-law")
-          ? "first-law"
-          : canonicalTopic === "heat-transfer" || canonicalTopic === "thermal-conduction" || canonicalTopic.includes("heat-transfer") || canonicalTopic.includes("conduction")
-          ? "heat-transfer"
-          : canonicalTopic === "angular-momentum" || canonicalTopic.includes("momentum") || canonicalTopic.includes("satellite")
-          ? "satellite-spin"
-          : canonicalTopic === "pure-rolling" || canonicalTopic.includes("rolling")
-          ? "skid-to-roll"
-          : canonicalTopic === "relative-motion"
-          ? "the-last-gap"
-          : "tablecloth-pull",
+            ? "mountain-truck"
+            : canonicalTopic === "atwood-machines-nlm-2" || canonicalTopic.includes("atwood")
+              ? "atwood-elevator"
+              : canonicalTopic === "inertia-nlm-1" || canonicalTopic === "inertia"
+                ? "asteroid-deflection"
+                : canonicalTopic === "inclined-projectiles"
+                  ? "mountain-summit-siege"
+                  : canonicalTopic === "2d-projectiles"
+                    ? "castle-siege"
+                    : canonicalTopic === "vectors-river-rain"
+                      ? "umbrella-tilt"
+                      : canonicalTopic === "rotational-equilibrium" || canonicalTopic.includes("equilibrium")
+                        ? "crane-boom"
+                        : canonicalTopic === "orbital-balance" || canonicalTopic.includes("orbital") || canonicalTopic.includes("geo-sync")
+                          ? "geo-sync"
+                          : canonicalTopic === "escape-velocity" || canonicalTopic.includes("escape")
+                            ? "escape-velocity"
+                            : canonicalTopic === "keplers-2nd-law" || canonicalTopic.includes("kepler") || canonicalTopic.includes("areal")
+                              ? "keplers-2nd-law"
+                              : canonicalTopic === "gravitational-fields" || canonicalTopic.includes("field") || canonicalTopic.includes("mapper")
+                                ? "gravitational-fields"
+                                : canonicalTopic === "hohmann-transfers" || canonicalTopic.includes("hohmann") || canonicalTopic.includes("transfer")
+                                  ? "hohmann-transfers"
+                                  : canonicalTopic === "calorimetry" || canonicalTopic.includes("calorimet")
+                                    ? "calorimetry"
+                                    : canonicalTopic === "thermal-expansion" || canonicalTopic.includes("expansion")
+                                      ? "thermal-expansion"
+                                      : canonicalTopic === "kinetic-theory-of-gases" || canonicalTopic === "kinetic-theory" || canonicalTopic.includes("kinetic") || canonicalTopic.includes("gas")
+                                        ? "kinetic-theory"
+                                        : canonicalTopic === "first-law-thermodynamics" || canonicalTopic === "first-law" || canonicalTopic === "1st-law-of-thermodynamics" || canonicalTopic.includes("first-law") || canonicalTopic.includes("1st-law")
+                                          ? "first-law"
+                                          : canonicalTopic === "heat-transfer" || canonicalTopic === "thermal-conduction" || canonicalTopic.includes("heat-transfer") || canonicalTopic.includes("conduction")
+                                            ? "heat-transfer"
+                                            : canonicalTopic === "angular-momentum" || canonicalTopic.includes("momentum") || canonicalTopic.includes("satellite")
+                                              ? "satellite-spin"
+                                              : canonicalTopic === "pure-rolling" || canonicalTopic.includes("rolling")
+                                                ? "skid-to-roll"
+                                                : canonicalTopic === "relative-motion"
+                                                  ? "the-last-gap"
+                                                  : "tablecloth-pull",
       isAvailable: true,
     },
     {
@@ -640,24 +646,24 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
         canonicalTopic === "1d-motion-deceleration"
           ? "Hypervelocity Armor Penetration"
           : canonicalTopic === "relative-motion"
-          ? "The Air-Drop Interception"
-          : canonicalTopic === "tablecloth-pull"
-          ? "Tablecloth Pull (Tower of Babel)"
-          : (foundTopic as any)?.challenges?.advanced?.title || "Advanced Challenge",
+            ? "The Air-Drop Interception"
+            : canonicalTopic === "tablecloth-pull"
+              ? "Tablecloth Pull (Tower of Babel)"
+              : (foundTopic as any)?.challenges?.advanced?.title || "Advanced Challenge",
       description:
         canonicalTopic === "1d-motion-deceleration"
           ? "Analyze non-linear drag deceleration F = -k·v² across layered ballistic media."
           : canonicalTopic === "relative-motion"
-          ? "Rescue helicopter drops supply payload onto a moving river boat under crosswinds."
-          : canonicalTopic === "tablecloth-pull"
-          ? "Extreme multi-tier unstable dish tower with delicate tipping moments."
-          : (foundTopic as any)?.challenges?.advanced?.description || "Challenging JEE Advanced-tier physics scenario.",
+            ? "Rescue helicopter drops supply payload onto a moving river boat under crosswinds."
+            : canonicalTopic === "tablecloth-pull"
+              ? "Extreme multi-tier unstable dish tower with delicate tipping moments."
+              : (foundTopic as any)?.challenges?.advanced?.description || "Challenging JEE Advanced-tier physics scenario.",
       sceneType:
         canonicalTopic === "1d-motion-deceleration"
           ? "decelerating-bullet"
           : canonicalTopic === "relative-motion"
-          ? "air-drop-interception"
-          : "tablecloth-pull",
+            ? "air-drop-interception"
+            : "tablecloth-pull",
       isAvailable: true,
     },
   ];

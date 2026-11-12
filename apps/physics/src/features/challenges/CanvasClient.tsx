@@ -150,6 +150,17 @@ const SimpleHarmonicMotionScene = dynamic(
   }
 );
 
+const DampedOscillationsScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/damped-oscillations/DampedOscillationsScene"
+    ).then((mod) => mod.DampedOscillationsScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -465,6 +476,13 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <GravityScannerScene />
+      </div>
+    );
+  }
+  if (sceneType === "damped-oscillations") {
+    return (
+      <div className="w-full h-full">
+        <DampedOscillationsScene />
       </div>
     );
   }
