@@ -79,24 +79,24 @@ export function DampedOscillationsControls({ config }: { config?: any }) {
       isLight={true}
       calculation={calculationDerivation}
       briefing={{
-        target: `Tune viscous damping b to achieve Critical Damping (bc = 2√(k·m) within ±${stage.tolerance.toFixed(2)} N·s/m).`,
-        storyObjective: `A ${stage.mass.toFixed(1)} kg cart connected to a ${stage.springK.toFixed(1)} N/m spring has been pulled to x₀ = ${stage.initialDisplacement.toFixed(2)} m. Your engineering mission is to calculate the exact critical damping constant bc for the hydraulic dashpot so the cart returns to equilibrium in the shortest time without overshooting.`,
+        target: `Calculate critical damping coefficient bc = 2√(k·m) to settle the cart without bounce.`,
+        storyObjective: `Given cart mass m = ${stage.mass.toFixed(1)} kg and spring constant k = ${stage.springK.toFixed(1)} N/m, find the critical damping coefficient bc to return the cart to equilibrium in minimal time without overshooting.`,
         targetImageUrl: "https://topcoaching.b-cdn.net/Module%207/Topic%203/medium/target.png",
         steps: [
           {
             step: 1,
             title: "Check System Parameters",
-            description: `Read the cart mass m = ${stage.mass.toFixed(1)} kg and spring stiffness k = ${stage.springK.toFixed(1)} N/m from the HUD or apparatus label.`,
+            description: `Read mass m = ${stage.mass.toFixed(1)} kg and spring constant k = ${stage.springK.toFixed(1)} N/m.`,
           },
           {
             step: 2,
-            title: "Calculate Critical Damping (bc = 2√(k·m))",
-            description: `Multiply k by m, take the square root, and double it: bc = 2 × √(${stage.springK.toFixed(1)} × ${stage.mass.toFixed(1)}) = ${stage.criticalDamping.toFixed(2)} N·s/m.`,
+            title: "Calculate Critical Damping",
+            description: `Compute bc = 2√(k·m) = 2√(${stage.springK.toFixed(1)} × ${stage.mass.toFixed(1)}) = ${stage.criticalDamping.toFixed(2)} N·s/m.`,
           },
           {
             step: 3,
-            title: "Calibrate Dashpot & Test Release",
-            description: "Adjust the damping slider (or type the value directly), then click RELEASE. The cart will glide smoothly to rest at x = 0 with zero oscillation.",
+            title: "Calibrate & Release",
+            description: "Set the damping slider to your answer and click RELEASE.",
           },
         ],
         formulas: stage.mathDerivation.formulas,
@@ -105,22 +105,22 @@ export function DampedOscillationsControls({ config }: { config?: any }) {
         title: "HOW TO USE THE CRITICAL DAMPER LAB",
         instructions: [
           {
-            title: "1. UNDERSTAND THE 3 DAMPING BEHAVIORS",
-            description: "• Underdamped (b < bc): The fluid drag is too weak. The cart overshoots past x = 0 and bounces back.\n• Overdamped (b > bc): The fluid drag is too thick. The cart moves like molasses and takes too long to reach x = 0.\n• Critically Damped (b = bc): The perfect balance! The cart glides to equilibrium in the minimum possible time without bouncing.",
+            title: "1. Read Mass & Spring Constant",
+            description: `Note cart mass m = ${stage.mass.toFixed(1)} kg and spring stiffness k = ${stage.springK.toFixed(1)} N/m.`,
             imageUrl: "https://topcoaching.b-cdn.net/Module%207/Topic%203/medium/1.png",
           },
           {
-            title: "2. USE THE FORMULA: bc = 2√(k · m)",
-            description: "Multiply spring constant k by mass m, take the square root, then multiply by 2. This gives the exact critical damping coefficient in N·s/m.",
+            title: "2. Calculate Critical Damping bc",
+            description: "Use the formula bc = 2√(k·m) to find the required damping coefficient.",
             imageUrl: "https://topcoaching.b-cdn.net/Module%207/Topic%203/medium/2.png",
           },
           {
-            title: "3. SET THE SLIDER & CLICK RELEASE",
-            description: "Use the slider, stepper buttons (±0.1, ±0.01), or click on the number to type your answer. Then hit RELEASE to verify your calculation in real-time!",
+            title: "3. Calibrate & Release",
+            description: "Set the damping value with the slider or stepper and click RELEASE to test.",
             imageUrl: "https://topcoaching.b-cdn.net/Module%207/Topic%203/medium/3.png",
           },
         ],
-        tip: "Remember: Critical damping is the exact boundary condition where the cart reaches x = 0 as fast as physically possible without crossing over to negative displacement.",
+        tip: "b < bc will overshoot and oscillate (underdamped); b > bc returns too slowly (overdamped).",
       }}
       result={
         showResultModal && (isWon || isGameOver)
