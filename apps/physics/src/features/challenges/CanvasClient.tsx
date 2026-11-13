@@ -161,6 +161,17 @@ const DampedOscillationsScene = dynamic(
   }
 );
 
+const StandingWavesScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/standing-waves/StandingWavesScene"
+    ).then((mod) => mod.StandingWavesScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -483,6 +494,13 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <DampedOscillationsScene />
+      </div>
+    );
+  }
+  if (sceneType === "standing-waves") {
+    return (
+      <div className="w-full h-full">
+        <StandingWavesScene />
       </div>
     );
   }

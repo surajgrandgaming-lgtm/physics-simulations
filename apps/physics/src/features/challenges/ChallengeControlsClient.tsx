@@ -10,6 +10,7 @@ import { HeatTransferControls } from "@/features/challenges/topics/physics/heat-
 import { SimpleHarmonicMotionControls } from "@/features/challenges/topics/physics/simple-harmonic-motion/SimpleHarmonicMotionControls";
 import { GravityScannerControls } from "@/features/challenges/topics/physics/simple-pendulum/GravityScannerControls";
 import { DampedOscillationsControls } from "@/features/challenges/topics/physics/damped-oscillations/DampedOscillationsControls";
+import { StandingWavesControls } from "@/features/challenges/topics/physics/standing-waves/StandingWavesControls";
 import { KeplerSecondLawControls } from "@/features/challenges/topics/physics/keplers-2nd-law/KeplerSecondLawControls";
 import { EscapeVelocityControls } from "@/features/challenges/topics/physics/escape-velocity/EscapeVelocityControls";
 import { GeoSyncControls } from "@/features/challenges/topics/physics/orbital-balance/GeoSyncControls";
@@ -76,6 +77,9 @@ export function ChallengeControlsClient({ config }: ChallengeControlsClientProps
   }
   if (sceneType === "damped-oscillations") {
     return <DampedOscillationsControls config={config} />;
+  }
+  if (sceneType === "standing-waves") {
+    return <StandingWavesControls />;
   }
   if (sceneType === "simple-harmonic-motion") {
     return <SimpleHarmonicMotionControls config={config} />;
