@@ -90,7 +90,7 @@ export function SonicBoomControls({ config }: { config?: any }) {
       briefing={{
         target: `Launch the aircraft along the track at speed v_s to register target frequency f' = ${stage.targetFrequency.toFixed(0)} Hz.`,
         storyObjective: `Calculate the flight speed v_s = v · (1 - f_0 / f') so the Doppler compressed sound wavefronts match the Acoustic Sensor Gate target of ${stage.targetFrequency.toFixed(0)} Hz.`,
-        targetImageUrl: "https://topcoaching.b-cdn.net/Module%207/Topic%204/medium/target.png",
+        targetImageUrl: "https://topcoaching.b-cdn.net/Module%207/Topic%205/medium/target.png",
         steps: [
           {
             step: 1,
@@ -116,17 +116,17 @@ export function SonicBoomControls({ config }: { config?: any }) {
           {
             title: "1. Calculate Target Flight Velocity",
             description: "Compute v_s = v · (1 - f_0 / f') using given sound speed and frequencies.",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%207/Topic%204/medium/1.png",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%207/Topic%205/medium/1.png",
           },
           {
             title: "2. Set Speed on Capsule Dock",
             description: "Adjust flight velocity using steppers (-/+) or click to type directly.",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%207/Topic%204/medium/2.png",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%207/Topic%205/medium/2.png",
           },
           {
             title: "3. Run Test to Lock Frequency",
             description: "Click RUN to launch the jet and lock the sensor gate frequency.",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%207/Topic%204/medium/3.png",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%207/Topic%205/medium/3.png",
           },
         ],
         tip: "Higher jet speed compresses sound wavefronts, raising the received frequency f'.",

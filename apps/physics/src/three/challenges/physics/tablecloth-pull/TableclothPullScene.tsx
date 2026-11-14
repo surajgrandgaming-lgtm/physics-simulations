@@ -26,13 +26,26 @@ interface Props {
 
 /** The actual Three.js scene — rendered inside Canvas */
 function Scene({ config }: Props) {
-  const scene = (config as any).scene ?? {
+  const scene = (config as any)?.scene ?? {
     cameraPosition: [0, 3, 5] as [number, number, number],
     cameraTarget: [0, 0.5, 0] as [number, number, number],
     fov: 50,
   };
-  const physics = (config as any).physics ?? {
+  const physics = (config as any)?.physics ?? {
     gravity: [0, -9.81, 0] as [number, number, number],
+    tableDimensions: {
+      height: 0.9,
+      width: 2.8,
+      thickness: 0.08,
+      depth: 1.8,
+    },
+  };
+
+  const tableDimensions = physics.tableDimensions ?? {
+    height: 0.9,
+    width: 2.8,
+    thickness: 0.08,
+    depth: 1.8,
   };
 
   return (
@@ -51,21 +64,21 @@ function Scene({ config }: Props) {
           <mesh
             castShadow
             receiveShadow
-            position={[0, physics.tableDimensions.height / 2, 0]}
+            position={[0, tableDimensions.height / 2, 0]}
           >
             <boxGeometry
               args={[
-                physics.tableDimensions.width,
-                physics.tableDimensions.thickness,
-                physics.tableDimensions.depth,
+                tableDimensions.width,
+                tableDimensions.thickness,
+                tableDimensions.depth,
               ]}
             />
             <meshStandardMaterial color="#5c3d2e" roughness={0.7} metalness={0.1} />
           </mesh>
           {/* Table legs */}
           {[[-1.3, -0.8], [-1.3, 0.8], [1.3, -0.8], [1.3, 0.8]].map(([lx, lz], i) => (
-            <mesh key={i} position={[lx, physics.tableDimensions.height / 2 - 0.4, lz]}>
-              <cylinderGeometry args={[0.04, 0.04, physics.tableDimensions.height - 0.05, 8]} />
+            <mesh key={i} position={[lx, tableDimensions.height / 2 - 0.4, lz]}>
+              <cylinderGeometry args={[0.04, 0.04, tableDimensions.height - 0.05, 8]} />
               <meshStandardMaterial color="#3d2010" roughness={0.9} />
             </mesh>
           ))}

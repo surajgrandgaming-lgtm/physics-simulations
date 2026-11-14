@@ -80,30 +80,16 @@ function AcousticSensorGate({
       </mesh>
 
       {/* ── Floating Gate Telemetry Header & Frequency Readout ── */}
-      <Html position={[0, radius + 1.2, 0]} center>
+      <Html position={[0, radius + 0.9, 0]} center>
         <div
-          className={`backdrop-blur-md rounded-xl px-3 py-1.5 text-center shadow-xl border select-none pointer-events-none whitespace-nowrap transition-all duration-300 ${
+          className={`backdrop-blur-md rounded-xl px-2.5 py-1 text-center shadow-lg border select-none pointer-events-none whitespace-nowrap transition-all duration-300 ${
             isLocked
               ? "bg-emerald-950/90 border-emerald-400 text-emerald-300 shadow-emerald-500/30 scale-105"
               : "bg-white/95 border-slate-300 text-slate-800"
           }`}
         >
-          <div className="flex items-center justify-center gap-1.5 text-[9px] font-mono uppercase tracking-wider font-bold">
-            <span
-              className={`w-2 h-2 rounded-full ${
-                isLocked ? "bg-emerald-400 animate-ping" : "bg-sky-500"
-              }`}
-            />
-            <span>ACOUSTIC SENSOR GATE</span>
-          </div>
-          <div className="text-xs sm:text-sm font-mono font-black mt-0.5">
-            f' = {detectedFrequency.toFixed(1)} Hz
-          </div>
-          <div className="text-[10px] font-mono font-semibold text-slate-500">
-            TARGET: {targetFrequency.toFixed(1)} Hz{" "}
-            {isLocked
-              ? "• LOCK ACHIEVED!"
-              : `(Δ ${(detectedFrequency - targetFrequency).toFixed(1)} Hz)`}
+          <div className="text-xs sm:text-sm font-mono font-bold text-emerald-700">
+            Target: f' = {targetFrequency.toFixed(0)} Hz
           </div>
         </div>
       </Html>
@@ -328,13 +314,10 @@ function DopplerContent({
 
         {/* Emitted Sound Waves Frequency Badge on Aircraft */}
         <Html position={[0, 1.45, 0]} center>
-          <div className="bg-white/95 backdrop-blur-md border border-slate-300 rounded-lg px-2.5 py-1 text-center shadow-md select-none pointer-events-none whitespace-nowrap">
-            <div className="text-[11px] sm:text-xs font-mono font-bold text-sky-800">
-              SIREN: f₀ = {stage.sourceFrequency.toFixed(0)} Hz
-            </div>
-            <div className="text-[10px] sm:text-[11px] font-mono font-semibold text-slate-600">
-              Speed: {sliderValue.toFixed(1)} m/s
-            </div>
+          <div className="bg-white/95 backdrop-blur-md border border-slate-300 rounded-lg px-2.5 py-0.5 text-center shadow-md select-none pointer-events-none whitespace-nowrap">
+            <span className="text-[11px] font-mono font-bold text-sky-800">
+              f₀ = {stage.sourceFrequency.toFixed(0)} Hz
+            </span>
           </div>
         </Html>
       </group>
