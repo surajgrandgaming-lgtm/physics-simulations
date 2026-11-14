@@ -54,6 +54,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "simple-pendulum" || canonicalTopic === "pendulum" || canonicalTopic.includes("pendulum")) && (slug.includes("pendulum") || t.topicId === "32")) return true;
     if ((canonicalTopic === "damped-oscillations" || canonicalTopic === "damping" || canonicalTopic.includes("damped")) && (slug.includes("damped") || t.topicId === "33")) return true;
     if ((canonicalTopic === "standing-waves" || canonicalTopic === "standing" || canonicalTopic.includes("standing-wave")) && (slug.includes("standing") || t.topicId === "34")) return true;
+    if ((canonicalTopic === "doppler-effect-sound" || canonicalTopic === "doppler-effect" || canonicalTopic.includes("doppler")) && (slug.includes("doppler") || t.topicId === "35")) return true;
     return false;
   });
 
@@ -108,6 +109,7 @@ export const getChallenge = cache(
     const isSHM = canonicalTopic === "simple-harmonic-motion" || canonicalTopic === "shm" || canonicalTopic.includes("harmonic") || foundTopic?.topicId === "31";
     const isDampedOscillations = canonicalTopic === "damped-oscillations" || canonicalTopic === "damping" || canonicalTopic.includes("damped") || foundTopic?.topicId === "33";
     const isStandingWaves = canonicalTopic === "standing-waves" || canonicalTopic === "standing" || canonicalTopic.includes("standing") || foundTopic?.topicId === "34";
+    const isSonicBoom = canonicalTopic === "doppler-effect-sound" || canonicalTopic === "doppler-effect" || canonicalTopic.includes("doppler") || foundTopic?.topicId === "35";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -298,6 +300,9 @@ export const getChallenge = cache(
       parameters = { rounds: 3 };
     } else if (isStandingWaves && difficulty === "medium") {
       sceneType = "standing-waves";
+      parameters = { rounds: 3 };
+    } else if (isSonicBoom && difficulty === "medium") {
+      sceneType = "sonic-boom";
       parameters = { rounds: 3 };
     } else if (isSHM) {
       sceneType = "simple-harmonic-motion";
@@ -642,6 +647,8 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
                                                 ? "skid-to-roll"
                                                  : canonicalTopic === "standing-waves" || canonicalTopic.includes("standing")
                                                    ? "standing-waves"
+                                                 : canonicalTopic === "doppler-effect-sound" || canonicalTopic === "doppler-effect" || canonicalTopic.includes("doppler")
+                                                   ? "sonic-boom"
                                                 : canonicalTopic === "relative-motion"
                                                   ? "the-last-gap"
                                                   : "tablecloth-pull",

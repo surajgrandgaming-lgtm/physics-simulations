@@ -172,6 +172,17 @@ const StandingWavesScene = dynamic(
   }
 );
 
+const SonicBoomScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/doppler-effect/SonicBoomScene"
+    ).then((mod) => mod.SonicBoomScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -501,6 +512,13 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <StandingWavesScene />
+      </div>
+    );
+  }
+  if (sceneType === "sonic-boom") {
+    return (
+      <div className="w-full h-full">
+        <SonicBoomScene />
       </div>
     );
   }
