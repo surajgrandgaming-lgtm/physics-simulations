@@ -183,6 +183,17 @@ const SonicBoomScene = dynamic(
   }
 );
 
+const ParticleDeflectorScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/electric-fields/ParticleDeflectorScene"
+    ).then((mod) => mod.ParticleDeflectorScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -519,6 +530,13 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <SonicBoomScene />
+      </div>
+    );
+  }
+  if (sceneType === "particle-deflector") {
+    return (
+      <div className="w-full h-full">
+        <ParticleDeflectorScene />
       </div>
     );
   }

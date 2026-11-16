@@ -12,6 +12,7 @@ import { GravityScannerControls } from "@/features/challenges/topics/physics/sim
 import { DampedOscillationsControls } from "@/features/challenges/topics/physics/damped-oscillations/DampedOscillationsControls";
 import { StandingWavesControls } from "@/features/challenges/topics/physics/standing-waves/StandingWavesControls";
 import { SonicBoomControls } from "@/features/challenges/topics/physics/doppler-effect/SonicBoomControls";
+import { ParticleDeflectorControls } from "@/features/challenges/topics/physics/electric-fields/ParticleDeflectorControls";
 import { KeplerSecondLawControls } from "@/features/challenges/topics/physics/keplers-2nd-law/KeplerSecondLawControls";
 import { EscapeVelocityControls } from "@/features/challenges/topics/physics/escape-velocity/EscapeVelocityControls";
 import { GeoSyncControls } from "@/features/challenges/topics/physics/orbital-balance/GeoSyncControls";
@@ -84,6 +85,9 @@ export function ChallengeControlsClient({ config }: ChallengeControlsClientProps
   }
   if (sceneType === "sonic-boom") {
     return <SonicBoomControls />;
+  }
+  if (sceneType === "particle-deflector") {
+    return <ParticleDeflectorControls config={config} />;
   }
   if (sceneType === "simple-harmonic-motion") {
     return <SimpleHarmonicMotionControls config={config} />;

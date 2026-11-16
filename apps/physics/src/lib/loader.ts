@@ -55,6 +55,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "damped-oscillations" || canonicalTopic === "damping" || canonicalTopic.includes("damped")) && (slug.includes("damped") || t.topicId === "33")) return true;
     if ((canonicalTopic === "standing-waves" || canonicalTopic === "standing" || canonicalTopic.includes("standing-wave")) && (slug.includes("standing") || t.topicId === "34")) return true;
     if ((canonicalTopic === "doppler-effect-sound" || canonicalTopic === "doppler-effect" || canonicalTopic.includes("doppler")) && (slug.includes("doppler") || t.topicId === "35")) return true;
+    if ((canonicalTopic === "electric-fields" || canonicalTopic === "electric-field" || canonicalTopic.includes("electric-field")) && (slug.includes("electric") || t.topicId === "36")) return true;
     return false;
   });
 
@@ -99,7 +100,7 @@ export const getChallenge = cache(
     const isOrbitalBalance = canonicalTopic === "orbital-balance" || canonicalTopic.includes("orbital") || canonicalTopic.includes("geo-sync") || foundTopic?.topicId === "16";
     const isEscapeVelocity = canonicalTopic === "escape-velocity" || canonicalTopic.includes("escape") || foundTopic?.topicId === "17";
     const isKeplerSecondLaw = canonicalTopic === "keplers-2nd-law" || canonicalTopic.includes("kepler") || canonicalTopic.includes("areal") || foundTopic?.topicId === "18";
-    const isGravitationalFields = canonicalTopic === "gravitational-fields" || canonicalTopic.includes("field") || canonicalTopic.includes("mapper") || foundTopic?.topicId === "19";
+    const isGravitationalFields = (canonicalTopic === "gravitational-fields" || canonicalTopic.includes("mapper") || foundTopic?.topicId === "19") && canonicalTopic !== "electric-fields" && !canonicalTopic.includes("electric");
     const isHohmannTransfers = canonicalTopic === "hohmann-transfers" || canonicalTopic === "hohmann" || canonicalTopic.includes("hohmann") || foundTopic?.topicId === "20";
     const isCalorimetry = canonicalTopic === "calorimetry" || canonicalTopic.includes("calorimet") || foundTopic?.topicId === "26";
     const isThermalExpansion = canonicalTopic === "thermal-expansion" || canonicalTopic.includes("expansion") || foundTopic?.topicId === "27";
@@ -110,6 +111,7 @@ export const getChallenge = cache(
     const isDampedOscillations = canonicalTopic === "damped-oscillations" || canonicalTopic === "damping" || canonicalTopic.includes("damped") || foundTopic?.topicId === "33";
     const isStandingWaves = canonicalTopic === "standing-waves" || canonicalTopic === "standing" || canonicalTopic.includes("standing") || foundTopic?.topicId === "34";
     const isSonicBoom = canonicalTopic === "doppler-effect-sound" || canonicalTopic === "doppler-effect" || canonicalTopic.includes("doppler") || foundTopic?.topicId === "35";
+    const isElectricFields = canonicalTopic === "electric-fields" || canonicalTopic === "electric-field" || canonicalTopic.includes("electric") || foundTopic?.topicId === "36";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -303,6 +305,9 @@ export const getChallenge = cache(
       parameters = { rounds: 3 };
     } else if (isSonicBoom && difficulty === "medium") {
       sceneType = "sonic-boom";
+      parameters = { rounds: 3 };
+    } else if (isElectricFields && difficulty === "medium") {
+      sceneType = "particle-deflector";
       parameters = { rounds: 3 };
     } else if (isSHM) {
       sceneType = "simple-harmonic-motion";
@@ -649,6 +654,8 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
                                                    ? "standing-waves"
                                                  : canonicalTopic === "doppler-effect-sound" || canonicalTopic === "doppler-effect" || canonicalTopic.includes("doppler")
                                                    ? "sonic-boom"
+                                                 : canonicalTopic === "electric-fields" || canonicalTopic === "electric-field" || canonicalTopic.includes("electric")
+                                                   ? "particle-deflector"
                                                 : canonicalTopic === "relative-motion"
                                                   ? "the-last-gap"
                                                   : "tablecloth-pull",
