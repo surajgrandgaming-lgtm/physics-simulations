@@ -56,6 +56,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "standing-waves" || canonicalTopic === "standing" || canonicalTopic.includes("standing-wave")) && (slug.includes("standing") || t.topicId === "34")) return true;
     if ((canonicalTopic === "doppler-effect-sound" || canonicalTopic === "doppler-effect" || canonicalTopic.includes("doppler")) && (slug.includes("doppler") || t.topicId === "35")) return true;
     if ((canonicalTopic === "electric-fields" || canonicalTopic === "electric-field" || canonicalTopic.includes("electric-field")) && (slug.includes("electric") || t.topicId === "36")) return true;
+    if ((canonicalTopic === "gauss-law" || canonicalTopic === "gausss-law" || canonicalTopic === "gauss" || canonicalTopic.includes("gauss") || canonicalTopic.includes("faraday")) && (slug.includes("gauss") || t.topicId === "37")) return true;
     return false;
   });
 
@@ -111,7 +112,8 @@ export const getChallenge = cache(
     const isDampedOscillations = canonicalTopic === "damped-oscillations" || canonicalTopic === "damping" || canonicalTopic.includes("damped") || foundTopic?.topicId === "33";
     const isStandingWaves = canonicalTopic === "standing-waves" || canonicalTopic === "standing" || canonicalTopic.includes("standing") || foundTopic?.topicId === "34";
     const isSonicBoom = canonicalTopic === "doppler-effect-sound" || canonicalTopic === "doppler-effect" || canonicalTopic.includes("doppler") || foundTopic?.topicId === "35";
-    const isElectricFields = canonicalTopic === "electric-fields" || canonicalTopic === "electric-field" || canonicalTopic.includes("electric") || foundTopic?.topicId === "36";
+    const isElectricFields = (canonicalTopic === "electric-fields" || canonicalTopic === "electric-field" || canonicalTopic.includes("electric")) && !canonicalTopic.includes("gauss") && foundTopic?.topicId === "36";
+    const isGaussLaw = canonicalTopic === "gauss-law" || canonicalTopic === "gausss-law" || canonicalTopic === "gauss" || canonicalTopic.includes("gauss") || canonicalTopic.includes("faraday") || foundTopic?.topicId === "37";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -308,6 +310,9 @@ export const getChallenge = cache(
       parameters = { rounds: 3 };
     } else if (isElectricFields && difficulty === "medium") {
       sceneType = "particle-deflector";
+      parameters = { rounds: 3 };
+    } else if (isGaussLaw && difficulty === "medium") {
+      sceneType = "faraday-shield";
       parameters = { rounds: 3 };
     } else if (isSHM) {
       sceneType = "simple-harmonic-motion";

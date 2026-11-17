@@ -13,6 +13,7 @@ import { DampedOscillationsControls } from "@/features/challenges/topics/physics
 import { StandingWavesControls } from "@/features/challenges/topics/physics/standing-waves/StandingWavesControls";
 import { SonicBoomControls } from "@/features/challenges/topics/physics/doppler-effect/SonicBoomControls";
 import { ParticleDeflectorControls } from "@/features/challenges/topics/physics/electric-fields/ParticleDeflectorControls";
+import { FaradayShieldControls } from "@/features/challenges/topics/physics/gauss-law/FaradayShieldControls";
 import { KeplerSecondLawControls } from "@/features/challenges/topics/physics/keplers-2nd-law/KeplerSecondLawControls";
 import { EscapeVelocityControls } from "@/features/challenges/topics/physics/escape-velocity/EscapeVelocityControls";
 import { GeoSyncControls } from "@/features/challenges/topics/physics/orbital-balance/GeoSyncControls";
@@ -88,6 +89,9 @@ export function ChallengeControlsClient({ config }: ChallengeControlsClientProps
   }
   if (sceneType === "particle-deflector") {
     return <ParticleDeflectorControls config={config} />;
+  }
+  if (sceneType === "faraday-shield") {
+    return <FaradayShieldControls config={config} />;
   }
   if (sceneType === "simple-harmonic-motion") {
     return <SimpleHarmonicMotionControls config={config} />;

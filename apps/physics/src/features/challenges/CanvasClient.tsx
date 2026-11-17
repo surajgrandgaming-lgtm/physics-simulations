@@ -194,6 +194,17 @@ const ParticleDeflectorScene = dynamic(
   }
 );
 
+const FaradayShieldScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/gauss-law/FaradayShieldScene"
+    ).then((mod) => mod.FaradayShieldScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -537,6 +548,13 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <ParticleDeflectorScene />
+      </div>
+    );
+  }
+  if (sceneType === "faraday-shield") {
+    return (
+      <div className="w-full h-full">
+        <FaradayShieldScene />
       </div>
     );
   }
