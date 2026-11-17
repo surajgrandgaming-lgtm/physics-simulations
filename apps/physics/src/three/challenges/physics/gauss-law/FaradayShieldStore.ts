@@ -62,57 +62,64 @@ export const FARADAY_STAGES: Record<number, FaradayShieldStageConfig> = {
     mathDerivation: {
       title: "Stage 1: Gauss's Law in the Central Vacuum Cavity",
       concept:
-        "When an imaginary spherical Gaussian surface of radius r surrounds a central point charge Q inside a vacuum cavity (r < R₁), three fundamental physical conditions hold:\n\n1. Spherical Symmetry of Electric Field:\nBecause the central charge is a sphere, the electric field lines radiate symmetrically outward in all 360° directions. At any constant radius r, the electric field strength E has the exact same magnitude everywhere on the sphere and points strictly perpendicular to the surface (parallel to the area normal vector dA).\n\n2. Evaluating the Gauss's Law Flux Integral:\nGauss's Law states that total electric flux Φ_E equals the net enclosed charge divided by permittivity:\n   Φ_E = ∮ E · dA = E · ∮ dA = E · (4πr²) = Q_enc / ε₀\n\n3. Solving for Electric Field & Sensor Radius:\nIsolating E gives Coulomb's inverse-square law:\n   E(r) = (1 / 4πε₀) · (Q / r²) = k_e · (Q / r²)\nwhere k_e = 9.0 kV·m/μC. To find the exact radius r where the field equals our calibrated instrument threshold E_target = 9.00 kV/m, we rearrange:\n   r = √(k_e · Q / E_target)",
+        "Imagine an imaginary spherical balloon (a Gaussian surface) expanding from the central positive ion core outward through the empty vacuum cavity. Because the central charge is a sphere, electric field lines spray out uniformly in every direction like sunlight from a star. Gauss's Law allows us to find the field strength at any radius r simply by asking: how much charge is trapped inside the balloon, and how much surface area is that field spread over? Since the surface area of a sphere grows as 4πr², the electric field spreads out and dilutes with distance squared (E ∝ 1/r²).",
       conclusion:
-        "Key Physics Takeaway: In vacuum, the electric field drops off with the square of the distance (E ∝ 1/r²). For an ion core of Q = +4.0 μC, setting the Gaussian detector radius to r = 2.00 m produces a field of exactly E = 9.00 kV/m.",
+        "In the vacuum cavity, the electric field follows Coulomb's inverse-square law: E = k_e · Q / r². For a +4.0 μC core, tuning the Gaussian detector radius to exactly r = 2.00 m concentrates the field to exactly the target 9.00 kV/m.",
       formulas: [
         {
-          label: "1. GAUSS'S FLUX INTEGRAL FOR A SPHERE",
+          label: "1. GAUSS'S LAW FOR A SPHERE",
           formula: "\\Phi_E = \\oint \\mathbf{E} \\cdot d\\mathbf{A} = E(r) \\cdot (4\\pi r^2) = \\dfrac{Q_{\\text{enc}}}{\\varepsilon_0}",
           explanation:
-            "Because E is radial and uniform across the spherical surface, the dot product E·dA simplifies directly to field magnitude E multiplied by total surface area 4πr².",
+            "Electric field lines point straight outward perpendicular to the sphere. The total electric flux equals field strength E times the sphere's surface area 4πr².",
         },
         {
-          label: "2. CAVITY ELECTRIC FIELD (COULOMB'S INVERSE-SQUARE LAW)",
+          label: "2. ELECTRIC FIELD IN VACUUM CAVITY",
           formula: "E(r) = k_e \\dfrac{Q_{\\text{core}}}{r^2} \\qquad \\left(k_e = \\dfrac{1}{4\\pi\\varepsilon_0} = 9.0\\text{ kV}\\cdot\\text{m}/\\mu\\text{C}\\right)",
           explanation:
-            "The electric field inside the cavity depends solely on the central core charge and decays rapidly with distance squared (1/r²).",
+            "Dividing the flux equation by 4πr² gives the familiar inverse-square law: doubling your distance cuts the electric field strength to one-fourth.",
         },
         {
-          label: "3. SOLVED RADIUS FORMULA",
+          label: "3. TARGET DETECTOR RADIUS FORMULA",
           formula: "r = \\sqrt{\\dfrac{k_e \\cdot Q_{\\text{core}}}{E_{\\text{target}}}}",
           explanation:
-            "Direct working equation used to calculate the required detector radius for any target field threshold.",
+            "Rearranging the field equation lets us directly calculate the exact radius needed to measure any desired field strength.",
         },
       ],
       steps: [
         {
           step: 1,
-          title: "Step 1: Identify Given Parameters",
+          title: "Step 1: Identify Known Values",
           math: "Q_{\\text{core}} = +4.0\\,\\mu\\text{C}, \\quad E_{\\text{target}} = 9.00\\text{ kV/m}, \\quad k_e = 9.0\\text{ kV}\\cdot\\text{m}/\\mu\\text{C}",
           explanation:
-            "The positive ion core suspended at the center holds a charge of 4.0 microcoulombs.",
+            "The suspended central core holds +4.0 microcoulombs of positive charge, and our target field is 9.00 kilovolts per meter.",
         },
         {
           step: 2,
-          title: "Step 2: Set Up the Inverted Radius Equation",
-          math: "r^2 = \\dfrac{k_e \\cdot Q_{\\text{core}}}{E_{\\text{target}}} = \\dfrac{9.0 \\times 4.0}{9.00} = \\dfrac{36.0}{9.00}",
+          title: "Step 2: Calculate the Numerator (Field Times Area Factor)",
+          math: "k_e \\times Q_{\\text{core}} = 9.0 \\times 4.0 = 36.0\\text{ kV}\\cdot\\text{m}",
           explanation:
-            "Multiply Coulomb's constant (9.0) by the core charge (4.0 μC) to get 36.0, then divide by the target field (9.00 kV/m).",
+            "Multiply Coulomb's constant (9.0) by the central core charge (4.0 μC) to find the total field-distance constant of 36.0.",
         },
         {
           step: 3,
-          title: "Step 3: Compute the Target Radius",
-          math: "r^2 = 4.00\\text{ m}^2 \\implies r = \\sqrt{4.00} = 2.00\\text{ m}",
+          title: "Step 3: Solve for Radius Squared (r²)",
+          math: "r^2 = \\dfrac{k_e \\cdot Q_{\\text{core}}}{E_{\\text{target}}} = \\dfrac{36.0}{9.00} = 4.00\\text{ m}^2",
           explanation:
-            "Taking the square root of 4.00 gives exactly r = 2.00 meters.",
+            "Divide the constant (36.0) by the target electric field (9.00 kV/m). This gives r² = 4.00 square meters.",
         },
         {
           step: 4,
-          title: "Step 4: Verify Surface Flux & Field",
-          math: "E = \\dfrac{9.0 \\times 4.0}{(2.00)^2} = \\dfrac{36.0}{4.00} = 9.00\\text{ kV/m}",
+          title: "Step 4: Take the Square Root to Find Target Radius",
+          math: "r = \\sqrt{4.00\\text{ m}^2} = 2.00\\text{ m}",
           explanation:
-            "Plugging r = 2.00 m back into Gauss's Law confirms the field is dead-on 9.00 kV/m, matching the target.",
+            "Taking the square root of 4.00 gives exactly r = 2.00 meters. This is safely inside the cavity boundary (R₁ = 2.50 m).",
+        },
+        {
+          step: 5,
+          title: "Step 5: Verify the Electric Field",
+          math: "E(2.00\\text{ m}) = \\dfrac{9.0 \\times 4.0}{(2.00)^2} = \\dfrac{36.0}{4.00} = 9.00\\text{ kV/m}",
+          explanation:
+            "Plugging r = 2.00 m back into Gauss's Law confirms the detector registers exactly 9.00 kV/m.",
         },
       ],
     },
@@ -137,59 +144,66 @@ export const FARADAY_STAGES: Record<number, FaradayShieldStageConfig> = {
     tolerance: 0.65, // Any radius strictly inside the metal wall: [2.45, 3.75]
     targetDescription: "Expand detector into the conducting metal bulk (2.40 m < r < 3.80 m) where E = 0.00 kV/m",
     mathDerivation: {
-      title: "Stage 2: Electrostatic Shielding & Induced Charges in Conductors",
+      title: "Stage 2: Electrostatic Shielding & Conductor Zero-Field Discovery",
       concept:
-        "When an uncharged conducting metal shell surrounds a positive cavity charge Q_core = +5.0 μC, a remarkable physical phenomenon occurs:\n\n1. Behavior of Mobile Conduction Electrons:\nMetals contain quadrillions of mobile free electrons. The positive charge at the center attracts these electrons inward toward the inner cavity surface (R₁ = 2.40 m). Electrons accumulate on the inner surface until the electric field they generate completely cancels the core's outward field inside the metal bulk!\n\n2. Electrostatic Equilibrium (E = 0 in Metal):\nIf any electric field existed inside the conducting metal, free electrons would experience a force (F = -e·E) and move. Because charges are at rest in equilibrium, the electric field inside the metal wall must be strictly zero:\n   E_metal = 0\n\n3. Applying Gauss's Law Inside the Metal (R₁ < r < R₂):\nDrawing any Gaussian sphere of radius r inside the metal wall:\n   Φ_E = ∮ E · dA = ∮ 0 · dA = 0\n   ⟹ Q_enc = Q_core + Q_inner_surface = 0\n   ⟹ Q_inner_surface = -Q_core = -5.0 μC\n\n4. Outer Surface Charge Conservation:\nBecause the metal shell had zero net charge originally (uncharged), the electrons that moved to the inner wall left behind a positive deficit on the outer wall:\n   Q_outer_surface = Q_shell - Q_inner_surface = 0 - (-5.0 μC) = +5.0 μC\n\nTherefore, inside the metal wall (2.40 m < r < 3.80 m), any sensitive quantum instrument is completely shielded from external and internal fields: E = 0.00 kV/m.",
+        "What happens when electric field lines hit a solid metal shell? Metals are packed with trillions of free, mobile conduction electrons. The moment the positive central core (+5.0 μC) attracts them, negative electrons instantly rush to the inner wall (R₁ = 2.40 m), building up an induced charge of -5.0 μC. This negative wall creates its own internal electric field that points in the exact opposite direction of the core's field! Inside the solid metal wall, these two fields cancel each other out with 100% precision. Therefore, inside any conductor in electrostatic equilibrium, the net electric field is always strictly zero (E = 0). This is the secret behind Faraday cages and electromagnetic shielding.",
       conclusion:
-        "Key Physics Takeaway: Inside a conductor in electrostatic equilibrium, E = 0 strictly holds. The inner surface automatically induces Q_in = -Q_core so that the net enclosed charge Q_enc = 0 for any Gaussian surface inside the metal (2.40 m < r < 3.80 m).",
+        "Conductors act as perfect shields. Mobile electrons automatically rearrange until E = 0 inside the metal bulk. For any Gaussian sphere inside the metal wall (2.40 m < r < 3.80 m), the enclosed core charge (+5.0 μC) and induced inner surface charge (-5.0 μC) cancel out (Q_enc = 0), proving that E = 0.00 kV/m.",
       formulas: [
         {
-          label: "1. CONDUCTOR EQUILIBRIUM CONDITION",
-          formula: "\\mathbf{E}_{\\text{metal}} = 0 \\implies \\oint_{\\text{bulk}} \\mathbf{E} \\cdot d\\mathbf{A} = 0",
+          label: "1. CONDUCTOR EQUILIBRIUM PRINCIPLE",
+          formula: "\\mathbf{E}_{\\text{metal}} = 0 \\iff \\oint_{\\text{metal}} \\mathbf{E} \\cdot d\\mathbf{A} = 0",
           explanation:
-            "Mobile electrons instantaneously redistribute until the internal electrostatic field vanishes completely.",
+            "If an electric field existed inside the metal, free electrons would keep moving. Since charges are at rest in equilibrium, the field inside must be zero.",
         },
         {
           label: "2. INDUCED INNER SURFACE CHARGE",
           formula: "Q_{\\text{enc}} = Q_{\\text{core}} + Q_{\\text{inner}} = 0 \\implies Q_{\\text{inner}} = -Q_{\\text{core}}",
           explanation:
-            "By Gauss's Law, zero field implies zero net enclosed charge, forcing the inner wall to hold exactly -Q_core.",
+            "Because the electric field inside the metal is zero, Gauss's Law proves that the total enclosed charge must equal zero.",
         },
         {
-          label: "3. OUTER SURFACE INDUCED CHARGE",
-          formula: "Q_{\\text{outer}} = Q_{\\text{shell, net}} - Q_{\\text{inner}} = 0 - (-Q_{\\text{core}}) = +Q_{\\text{core}}",
+          label: "3. ZERO FIELD IN CONDUCTING REGION",
+          formula: "E(r) = k_e \\dfrac{Q_{\\text{enc}}}{r^2} = k_e \\dfrac{0}{r^2} = 0.00\\text{ kV/m} \\quad (R_1 < r < R_2)",
           explanation:
-            "Charge conservation on an isolated shell means an equal positive charge appears on the exterior boundary.",
+            "Zero net enclosed charge guarantees that no electric field lines penetrate or exist anywhere within the thickness of the metal shell.",
         },
       ],
       steps: [
         {
           step: 1,
-          title: "Step 1: Identify Conductor Shell Boundaries",
+          title: "Step 1: Identify Metal Shell Boundaries",
           math: "R_1 = 2.40\\text{ m} \\quad (\\text{Inner Wall}), \\qquad R_2 = 3.80\\text{ m} \\quad (\\text{Outer Wall})",
           explanation:
-            "The solid metallic conducting wall spans from radius 2.40 m to 3.80 m.",
+            "The solid metallic conducting shell extends from radius 2.40 m to radius 3.80 m (thickness of 1.40 m).",
         },
         {
           step: 2,
-          title: "Step 2: Determine Net Enclosed Charge Inside Metal",
-          math: "Q_{\\text{enc}}(r) = Q_{\\text{core}} + Q_{\\text{inner}} = +5.0\\,\\mu\\text{C} + (-5.0\\,\\mu\\text{C}) = 0.00\\,\\mu\\text{C}",
+          title: "Step 2: Calculate Induced Inner Surface Charge",
+          math: "Q_{\\text{inner}} = -Q_{\\text{core}} = -(+5.00\\,\\mu\\text{C}) = -5.00\\,\\mu\\text{C}",
           explanation:
-            "The induced negative charge on the inner wall cancels the positive core charge completely.",
+            "Mobile electrons are pulled inward until exactly 5.00 microcoulombs of negative charge lines the inner cavity wall.",
         },
         {
           step: 3,
-          title: "Step 3: Calculate Electric Field Inside Metal",
-          math: "E(r) = \\dfrac{k_e \\cdot Q_{\\text{enc}}}{r^2} = \\dfrac{9.0 \\times 0.00}{r^2} = 0.00\\text{ kV/m} \\quad (2.40\\text{ m} < r < 3.80\\text{ m})",
+          title: "Step 3: Sum the Enclosed Charge in the Metal Bulk",
+          math: "Q_{\\text{enc}} = Q_{\\text{core}} + Q_{\\text{inner}} = +5.00\\,\\mu\\text{C} + (-5.00\\,\\mu\\text{C}) = 0.00\\,\\mu\\text{C}",
           explanation:
-            "Zero net enclosed charge guarantees that the electric field is exactly zero everywhere inside the metal.",
+            "Any Gaussian surface drawn between R₁ and R₂ encloses both the positive core and the negative inner wall, summing to zero net charge.",
         },
         {
           step: 4,
-          title: "Step 4: Select Sensor Radius in the Shielded Band",
+          title: "Step 4: Evaluate Electric Field via Gauss's Law",
+          math: "E(r) = \\dfrac{k_e \\cdot Q_{\\text{enc}}}{r^2} = \\dfrac{9.0 \\times 0.00}{r^2} = 0.00\\text{ kV/m}",
+          explanation:
+            "Gauss's Law states flux equals Q_enc / ε₀. With zero enclosed charge, the electric field is strictly 0.00 kV/m.",
+        },
+        {
+          step: 5,
+          title: "Step 5: Select Sensor Detector Target",
           math: "r = 3.10\\text{ m} \\quad (2.40\\text{ m} < 3.10\\text{ m} < 3.80\\text{ m})",
           explanation:
-            "Positioning the sensor at r = 3.10 m places it safely inside the shielded metal wall where E = 0.",
+            "Setting the detector to r = 3.10 m places it directly in the quiet zone of the metal shell, where field readings drop to zero.",
         },
       ],
     },
@@ -214,59 +228,66 @@ export const FARADAY_STAGES: Record<number, FaradayShieldStageConfig> = {
     tolerance: 0.15,
     targetDescription: "Dial the outer shield charge Q to -6.00 μC so exterior field E(r > R2) is zero",
     mathDerivation: {
-      title: "Stage 3: Electrostatic Cloaking via Outer Surface Grounding / Charge Bias",
+      title: "Stage 3: Electrostatic Cloaking via Shell Charge Bias",
       concept:
-        "In Stage 3, our Gaussian detector is placed in the external environment outside the entire apparatus (r > R₂ = 4.0 m):\n\n1. The Problem of Field Leakage:\nEven though the metal shell shields its own bulk (E = 0 inside), by default its outer surface still carries an induced charge Q_outer = +Q_core = +6.00 μC. This outer charge emits electric flux lines outward into the laboratory room!\n\n2. Applying Gauss's Law to the Entire System:\nA Gaussian sphere drawn outside the entire assembly (r > 4.0 m) encloses both the central core AND the outer conducting shell:\n   Φ_E = ∮ E · dA = E · (4πr²) = Q_enc / ε₀\n   where Q_enc = Q_core + Q_shell\n\n3. The Electrostatic Cloaking Condition:\nTo prevent any electric field from escaping into the room (achieving complete electrostatic cloaking):\n   E(r > R₂) = 0 ⟹ Φ_E = 0 ⟹ Q_enc = 0\n   Q_core + Q_shell = 0\n   ⟹ Q_shell = -Q_core = -6.00 μC\n\nWhen we apply an external bias of -6.00 μC to the shell (or ground the shell), negative charges flow onto the outer wall, neutralizing the +6.00 μC outer surface charge. The net exterior enclosed charge drops to zero, and the exterior electric field vanishes completely!",
+        "While a metal shell shields its own interior metal bulk, notice what happens outside! By default, because the metal was neutral, pulling negative charges to the inner wall leaves behind +6.0 μC of positive charge on the exterior surface. As a result, the outer world still feels electric field lines radiating into the room! To make the entire system completely invisible to external detectors (electrostatic cloaking), we must eliminate all outward flux. According to Gauss's Law, the only way the electric field outside the entire apparatus (r > R₂ = 4.0 m) can be zero is if the total net charge enclosed by an external Gaussian surface is zero. By applying an external charge bias of Q_bias = -6.0 μC (or grounding the shell), we neutralize the outer surface charge, collapsing the escaping external field to zero.",
       conclusion:
-        "Key Physics Takeaway: Applying an equal and opposite charge Q_shell = -Q_core (or grounding the shell) neutralizes all exterior surface charge. As a result, Q_enc = 0 for any external Gaussian surface, making the system 100% electrostatically invisible (E = 0 for all r > R₂).",
+        "To achieve complete electrostatic cloaking (E = 0 everywhere outside), the net charge of the entire assembly must sum to zero: Q_total = Q_core + Q_bias = 0. Setting the shell bias to Q_bias = -6.00 μC cancels the +6.00 μC core, eliminating all external electric flux.",
       formulas: [
         {
           label: "1. TOTAL EXTERIOR ENCLOSED CHARGE",
-          formula: "Q_{\\text{enc}}(r > R_2) = Q_{\\text{core}} + Q_{\\text{shell, net}}",
+          formula: "Q_{\\text{enc}}(r > R_2) = Q_{\\text{core}} + Q_{\\text{bias}}",
           explanation:
-            "A Gaussian surface outside the apparatus encloses the central core and all charges residing on the shell.",
+            "A Gaussian sphere surrounding the entire apparatus encloses both the internal core ion and the conducting shell.",
         },
         {
           label: "2. CLOAKING ZERO-FIELD CONDITION",
-          formula: "E(r > R_2) = 0 \\iff Q_{\\text{enc}} = 0 \\implies Q_{\\text{shell}} = -Q_{\\text{core}}",
+          formula: "E(r > R_2) = 0 \\iff Q_{\\text{enc}} = 0 \\implies Q_{\\text{bias}} = -Q_{\\text{core}}",
           explanation:
-            "The exterior field can only be zero if the total net charge enclosed by the Gaussian surface is zero.",
+            "By Gauss's Law, the exterior field vanishes if and only if the total enclosed charge adds up to zero.",
         },
         {
-          label: "3. EXTERIOR FIELD FORMULA",
+          label: "3. ESCAPING EXTERIOR ELECTRIC FIELD",
           formula: "E(r > R_2) = k_e \\dfrac{Q_{\\text{core}} + Q_{\\text{bias}}}{r^2}",
           explanation:
-            "Shows that adjusting the bias charge directly controls the strength of the escaping external electric field.",
+            "Shows that adjusting the shell bias directly dials the intensity of the external field up or down.",
         },
       ],
       steps: [
         {
           step: 1,
-          title: "Step 1: Identify Active Core Charge",
+          title: "Step 1: Identify Given Parameters",
           math: "Q_{\\text{core}} = +6.00\\,\\mu\\text{C}, \\quad R_1 = 2.50\\text{ m}, \\quad R_2 = 4.00\\text{ m}",
           explanation:
-            "The positive core emits outward electric flux corresponding to +6.00 microcoulombs.",
+            "The suspended core has +6.00 μC, and the shell outer boundary ends at radius 4.00 m.",
         },
         {
           step: 2,
-          title: "Step 2: Formulate External Flux Balance",
-          math: "Q_{\\text{enc}} = Q_{\\text{core}} + Q_{\\text{bias}} = +6.00\\,\\mu\\text{C} + Q_{\\text{bias}} = 0",
+          title: "Step 2: Set Up Exterior Gauss's Law Balance",
+          math: "Q_{\\text{enc}} = Q_{\\text{core}} + Q_{\\text{bias}} = 0",
           explanation:
-            "For zero external field lines to pierce the outer detector, the total net charge inside must sum to zero.",
+            "For zero electric flux lines to escape into the laboratory room, the sum of all enclosed charges must equal zero.",
         },
         {
           step: 3,
-          title: "Step 3: Solve for Required Bias Charge (Q)",
-          math: "Q_{\\text{bias}} = -Q_{\\text{core}} = -6.00\\,\\mu\\text{C}",
+          title: "Step 3: Solve for the Required Bias Charge",
+          math: "Q_{\\text{bias}} = -Q_{\\text{core}} = -(+6.00\\,\\mu\\text{C}) = -6.00\\,\\mu\\text{C}",
           explanation:
-            "Injecting -6.00 microcoulombs onto the conducting shell cancels the outward field completely.",
+            "Subtracting the core charge shows the shell requires a bias of exactly -6.00 microcoulombs.",
         },
         {
           step: 4,
-          title: "Step 4: Verify Exterior Electrostatic Isolation",
+          title: "Step 4: Verify Outer Surface Charge Cancellation",
+          math: "Q_{\\text{outer}} = Q_{\\text{bias}} - Q_{\\text{inner}} = -6.00\\,\\mu\\text{C} - (-6.00\\,\\mu\\text{C}) = 0.00\\,\\mu\\text{C}",
+          explanation:
+            "With -6.00 μC applied, the outer surface is completely neutral, so no charge remains on the exterior.",
+        },
+        {
+          step: 5,
+          title: "Step 5: Verify Exterior Electric Field is Zero",
           math: "E(r > 4.00\\text{ m}) = \\dfrac{k_e \\times (6.00 - 6.00)}{r^2} = \\dfrac{9.0 \\times 0.00}{r^2} = 0.00\\text{ kV/m}",
           explanation:
-            "With Q_bias = -6.00 μC, the external field is identically zero everywhere outside the apparatus.",
+            "The external electric field is identically zero at all distances outside the shell. The core is completely cloaked!",
         },
       ],
     },

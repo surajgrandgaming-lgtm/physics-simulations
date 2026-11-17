@@ -106,18 +106,18 @@ export function FaradayShieldControls({ config }: { config?: any }) {
         title: "HOW TO PLAY: FARADAY SHIELD & GAUSS'S LAW",
         instructions: [
           {
-            title: `1. Understand ${stage.title}`,
-            description: stage.subtitle,
+            title: "1. Calculate Target",
+            description: "Solve for the required radius or charge using Gauss's Law.",
             imageUrl: "https://topcoaching.b-cdn.net/Module%208/Topic%202/medium/1.png",
           },
           {
-            title: `2. Adjust ${stage.parameterName}`,
-            description: `Set your calculated value on the capsule dock below.`,
+            title: "2. Set the Value",
+            description: "Adjust the slider or click the number to type directly.",
             imageUrl: "https://topcoaching.b-cdn.net/Module%208/Topic%202/medium/2.png",
           },
           {
-            title: "3. Run Flux Analysis",
-            description: "Click ANALYZE FLUX to record electric flux and verify field containment.",
+            title: "3. Analyze Flux",
+            description: "Click ANALYZE FLUX to test your setting and verify shielding.",
             imageUrl: "https://topcoaching.b-cdn.net/Module%208/Topic%202/medium/3.png",
           },
         ],
