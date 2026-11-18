@@ -88,7 +88,7 @@ export function DualLoopGridControls({ config }: { config?: any }) {
             : currentStage === 2
             ? "Generator 1 (36.0 V) drives current downward through the central relay. Generator 2 (E₂) opposes it from below. By Thévenin's Theorem, Generator 1 produces 24.0 V across the relay. Dial E₂ to exactly 24.0 V to create an electrical stalemate (I_center = 0.00 A) and freeze current flow!"
             : "The power grid presents an internal Thévenin resistance of 4.0 Ω. By the Maximum Power Transfer Theorem, peak power transfer occurs when load impedance matches the grid (R_L = R_th = 4.0 Ω), dissipating a maximum of 36.0 W.",
-        targetImageUrl: "https://topcoaching.b-cdn.net/Module%208/Topic%203/medium/target.png",
+        targetImageUrl: "https://topcoaching.b-cdn.net/Module%208/Topic%204/medium/target.png",
         steps: [
           {
             step: 1,
@@ -124,17 +124,17 @@ export function DualLoopGridControls({ config }: { config?: any }) {
                 : currentStage === 2
                 ? "Set opposing voltage E₂ to freeze center current at 0.00 A."
                 : "Set load R_L to match grid resistance for max power (36.0 W).",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%208/Topic%203/medium/1.png",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%208/Topic%204/medium/1.png",
           },
           {
             title: "2. Adjust",
             description: `Adjust ${stage.parameterName} on the bottom dock to your calculated value.`,
-            imageUrl: "https://topcoaching.b-cdn.net/Module%208/Topic%203/medium/2.png",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%208/Topic%204/medium/2.png",
           },
           {
             title: "3. Check",
             description: "Click ENERGIZE to test the circuit and confirm your calculation.",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%208/Topic%203/medium/3.png",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%208/Topic%204/medium/3.png",
           },
         ],
         tip:

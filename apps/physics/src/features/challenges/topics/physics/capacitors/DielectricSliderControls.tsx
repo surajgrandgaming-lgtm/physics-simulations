@@ -83,7 +83,7 @@ export function DielectricSliderControls({ config }: { config?: any }) {
       briefing={{
         target: stage.targetDescription,
         storyObjective: `Analyze the behavior of dielectric polarization, capacitance scaling C(x), and energy storage inside a high-precision parallel-plate capacitor bench.`,
-        targetImageUrl: "https://topcoaching.b-cdn.net/Module%208/Topic%202/medium/target.png",
+        targetImageUrl: "https://topcoaching.b-cdn.net/Module%208/Topic%203/medium/target.png",
         steps: [
           {
             step: 1,
@@ -109,17 +109,17 @@ export function DielectricSliderControls({ config }: { config?: any }) {
           {
             title: "1. Calculate Target",
             description: "Solve for the target insertion depth or voltage using dielectric formulas.",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%208/Topic%202/medium/1.png",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%208/Topic%203/medium/1.png",
           },
           {
             title: "2. Set the Value",
             description: "Adjust the slider or click the number to type directly.",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%208/Topic%202/medium/2.png",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%208/Topic%203/medium/2.png",
           },
           {
             title: "3. Analyze Charge",
             description: "Click ANALYZE to test your setting and verify capacitor parameters.",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%208/Topic%202/medium/3.png",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%208/Topic%203/medium/3.png",
           },
         ],
         tip: "When battery is connected, V is constant. When battery is disconnected, charge Q is trapped and constant, causing V to drop as the dielectric enters.",
