@@ -15,6 +15,7 @@ import { SonicBoomControls } from "@/features/challenges/topics/physics/doppler-
 import { ParticleDeflectorControls } from "@/features/challenges/topics/physics/electric-fields/ParticleDeflectorControls";
 import { FaradayShieldControls } from "@/features/challenges/topics/physics/gauss-law/FaradayShieldControls";
 import { DielectricSliderControls } from "@/features/challenges/topics/physics/capacitors/DielectricSliderControls";
+import { DualLoopGridControls } from "@/features/challenges/topics/physics/dc-circuits/DualLoopGridControls";
 import { KeplerSecondLawControls } from "@/features/challenges/topics/physics/keplers-2nd-law/KeplerSecondLawControls";
 import { EscapeVelocityControls } from "@/features/challenges/topics/physics/escape-velocity/EscapeVelocityControls";
 import { GeoSyncControls } from "@/features/challenges/topics/physics/orbital-balance/GeoSyncControls";
@@ -96,6 +97,9 @@ export function ChallengeControlsClient({ config }: ChallengeControlsClientProps
   }
   if (sceneType === "dielectric-slider") {
     return <DielectricSliderControls config={config} />;
+  }
+  if (sceneType === "dual-loop-grid" || sceneType === "meter-bridge") {
+    return <DualLoopGridControls config={config} />;
   }
   if (sceneType === "simple-harmonic-motion") {
     return <SimpleHarmonicMotionControls config={config} />;

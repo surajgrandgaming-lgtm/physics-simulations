@@ -216,6 +216,17 @@ const DielectricSliderScene = dynamic(
   }
 );
 
+const DualLoopGridScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/dc-circuits/DualLoopGridScene"
+    ).then((mod) => mod.DualLoopGridScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -573,6 +584,13 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <DielectricSliderScene />
+      </div>
+    );
+  }
+  if (sceneType === "dual-loop-grid" || sceneType === "meter-bridge") {
+    return (
+      <div className="w-full h-full">
+        <DualLoopGridScene />
       </div>
     );
   }

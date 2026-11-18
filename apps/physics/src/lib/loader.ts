@@ -58,6 +58,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "electric-fields" || canonicalTopic === "electric-field" || canonicalTopic.includes("electric-field")) && (slug.includes("electric") || t.topicId === "36")) return true;
     if ((canonicalTopic === "gauss-law" || canonicalTopic === "gausss-law" || canonicalTopic === "gauss" || canonicalTopic.includes("gauss") || canonicalTopic.includes("faraday")) && (slug.includes("gauss") || t.topicId === "37")) return true;
     if ((canonicalTopic === "capacitors" || canonicalTopic === "capacitance" || canonicalTopic.includes("capacit") || canonicalTopic.includes("dielectric")) && (slug.includes("capacit") || t.topicId === "38")) return true;
+    if ((canonicalTopic === "dc-circuits" || canonicalTopic === "dc-circuit" || canonicalTopic.includes("circuit") || canonicalTopic.includes("wheatstone") || canonicalTopic.includes("dual-loop-grid")) && (slug.includes("circuit") || t.topicId === "39")) return true;
     return false;
   });
 
@@ -116,6 +117,7 @@ export const getChallenge = cache(
     const isElectricFields = (canonicalTopic === "electric-fields" || canonicalTopic === "electric-field" || canonicalTopic.includes("electric")) && !canonicalTopic.includes("gauss") && foundTopic?.topicId === "36";
     const isGaussLaw = canonicalTopic === "gauss-law" || canonicalTopic === "gausss-law" || canonicalTopic === "gauss" || canonicalTopic.includes("gauss") || canonicalTopic.includes("faraday") || foundTopic?.topicId === "37";
     const isCapacitors = canonicalTopic === "capacitors" || canonicalTopic === "capacitance" || canonicalTopic.includes("capacit") || canonicalTopic.includes("dielectric") || foundTopic?.topicId === "38";
+    const isDCCircuits = canonicalTopic === "dc-circuits" || canonicalTopic === "dc-circuit" || canonicalTopic.includes("circuit") || canonicalTopic.includes("wheatstone") || canonicalTopic.includes("dual-loop-grid") || foundTopic?.topicId === "39";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -319,6 +321,9 @@ export const getChallenge = cache(
     } else if (isCapacitors && difficulty === "medium") {
       sceneType = "dielectric-slider";
       parameters = { rounds: 3 };
+    } else if (isDCCircuits && (difficulty === "medium" || difficulty === "easy" || difficulty === "advanced")) {
+      sceneType = "dual-loop-grid";
+      parameters = { rounds: 3 };
     } else if (isSHM) {
       sceneType = "simple-harmonic-motion";
       parameters = {
@@ -328,7 +333,9 @@ export const getChallenge = cache(
 
     const title =
       challengeData?.title ||
-      (isCapacitors
+      (isDCCircuits
+        ? "DC Circuits: Dual-Loop Power Grid & Current Reversal"
+        : isCapacitors
         ? "Capacitors: Dielectric Slider & Polarization Bench"
         : isGaussLaw
           ? "Gauss's Law: Faraday Shield & Flux Detector"
@@ -682,6 +689,8 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
                                                       ? "faraday-shield"
                                                       : canonicalTopic === "capacitors" || canonicalTopic === "capacitance" || canonicalTopic.includes("capacit")
                                                         ? "dielectric-slider"
+                                                      : canonicalTopic === "dc-circuits" || canonicalTopic === "dc-circuit" || canonicalTopic.includes("circuit") || canonicalTopic.includes("wheatstone") || canonicalTopic.includes("dual-loop-grid")
+                                                        ? "dual-loop-grid"
                                                 : canonicalTopic === "relative-motion"
                                                   ? "the-last-gap"
                                                   : "tablecloth-pull",
