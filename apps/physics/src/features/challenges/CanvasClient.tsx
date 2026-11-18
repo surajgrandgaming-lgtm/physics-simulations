@@ -205,6 +205,17 @@ const FaradayShieldScene = dynamic(
   }
 );
 
+const DielectricSliderScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/capacitors/DielectricSliderScene"
+    ).then((mod) => mod.DielectricSliderScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -555,6 +566,13 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <FaradayShieldScene />
+      </div>
+    );
+  }
+  if (sceneType === "dielectric-slider") {
+    return (
+      <div className="w-full h-full">
+        <DielectricSliderScene />
       </div>
     );
   }

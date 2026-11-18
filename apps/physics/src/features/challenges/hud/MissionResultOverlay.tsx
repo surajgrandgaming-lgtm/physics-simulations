@@ -417,9 +417,37 @@ export function MissionResultOverlay({
                     </div>
                   )}
                   {(calculation?.concept || briefing?.storyObjective) && (
-                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans">
-                      {calculation?.concept || briefing?.storyObjective}
-                    </p>
+                    <div className="text-xs sm:text-sm text-slate-700 leading-relaxed font-sans space-y-2.5">
+                      {(calculation?.concept || briefing?.storyObjective || "")
+                        .split("\n\n")
+                        .filter((p) => p.trim().length > 0)
+                        .map((para, pIdx) => {
+                          const isHeading = para.startsWith("1.") || para.startsWith("2.") || para.startsWith("3.") || para.startsWith("4.");
+                          if (isHeading) {
+                            const [title, ...rest] = para.split("\n");
+                            return (
+                              <div
+                                key={pIdx}
+                                className="p-3 rounded-lg bg-slate-50 border border-slate-200/80 flex flex-col gap-1 my-1"
+                              >
+                                <span className="font-bold text-slate-900 text-xs sm:text-sm font-mono text-cyan-800">
+                                  {title}
+                                </span>
+                                {rest.length > 0 && (
+                                  <p className="text-slate-600 text-xs sm:text-[13px] leading-relaxed">
+                                    {rest.join(" ")}
+                                  </p>
+                                )}
+                              </div>
+                            );
+                          }
+                          return (
+                            <p key={pIdx} className="text-slate-600">
+                              {para}
+                            </p>
+                          );
+                        })}
+                    </div>
                   )}
                 </div>
 

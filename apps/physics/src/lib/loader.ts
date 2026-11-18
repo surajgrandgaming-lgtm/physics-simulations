@@ -57,6 +57,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "doppler-effect-sound" || canonicalTopic === "doppler-effect" || canonicalTopic.includes("doppler")) && (slug.includes("doppler") || t.topicId === "35")) return true;
     if ((canonicalTopic === "electric-fields" || canonicalTopic === "electric-field" || canonicalTopic.includes("electric-field")) && (slug.includes("electric") || t.topicId === "36")) return true;
     if ((canonicalTopic === "gauss-law" || canonicalTopic === "gausss-law" || canonicalTopic === "gauss" || canonicalTopic.includes("gauss") || canonicalTopic.includes("faraday")) && (slug.includes("gauss") || t.topicId === "37")) return true;
+    if ((canonicalTopic === "capacitors" || canonicalTopic === "capacitance" || canonicalTopic.includes("capacit") || canonicalTopic.includes("dielectric")) && (slug.includes("capacit") || t.topicId === "38")) return true;
     return false;
   });
 
@@ -114,6 +115,7 @@ export const getChallenge = cache(
     const isSonicBoom = canonicalTopic === "doppler-effect-sound" || canonicalTopic === "doppler-effect" || canonicalTopic.includes("doppler") || foundTopic?.topicId === "35";
     const isElectricFields = (canonicalTopic === "electric-fields" || canonicalTopic === "electric-field" || canonicalTopic.includes("electric")) && !canonicalTopic.includes("gauss") && foundTopic?.topicId === "36";
     const isGaussLaw = canonicalTopic === "gauss-law" || canonicalTopic === "gausss-law" || canonicalTopic === "gauss" || canonicalTopic.includes("gauss") || canonicalTopic.includes("faraday") || foundTopic?.topicId === "37";
+    const isCapacitors = canonicalTopic === "capacitors" || canonicalTopic === "capacitance" || canonicalTopic.includes("capacit") || canonicalTopic.includes("dielectric") || foundTopic?.topicId === "38";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -314,6 +316,9 @@ export const getChallenge = cache(
     } else if (isGaussLaw && difficulty === "medium") {
       sceneType = "faraday-shield";
       parameters = { rounds: 3 };
+    } else if (isCapacitors && difficulty === "medium") {
+      sceneType = "dielectric-slider";
+      parameters = { rounds: 3 };
     } else if (isSHM) {
       sceneType = "simple-harmonic-motion";
       parameters = {
@@ -323,7 +328,19 @@ export const getChallenge = cache(
 
     const title =
       challengeData?.title ||
-      (isSHM
+      (isCapacitors
+        ? "Capacitors: Dielectric Slider & Polarization Bench"
+        : isGaussLaw
+          ? "Gauss's Law: Faraday Shield & Flux Detector"
+          : isElectricFields
+            ? "Electric Fields: Multi-Pole Particle Deflector"
+            : isSonicBoom
+              ? "Doppler Effect: The Transonic Wave Trap"
+              : isStandingWaves
+                ? "Standing Waves: Acoustic Tube Resonator"
+                : isDampedOscillations
+                  ? "Damped Oscillations: The Shock Absorber"
+                  : isSHM
         ? "Simple Harmonic Motion: Spring-Mass Oscillator & Velocity Target"
         : isHeatTransfer
           ? "Heat Transfer: Thermal Conduction & Resistance Network"
@@ -661,6 +678,10 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
                                                    ? "sonic-boom"
                                                  : canonicalTopic === "electric-fields" || canonicalTopic === "electric-field" || canonicalTopic.includes("electric")
                                                    ? "particle-deflector"
+                                                    : canonicalTopic === "gauss-law" || canonicalTopic === "gausss-law" || canonicalTopic.includes("gauss")
+                                                      ? "faraday-shield"
+                                                      : canonicalTopic === "capacitors" || canonicalTopic === "capacitance" || canonicalTopic.includes("capacit")
+                                                        ? "dielectric-slider"
                                                 : canonicalTopic === "relative-motion"
                                                   ? "the-last-gap"
                                                   : "tablecloth-pull",
