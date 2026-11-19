@@ -16,6 +16,7 @@ import { ParticleDeflectorControls } from "@/features/challenges/topics/physics/
 import { FaradayShieldControls } from "@/features/challenges/topics/physics/gauss-law/FaradayShieldControls";
 import { DielectricSliderControls } from "@/features/challenges/topics/physics/capacitors/DielectricSliderControls";
 import { DualLoopGridControls } from "@/features/challenges/topics/physics/dc-circuits/DualLoopGridControls";
+import { MetrologyBenchControls } from "@/features/challenges/topics/physics/measurement-instruments/MetrologyBenchControls";
 import { KeplerSecondLawControls } from "@/features/challenges/topics/physics/keplers-2nd-law/KeplerSecondLawControls";
 import { EscapeVelocityControls } from "@/features/challenges/topics/physics/escape-velocity/EscapeVelocityControls";
 import { GeoSyncControls } from "@/features/challenges/topics/physics/orbital-balance/GeoSyncControls";
@@ -100,6 +101,9 @@ export function ChallengeControlsClient({ config }: ChallengeControlsClientProps
   }
   if (sceneType === "dual-loop-grid" || sceneType === "meter-bridge") {
     return <DualLoopGridControls config={config} />;
+  }
+  if (sceneType === "metrology-bench" || sceneType === "measurement-instruments") {
+    return <MetrologyBenchControls config={config} />;
   }
   if (sceneType === "simple-harmonic-motion") {
     return <SimpleHarmonicMotionControls config={config} />;

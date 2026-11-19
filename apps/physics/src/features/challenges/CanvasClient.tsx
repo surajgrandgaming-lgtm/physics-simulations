@@ -227,6 +227,17 @@ const DualLoopGridScene = dynamic(
   }
 );
 
+const MetrologyBenchScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/measurement-instruments/MetrologyBenchScene"
+    ).then((mod) => mod.MetrologyBenchScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -591,6 +602,13 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <DualLoopGridScene />
+      </div>
+    );
+  }
+  if (sceneType === "metrology-bench" || sceneType === "measurement-instruments") {
+    return (
+      <div className="w-full h-full">
+        <MetrologyBenchScene />
       </div>
     );
   }
