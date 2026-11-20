@@ -46,7 +46,7 @@ function DynamicIonBeam({ points, color }: { points: TrajectoryPoint[]; color: s
 // Stage 3: Crossed Fields Wien Filter - v (Right), B (Out of screen), F_B (Down) opposing F_E (Up)
 function VectorCrossProductIndicator({ stageNum }: { stageNum: number }) {
   return (
-    <group position={[-3.6, 3.2, 0.0]}>
+    <group position={[-3.8, 2.7, 0.0]}>
       {/* Background backing panel for high clarity */}
       <mesh position={[0.45, stageNum === 3 ? 0.0 : -0.15, -0.05]}>
         <planeGeometry args={[2.0, stageNum === 3 ? 2.2 : 1.8]} />
@@ -489,12 +489,6 @@ function LorentzChamberContent({ controlsRef }: { controlsRef: React.RefObject<a
                 <sphereGeometry args={[0.035, 16, 16]} />
                 <meshBasicMaterial color="#0284c7" />
               </mesh>
-
-              <Html position={[0, 0.45, 0]} center distanceFactor={10} className="pointer-events-none select-none">
-                <div className="px-1.5 py-0.5 rounded bg-white/95 border border-slate-300 font-mono text-[9px] font-black text-slate-900 shadow-xs whitespace-nowrap">
-                  Peak Target Ring (B = 1.00 T)
-                </div>
-              </Html>
             </group>
           </group>
         )}
@@ -551,32 +545,9 @@ function LorentzChamberContent({ controlsRef }: { controlsRef: React.RefObject<a
                 <sphereGeometry args={[0.04, 16, 16]} />
                 <meshBasicMaterial color="#0284c7" />
               </mesh>
-
-              {/* Minimalist Floating Badge */}
-              <Html position={[0, 0.48, 0]} center distanceFactor={10} className="pointer-events-none select-none">
-                <div className="px-1.5 py-0.5 rounded bg-white/95 border border-slate-300 font-mono text-[9px] font-black text-slate-900 shadow-xs whitespace-nowrap">
-                  Undeflected Target (E = 8.00 kV/m)
-                </div>
-              </Html>
             </group>
-
-            {/* Deflection Plates Info Badge */}
-            <Html position={[0, 1.45, 0]} center distanceFactor={10} className="pointer-events-none select-none">
-              <div className="px-2 py-0.5 rounded bg-white/95 border border-slate-300 font-mono text-[9px] font-black text-slate-900 shadow-xs whitespace-nowrap">
-                Deflection Plates: E = {sliderValue.toFixed(2)} kV/m (Fixed B = 2.00 T)
-              </div>
-            </Html>
           </group>
         )}
-
-        {/* ── CHAMBER STATUS BADGE (CENTER TOP) ── */}
-        <Html position={[0, 1.95, 0]} center distanceFactor={10} className="pointer-events-none select-none">
-          <div className="px-2 py-0.5 rounded bg-white/95 border border-slate-300 font-mono text-[10px] font-black text-slate-900 shadow-xs whitespace-nowrap">
-            {currentStage === 1 && `B-Field: ${sliderValue.toFixed(2)} T | Orbit Radius: ${cyclotronRadius.toFixed(2)} m`}
-            {currentStage === 2 && `Solenoid B: ${sliderValue.toFixed(2)} T | Helical Pitch: ${helicalPitch.toFixed(2)} m`}
-            {currentStage === 3 && `Crossed Fields | E: ${sliderValue.toFixed(2)} kV/m | B: 2.00 T`}
-          </div>
-        </Html>
       </group>
     </>
   );

@@ -83,8 +83,8 @@ export function LorentzForceControls({ config }: { config?: any }) {
           currentStage === 1
             ? "MISSION: Energetic Argon ions (Ar⁺) enter the vacuum chamber at 90° to the magnetic field. Use the Cyclotron equation r = mv/(qB) to calculate the field needed for orbital radius r = 5.00 m. Steer the beam into the detector target!"
             : currentStage === 2
-            ? "MISSION: Deuterium ions (D⁺) are injected obliquely at θ = 60°. Decompose velocity into parallel and perpendicular components to determine the helical pitch p = v_∥ · (2πm/qB). Synchronize the pitch to p = 2.00 m to thread all baffle rings and the crest target!"
-            : "MISSION CRITICAL: Molecular ions (N₂⁺) are subjected to crossed magnetic (B = 2.00 T) and electrostatic fields. Balance electrostatic force against magnetic Lorentz force (qE = qvB) so net transverse deflection vanishes, shooting ions cleanly through the exit target!",
+              ? "MISSION: Deuterium ions (D⁺) are injected obliquely at θ = 60°. Decompose velocity into parallel and perpendicular components to determine the helical pitch p = v_∥ · (2πm/qB). Synchronize the pitch to p = 2.00 m to thread all baffle rings and the crest target!"
+              : "MISSION CRITICAL: Molecular ions (N₂⁺) are subjected to crossed magnetic (B = 2.00 T) and electrostatic fields. Balance electrostatic force against magnetic Lorentz force (qE = qvB) so net transverse deflection vanishes, shooting ions cleanly through the exit target!",
         targetImageUrl: "https://topcoaching.b-cdn.net/Module%209/Topic%201/medium/target.png",
         steps: [
           {
@@ -187,7 +187,7 @@ export function LorentzForceControls({ config }: { config?: any }) {
           : undefined
       }
       topCenterHUD={
-        <div className="flex items-center gap-2 sm:gap-3 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-300 shadow-sm font-mono text-[11px] sm:text-xs">
+        <div className="flex items-center gap-2 sm:gap-3 px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-300 shadow-sm font-mono text-[11px] sm:text-xs">
           <div className="flex items-center gap-1 shrink-0">
             <span className="text-slate-400">STAGE:</span>
             <span className="font-bold text-slate-800">{currentStage}/3</span>
@@ -195,11 +195,21 @@ export function LorentzForceControls({ config }: { config?: any }) {
           <span className="text-slate-300">|</span>
           <div className="flex items-center gap-1 shrink-0 whitespace-nowrap">
             <span className="text-slate-400">
-              {currentStage === 1 ? "RADIUS:" : currentStage === 2 ? "PITCH:" : "STATUS:"}
+              {currentStage === 1 ? "B-FIELD:" : currentStage === 2 ? "SOLENOID B:" : "E-FIELD:"}
+            </span>
+            <span className="font-bold text-slate-800">
+              {sliderValue.toFixed(2)} {stage.parameterUnit}
+            </span>
+          </div>
+          <span className="text-slate-300">|</span>
+          <div className="flex items-center gap-1 shrink-0 whitespace-nowrap">
+            <span className="text-slate-400">
+              {currentStage === 1 ? "ORBIT RADIUS:" : currentStage === 2 ? "HELICAL PITCH:" : "STATUS:"}
             </span>
             <span
-              className={`font-bold ${isTrajectoryTargetHit ? "text-emerald-600" : "text-amber-600"
-                }`}
+              className={`font-bold ${
+                isTrajectoryTargetHit ? "text-emerald-600" : "text-amber-600"
+              }`}
             >
               {currentStage === 1
                 ? `${cyclotronRadius.toFixed(2)} m`
@@ -208,13 +218,6 @@ export function LorentzForceControls({ config }: { config?: any }) {
                   : isTrajectoryTargetHit
                     ? "UNDEFLECTED"
                     : "DEFLECTED"}
-            </span>
-          </div>
-          <span className="text-slate-300">|</span>
-          <div className="flex items-center gap-1 shrink-0 whitespace-nowrap">
-            <span className="text-slate-400">TARGET:</span>
-            <span className="font-bold text-slate-700 whitespace-nowrap">
-              {stage.targetValue.toFixed(2)} {stage.parameterUnit}
             </span>
           </div>
         </div>
