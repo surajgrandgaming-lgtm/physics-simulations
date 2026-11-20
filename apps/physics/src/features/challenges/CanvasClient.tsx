@@ -238,6 +238,17 @@ const MetrologyBenchScene = dynamic(
   }
 );
 
+const LorentzForceScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/lorentz-force/LorentzForceScene"
+    ).then((mod) => mod.LorentzForceScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -609,6 +620,13 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <MetrologyBenchScene />
+      </div>
+    );
+  }
+  if (sceneType === "solenoid-drift-chamber" || sceneType === "lorentz-force") {
+    return (
+      <div className="w-full h-full">
+        <LorentzForceScene />
       </div>
     );
   }

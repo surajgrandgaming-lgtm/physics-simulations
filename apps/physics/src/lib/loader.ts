@@ -60,6 +60,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "capacitors" || canonicalTopic === "capacitance" || canonicalTopic.includes("capacit") || canonicalTopic.includes("dielectric")) && (slug.includes("capacit") || t.topicId === "38")) return true;
     if ((canonicalTopic === "dc-circuits" || canonicalTopic === "dc-circuit" || canonicalTopic.includes("circuit") || canonicalTopic.includes("wheatstone") || canonicalTopic.includes("dual-loop-grid")) && (slug.includes("circuit") || t.topicId === "39")) return true;
     if ((canonicalTopic === "measurement-instruments" || canonicalTopic === "measuring-instruments" || canonicalTopic === "instruments" || canonicalTopic.includes("meter-bridge") || canonicalTopic.includes("potentiometer") || canonicalTopic.includes("metrology")) && (slug.includes("instrument") || slug.includes("measure") || t.topicId === "40")) return true;
+    if ((canonicalTopic === "lorentz-force" || canonicalTopic === "lorentz" || canonicalTopic.includes("lorentz") || canonicalTopic.includes("drift-chamber") || canonicalTopic.includes("cyclotron") || canonicalTopic.includes("helical")) && (slug.includes("lorentz") || t.topicId === "41")) return true;
     return false;
   });
 
@@ -120,6 +121,7 @@ export const getChallenge = cache(
     const isCapacitors = canonicalTopic === "capacitors" || canonicalTopic === "capacitance" || canonicalTopic.includes("capacit") || canonicalTopic.includes("dielectric") || foundTopic?.topicId === "38";
     const isDCCircuits = canonicalTopic === "dc-circuits" || canonicalTopic === "dc-circuit" || canonicalTopic.includes("circuit") || canonicalTopic.includes("dual-loop-grid") || foundTopic?.topicId === "39";
     const isMeasurementInstruments = canonicalTopic === "measurement-instruments" || canonicalTopic === "measuring-instruments" || canonicalTopic === "instruments" || canonicalTopic.includes("meter-bridge") || canonicalTopic.includes("potentiometer") || canonicalTopic.includes("metrology") || foundTopic?.topicId === "40";
+    const isLorentzForce = canonicalTopic === "lorentz-force" || canonicalTopic === "lorentz" || canonicalTopic.includes("lorentz") || canonicalTopic.includes("drift-chamber") || canonicalTopic.includes("cyclotron") || canonicalTopic.includes("helical") || foundTopic?.topicId === "41";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -329,6 +331,9 @@ export const getChallenge = cache(
     } else if (isMeasurementInstruments && (difficulty === "medium" || difficulty === "easy" || difficulty === "advanced")) {
       sceneType = "metrology-bench";
       parameters = { rounds: 3 };
+    } else if (isLorentzForce && (difficulty === "medium" || difficulty === "easy" || difficulty === "advanced")) {
+      sceneType = "solenoid-drift-chamber";
+      parameters = { rounds: 3 };
     } else if (isSHM) {
       sceneType = "simple-harmonic-motion";
       parameters = {
@@ -338,7 +343,9 @@ export const getChallenge = cache(
 
     const title =
       challengeData?.title ||
-      (isMeasurementInstruments
+      (isLorentzForce
+        ? "Lorentz Force: Cyclotron Orbit, Helical Drift & Wien Filter"
+        : isMeasurementInstruments
         ? "Measurement Instruments: Metre Bridge, Potentiometer & Galvanometer"
         : isDCCircuits
         ? "DC Circuits: Dual-Loop Power Grid & Current Reversal"
@@ -700,6 +707,8 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
                                                         ? "dual-loop-grid"
                                                       : canonicalTopic === "measurement-instruments" || canonicalTopic === "measuring-instruments" || canonicalTopic === "instruments" || canonicalTopic.includes("meter-bridge") || canonicalTopic.includes("potentiometer") || canonicalTopic.includes("metrology")
                                                         ? "metrology-bench"
+                                                       : canonicalTopic === "lorentz-force" || canonicalTopic === "lorentz" || canonicalTopic.includes("lorentz") || canonicalTopic.includes("drift-chamber") || canonicalTopic.includes("cyclotron")
+                                                         ? "solenoid-drift-chamber"
                                                 : canonicalTopic === "relative-motion"
                                                   ? "the-last-gap"
                                                   : "tablecloth-pull",
