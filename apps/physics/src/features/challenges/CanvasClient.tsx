@@ -249,6 +249,17 @@ const LorentzForceScene = dynamic(
   }
 );
 
+const MagneticFieldsScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/magnetic-fields/MagneticFieldsScene"
+    ).then((mod) => mod.MagneticFieldsScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -497,6 +508,21 @@ interface Props {
 
 export default function CanvasClient({ config }: Props) {
   const sceneType = config?.sceneType;
+
+  if (sceneType === "magnetic-bench" || sceneType === "magnetic-fields") {
+    return (
+      <div className="w-full h-full">
+        <MagneticFieldsScene />
+      </div>
+    );
+  }
+  if (sceneType === "solenoid-drift-chamber" || sceneType === "lorentz-force") {
+    return (
+      <div className="w-full h-full">
+        <LorentzForceScene />
+      </div>
+    );
+  }
   if (sceneType === "escape-velocity") {
     return (
       <div className="w-full h-full">
@@ -620,13 +646,6 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <MetrologyBenchScene />
-      </div>
-    );
-  }
-  if (sceneType === "solenoid-drift-chamber" || sceneType === "lorentz-force") {
-    return (
-      <div className="w-full h-full">
-        <LorentzForceScene />
       </div>
     );
   }

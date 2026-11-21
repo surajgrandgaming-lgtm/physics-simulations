@@ -18,6 +18,7 @@ import { DielectricSliderControls } from "@/features/challenges/topics/physics/c
 import { DualLoopGridControls } from "@/features/challenges/topics/physics/dc-circuits/DualLoopGridControls";
 import { MetrologyBenchControls } from "@/features/challenges/topics/physics/measurement-instruments/MetrologyBenchControls";
 import { LorentzForceControls } from "@/features/challenges/topics/physics/lorentz-force/LorentzForceControls";
+import { MagneticFieldsControls } from "@/features/challenges/topics/physics/magnetic-fields/MagneticFieldsControls";
 import { KeplerSecondLawControls } from "@/features/challenges/topics/physics/keplers-2nd-law/KeplerSecondLawControls";
 import { EscapeVelocityControls } from "@/features/challenges/topics/physics/escape-velocity/EscapeVelocityControls";
 import { GeoSyncControls } from "@/features/challenges/topics/physics/orbital-balance/GeoSyncControls";
@@ -108,6 +109,9 @@ export function ChallengeControlsClient({ config }: ChallengeControlsClientProps
   }
   if (sceneType === "solenoid-drift-chamber" || sceneType === "lorentz-force") {
     return <LorentzForceControls config={config} />;
+  }
+  if (sceneType === "magnetic-bench" || sceneType === "magnetic-fields") {
+    return <MagneticFieldsControls config={config} />;
   }
   if (sceneType === "simple-harmonic-motion") {
     return <SimpleHarmonicMotionControls config={config} />;
