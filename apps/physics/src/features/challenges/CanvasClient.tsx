@@ -260,6 +260,17 @@ const MagneticFieldsScene = dynamic(
   }
 );
 
+const MotionalEmfScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/electromagnetic-induction/MotionalEmfScene"
+    ).then((mod) => mod.MotionalEmfScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const CraneBoomScene = dynamic(
   () =>
     import(
@@ -509,6 +520,13 @@ interface Props {
 export default function CanvasClient({ config }: Props) {
   const sceneType = config?.sceneType;
 
+  if (sceneType === "motional-emf-bench" || sceneType === "electromagnetic-induction" || sceneType === "motional-emf") {
+    return (
+      <div className="w-full h-full">
+        <MotionalEmfScene />
+      </div>
+    );
+  }
   if (sceneType === "magnetic-bench" || sceneType === "magnetic-fields") {
     return (
       <div className="w-full h-full">

@@ -499,8 +499,8 @@ export const useMagneticFieldsStore = create<InclinedRailsState>((set, get) => {
             stageId === 1
               ? "I = (mg tan θ) / (LB) = 10.00 A"
               : stageId === 2
-              ? "I_min = [mg(1 - μ_s)] / [LB(1 + μ_s)] = 6.00 A"
-              : "I = (mg sin θ) / (LB) = 5.00 A";
+                ? "I_min = [mg(1 - μ_s)] / [LB(1 + μ_s)] = 6.00 A"
+                : "I = (mg sin θ) / (LB) = 5.00 A";
 
           set({
             isVerifying: false,

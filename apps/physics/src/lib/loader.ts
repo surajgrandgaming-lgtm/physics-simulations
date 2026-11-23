@@ -62,6 +62,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "measurement-instruments" || canonicalTopic === "measuring-instruments" || canonicalTopic === "instruments" || canonicalTopic.includes("meter-bridge") || canonicalTopic.includes("potentiometer") || canonicalTopic.includes("metrology")) && (slug.includes("instrument") || slug.includes("measure") || t.topicId === "40")) return true;
     if ((canonicalTopic === "lorentz-force" || canonicalTopic === "lorentz" || canonicalTopic.includes("lorentz") || canonicalTopic.includes("drift-chamber") || canonicalTopic.includes("cyclotron") || canonicalTopic.includes("helical")) && (slug.includes("lorentz") || t.topicId === "41")) return true;
     if ((canonicalTopic === "magnetic-fields" || canonicalTopic === "magnetic-field" || canonicalTopic.includes("magnetic-field") || canonicalTopic.includes("biot-savart") || canonicalTopic.includes("ampere") || canonicalTopic.includes("magnetic-bench")) && (slug.includes("magnetic") || t.topicId === "42")) return true;
+    if ((canonicalTopic === "electromagnetic-induction" || canonicalTopic === "induction" || canonicalTopic.includes("induction") || canonicalTopic.includes("motional-emf") || canonicalTopic.includes("lenz")) && (slug.includes("induct") || t.topicId === "43")) return true;
     return false;
   });
 
@@ -124,6 +125,7 @@ export const getChallenge = cache(
     const isMeasurementInstruments = canonicalTopic === "measurement-instruments" || canonicalTopic === "measuring-instruments" || canonicalTopic === "instruments" || canonicalTopic.includes("meter-bridge") || canonicalTopic.includes("potentiometer") || canonicalTopic.includes("metrology") || foundTopic?.topicId === "40";
     const isLorentzForce = canonicalTopic === "lorentz-force" || canonicalTopic === "lorentz" || canonicalTopic.includes("lorentz") || canonicalTopic.includes("drift-chamber") || canonicalTopic.includes("cyclotron") || canonicalTopic.includes("helical") || foundTopic?.topicId === "41";
     const isMagneticFields = canonicalTopic === "magnetic-fields" || canonicalTopic === "magnetic-field" || canonicalTopic.includes("magnetic-field") || canonicalTopic.includes("biot-savart") || canonicalTopic.includes("ampere") || canonicalTopic.includes("magnetic-bench") || foundTopic?.topicId === "42";
+    const isElectromagneticInduction = canonicalTopic === "electromagnetic-induction" || canonicalTopic === "induction" || canonicalTopic.includes("induction") || canonicalTopic.includes("motional-emf") || canonicalTopic.includes("lenz") || foundTopic?.topicId === "43";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -339,6 +341,9 @@ export const getChallenge = cache(
     } else if (isMagneticFields && (difficulty === "medium" || difficulty === "easy" || difficulty === "advanced")) {
       sceneType = "magnetic-bench";
       parameters = { rounds: 3 };
+    } else if (isElectromagneticInduction && (difficulty === "medium" || difficulty === "easy" || difficulty === "advanced")) {
+      sceneType = "motional-emf-bench";
+      parameters = { rounds: 3 };
     } else if (isSHM) {
       sceneType = "simple-harmonic-motion";
       parameters = {
@@ -348,7 +353,9 @@ export const getChallenge = cache(
 
     const title =
       challengeData?.title ||
-      (isMagneticFields
+      (isElectromagneticInduction
+        ? "Electromagnetic Induction: Motional EMF & Faraday Induction Bench"
+        : isMagneticFields
         ? "Magnetic Fields: Biot–Savart Law & Ampère's Circuital Law"
         : isLorentzForce
         ? "Lorentz Force: Cyclotron Orbit, Helical Drift & Wien Filter"
