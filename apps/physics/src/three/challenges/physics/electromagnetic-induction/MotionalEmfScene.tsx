@@ -105,8 +105,8 @@ function CCoreMagnetAssembly({
         ))}
 
         {/* Compact B-Field Badge */}
-        <Html position={[0, 0.5, 0]} center distanceFactor={4.2} className="pointer-events-none select-none">
-          <div className="px-1.5 py-0.5 rounded bg-slate-900/95 border border-cyan-400/80 font-mono text-[7px] font-black text-cyan-300 shadow-sm whitespace-nowrap leading-tight">
+        <Html position={[0, 0.5, 0]} center distanceFactor={3.2} className="pointer-events-none select-none">
+          <div className="px-1 py-0.2 rounded bg-white/95 border border-slate-300 font-mono text-[6px] font-black text-slate-800 shadow-xs whitespace-nowrap leading-tight">
             B = {bField.toFixed(2)} T (Upward)
           </div>
         </Html>
@@ -204,8 +204,8 @@ function AnalogCenterZeroGalvanometer({ emfVoltage }: { emfVoltage: number }) {
         <meshStandardMaterial color="#0f172a" metalness={0.9} roughness={0.2} />
       </mesh>
 
-      <Html position={[0.2, 0.05, 0.08]} center distanceFactor={4.2} className="pointer-events-none select-none">
-        <div className="px-1.5 py-0.5 rounded bg-slate-900/95 border border-cyan-400/80 font-mono text-[7px] font-black text-cyan-300 shadow-sm whitespace-nowrap leading-tight">
+      <Html position={[0.2, 0.05, 0.08]} center distanceFactor={3.2} className="pointer-events-none select-none">
+        <div className="px-1 py-0.2 rounded bg-white/95 border border-slate-300 font-mono text-[6px] font-black text-slate-800 shadow-xs whitespace-nowrap leading-tight">
           EMF: {emfVoltage.toFixed(2)} V
         </div>
       </Html>
@@ -280,8 +280,8 @@ function LaboratoryCapacitor({ capacitance }: { capacitance: number }) {
         <meshStandardMaterial color="#0284c7" transparent opacity={0.65} metalness={0.2} roughness={0.1} />
       </mesh>
       {/* Floating Readout */}
-      <Html position={[0, 0.16, 0]} center distanceFactor={4.2} className="pointer-events-none select-none">
-        <div className="px-1.5 py-0.5 rounded bg-slate-900/95 border border-cyan-400/80 font-mono text-[7px] font-black text-cyan-300 shadow-sm whitespace-nowrap leading-tight">
+      <Html position={[0, 0.16, 0]} center distanceFactor={3.2} className="pointer-events-none select-none">
+        <div className="px-1 py-0.2 rounded bg-white/95 border border-slate-300 font-mono text-[6px] font-black text-slate-800 shadow-xs whitespace-nowrap leading-tight">
           C: {capacitance.toFixed(2)} F
         </div>
       </Html>
@@ -402,12 +402,13 @@ function CalibratedTargetRectangle({
       )}
 
       {/* Floating Target Speed Badge */}
-      <Html position={[0, 0.18, 0]} center distanceFactor={4.2} className="pointer-events-none select-none">
+      <Html position={[0, 0.18, 0]} center distanceFactor={3.2} className="pointer-events-none select-none">
         <div
-          className={`px-1.5 py-0.5 rounded border font-mono text-[7px] font-black shadow-sm whitespace-nowrap leading-tight transition-colors ${isHit
-            ? "bg-emerald-950/95 border-emerald-400 text-emerald-300 shadow-[0_0_12px_rgba(16,185,129,0.5)]"
-            : "bg-slate-900/95 border-cyan-400/80 text-cyan-300 shadow-[0_0_8px_rgba(6,182,212,0.4)]"
-            }`}
+          className={`px-1 py-0.2 rounded border font-mono text-[6px] font-black shadow-xs whitespace-nowrap leading-tight transition-colors ${
+            isHit
+              ? "bg-emerald-950/95 border-emerald-400 text-emerald-300 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
+              : "bg-slate-900/95 border-cyan-400/80 text-cyan-300 shadow-[0_0_6px_rgba(6,182,212,0.4)]"
+          }`}
         >
           TARGET: {targetSpeed.toFixed(2)} m/s
         </div>
@@ -456,8 +457,8 @@ function DynamicLoadBulb({ power }: { power: number }) {
       {normIntensity > 0.02 && (
         <pointLight position={[0, 0.08, 0]} color="#f59e0b" intensity={normIntensity * 3.0} distance={1.8} />
       )}
-      <Html position={[0, 0.22, 0]} center distanceFactor={4.2} className="pointer-events-none select-none">
-        <div className="px-1.5 py-0.5 rounded bg-slate-900/95 border border-cyan-400/80 font-mono text-[7px] font-black text-cyan-300 shadow-sm whitespace-nowrap leading-tight">
+      <Html position={[0, 0.22, 0]} center distanceFactor={3.2} className="pointer-events-none select-none">
+        <div className="px-1 py-0.2 rounded bg-white/95 border border-slate-300 font-mono text-[6px] font-black text-slate-800 shadow-xs whitespace-nowrap leading-tight">
           P: {power.toFixed(2)} W
         </div>
       </Html>
@@ -830,8 +831,8 @@ function MotionalEmfApparatus({
           </group>
 
           {/* Live Speed Badge directly above slider */}
-          <Html position={[0, rodRadius + 0.16, 0]} center distanceFactor={4.2} className="pointer-events-none select-none">
-            <div className="px-1.5 py-0.5 rounded bg-slate-900/95 border border-cyan-400/80 font-mono text-[7px] font-black text-cyan-300 shadow-sm whitespace-nowrap leading-tight">
+          <Html position={[0, rodRadius + 0.16, 0]} center distanceFactor={3.2} className="pointer-events-none select-none">
+            <div className="px-1 py-0.2 rounded bg-white/95 border border-slate-300 font-mono text-[6px] font-black text-slate-800 shadow-xs whitespace-nowrap leading-tight">
               v: {activeSpeed.toFixed(2)} m/s
             </div>
           </Html>
