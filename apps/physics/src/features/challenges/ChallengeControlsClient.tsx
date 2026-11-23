@@ -19,6 +19,7 @@ import { DualLoopGridControls } from "@/features/challenges/topics/physics/dc-ci
 import { MetrologyBenchControls } from "@/features/challenges/topics/physics/measurement-instruments/MetrologyBenchControls";
 import { LorentzForceControls } from "@/features/challenges/topics/physics/lorentz-force/LorentzForceControls";
 import { MagneticFieldsControls } from "@/features/challenges/topics/physics/magnetic-fields/MagneticFieldsControls";
+import { AcCircuitsControls } from "@/features/challenges/topics/physics/ac-circuits/AcCircuitsControls";
 import { MotionalEmfControls } from "@/features/challenges/topics/physics/electromagnetic-induction/MotionalEmfControls";
 import { KeplerSecondLawControls } from "@/features/challenges/topics/physics/keplers-2nd-law/KeplerSecondLawControls";
 import { EscapeVelocityControls } from "@/features/challenges/topics/physics/escape-velocity/EscapeVelocityControls";
@@ -113,6 +114,9 @@ export function ChallengeControlsClient({ config }: ChallengeControlsClientProps
   }
   if (sceneType === "magnetic-bench" || sceneType === "magnetic-fields") {
     return <MagneticFieldsControls config={config} />;
+  }
+  if (sceneType === "ac-circuits" || sceneType === "alternating-current" || sceneType === "rlc-resonance") {
+    return <AcCircuitsControls />;
   }
   if (sceneType === "motional-emf-bench" || sceneType === "electromagnetic-induction" || sceneType === "motional-emf") {
     return <MotionalEmfControls />;

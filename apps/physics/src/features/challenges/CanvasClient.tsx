@@ -260,6 +260,17 @@ const MagneticFieldsScene = dynamic(
   }
 );
 
+const AcCircuitsScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/ac-circuits/AcCircuitsScene"
+    ).then((mod) => mod.AcCircuitsScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const MotionalEmfScene = dynamic(
   () =>
     import(
@@ -520,6 +531,13 @@ interface Props {
 export default function CanvasClient({ config }: Props) {
   const sceneType = config?.sceneType;
 
+  if (sceneType === "ac-circuits" || sceneType === "alternating-current" || sceneType === "rlc-resonance") {
+    return (
+      <div className="w-full h-full">
+        <AcCircuitsScene />
+      </div>
+    );
+  }
   if (sceneType === "motional-emf-bench" || sceneType === "electromagnetic-induction" || sceneType === "motional-emf") {
     return (
       <div className="w-full h-full">

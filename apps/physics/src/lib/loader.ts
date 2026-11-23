@@ -58,11 +58,12 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "electric-fields" || canonicalTopic === "electric-field" || canonicalTopic.includes("electric-field")) && (slug.includes("electric") || t.topicId === "36")) return true;
     if ((canonicalTopic === "gauss-law" || canonicalTopic === "gausss-law" || canonicalTopic === "gauss" || canonicalTopic.includes("gauss") || canonicalTopic.includes("faraday")) && (slug.includes("gauss") || t.topicId === "37")) return true;
     if ((canonicalTopic === "capacitors" || canonicalTopic === "capacitance" || canonicalTopic.includes("capacit") || canonicalTopic.includes("dielectric")) && (slug.includes("capacit") || t.topicId === "38")) return true;
-    if ((canonicalTopic === "dc-circuits" || canonicalTopic === "dc-circuit" || canonicalTopic.includes("circuit") || canonicalTopic.includes("wheatstone") || canonicalTopic.includes("dual-loop-grid")) && (slug.includes("circuit") || t.topicId === "39")) return true;
+    if ((canonicalTopic === "dc-circuits" || canonicalTopic === "dc-circuit" || (canonicalTopic.includes("circuit") && !canonicalTopic.includes("ac")) || canonicalTopic.includes("wheatstone") || canonicalTopic.includes("dual-loop-grid")) && (slug.includes("circuit") || t.topicId === "39")) return true;
     if ((canonicalTopic === "measurement-instruments" || canonicalTopic === "measuring-instruments" || canonicalTopic === "instruments" || canonicalTopic.includes("meter-bridge") || canonicalTopic.includes("potentiometer") || canonicalTopic.includes("metrology")) && (slug.includes("instrument") || slug.includes("measure") || t.topicId === "40")) return true;
     if ((canonicalTopic === "lorentz-force" || canonicalTopic === "lorentz" || canonicalTopic.includes("lorentz") || canonicalTopic.includes("drift-chamber") || canonicalTopic.includes("cyclotron") || canonicalTopic.includes("helical")) && (slug.includes("lorentz") || t.topicId === "41")) return true;
     if ((canonicalTopic === "magnetic-fields" || canonicalTopic === "magnetic-field" || canonicalTopic.includes("magnetic-field") || canonicalTopic.includes("biot-savart") || canonicalTopic.includes("ampere") || canonicalTopic.includes("magnetic-bench")) && (slug.includes("magnetic") || t.topicId === "42")) return true;
     if ((canonicalTopic === "electromagnetic-induction" || canonicalTopic === "induction" || canonicalTopic.includes("induction") || canonicalTopic.includes("motional-emf") || canonicalTopic.includes("lenz")) && (slug.includes("induct") || t.topicId === "43")) return true;
+    if ((canonicalTopic === "ac-circuits" || canonicalTopic === "alternating-current" || canonicalTopic === "rlc-resonance" || canonicalTopic.includes("ac-circuit") || canonicalTopic.includes("alternating") || canonicalTopic.includes("resonance")) && (slug.includes("ac-circuit") || slug.includes("alternating") || t.topicId === "44")) return true;
     return false;
   });
 
@@ -121,11 +122,12 @@ export const getChallenge = cache(
     const isElectricFields = (canonicalTopic === "electric-fields" || canonicalTopic === "electric-field" || canonicalTopic.includes("electric")) && !canonicalTopic.includes("gauss") && foundTopic?.topicId === "36";
     const isGaussLaw = canonicalTopic === "gauss-law" || canonicalTopic === "gausss-law" || canonicalTopic === "gauss" || canonicalTopic.includes("gauss") || canonicalTopic.includes("faraday") || foundTopic?.topicId === "37";
     const isCapacitors = canonicalTopic === "capacitors" || canonicalTopic === "capacitance" || canonicalTopic.includes("capacit") || canonicalTopic.includes("dielectric") || foundTopic?.topicId === "38";
-    const isDCCircuits = canonicalTopic === "dc-circuits" || canonicalTopic === "dc-circuit" || canonicalTopic.includes("circuit") || canonicalTopic.includes("dual-loop-grid") || foundTopic?.topicId === "39";
+    const isDCCircuits = (canonicalTopic === "dc-circuits" || canonicalTopic === "dc-circuit" || (canonicalTopic.includes("circuit") && !canonicalTopic.includes("ac")) || canonicalTopic.includes("dual-loop-grid") || foundTopic?.topicId === "39") && foundTopic?.topicId !== "44" && !canonicalTopic.includes("ac");
     const isMeasurementInstruments = canonicalTopic === "measurement-instruments" || canonicalTopic === "measuring-instruments" || canonicalTopic === "instruments" || canonicalTopic.includes("meter-bridge") || canonicalTopic.includes("potentiometer") || canonicalTopic.includes("metrology") || foundTopic?.topicId === "40";
     const isLorentzForce = canonicalTopic === "lorentz-force" || canonicalTopic === "lorentz" || canonicalTopic.includes("lorentz") || canonicalTopic.includes("drift-chamber") || canonicalTopic.includes("cyclotron") || canonicalTopic.includes("helical") || foundTopic?.topicId === "41";
     const isMagneticFields = canonicalTopic === "magnetic-fields" || canonicalTopic === "magnetic-field" || canonicalTopic.includes("magnetic-field") || canonicalTopic.includes("biot-savart") || canonicalTopic.includes("ampere") || canonicalTopic.includes("magnetic-bench") || foundTopic?.topicId === "42";
     const isElectromagneticInduction = canonicalTopic === "electromagnetic-induction" || canonicalTopic === "induction" || canonicalTopic.includes("induction") || canonicalTopic.includes("motional-emf") || canonicalTopic.includes("lenz") || foundTopic?.topicId === "43";
+    const isAcCircuits = canonicalTopic === "ac-circuits" || canonicalTopic === "alternating-current" || canonicalTopic === "rlc-resonance" || canonicalTopic.includes("ac-circuit") || canonicalTopic.includes("alternating") || canonicalTopic.includes("resonance") || foundTopic?.topicId === "44";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -344,6 +346,9 @@ export const getChallenge = cache(
     } else if (isElectromagneticInduction && (difficulty === "medium" || difficulty === "easy" || difficulty === "advanced")) {
       sceneType = "motional-emf-bench";
       parameters = { rounds: 3 };
+    } else if (isAcCircuits && (difficulty === "medium" || difficulty === "easy" || difficulty === "advanced")) {
+      sceneType = "ac-circuits";
+      parameters = { rounds: 3 };
     } else if (isSHM) {
       sceneType = "simple-harmonic-motion";
       parameters = {
@@ -353,7 +358,9 @@ export const getChallenge = cache(
 
     const title =
       challengeData?.title ||
-      (isElectromagneticInduction
+      (isAcCircuits
+        ? "Alternating Current: Series RLC Resonance & Oscilloscope Bench"
+        : isElectromagneticInduction
         ? "Electromagnetic Induction: Motional EMF & Faraday Induction Bench"
         : isMagneticFields
         ? "Magnetic Fields: Biot–Savart Law & Ampère's Circuital Law"
@@ -717,7 +724,9 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
                                                       ? "faraday-shield"
                                                       : canonicalTopic === "capacitors" || canonicalTopic === "capacitance" || canonicalTopic.includes("capacit")
                                                         ? "dielectric-slider"
-                                                      : canonicalTopic === "dc-circuits" || canonicalTopic === "dc-circuit" || canonicalTopic.includes("circuit") || canonicalTopic.includes("dual-loop-grid")
+                                                      : canonicalTopic === "ac-circuits" || canonicalTopic === "alternating-current" || canonicalTopic === "rlc-resonance"
+                                                        ? "ac-circuits"
+                                                      : canonicalTopic === "dc-circuits" || canonicalTopic === "dc-circuit" || (canonicalTopic.includes("circuit") && !canonicalTopic.includes("ac")) || canonicalTopic.includes("dual-loop-grid")
                                                         ? "dual-loop-grid"
                                                       : canonicalTopic === "measurement-instruments" || canonicalTopic === "measuring-instruments" || canonicalTopic === "instruments" || canonicalTopic.includes("meter-bridge") || canonicalTopic.includes("potentiometer") || canonicalTopic.includes("metrology")
                                                         ? "metrology-bench"
