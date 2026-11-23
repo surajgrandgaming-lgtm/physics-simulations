@@ -8,6 +8,7 @@ export interface MissionStep {
   title: string;
   description: string;
   keys?: string[];
+  imageUrl?: string;
 }
 
 export interface MissionFormula {

@@ -11,7 +11,11 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
       const modSlug = m.moduleName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
       return (
         modSlug === normalizedModule ||
+        modSlug === normalizedModule.replace(/-and-/g, "-") ||
+        modSlug.replace(/-and-/g, "-") === normalizedModule ||
         m.moduleId.toLowerCase() === normalizedModule ||
+        (normalizedModule.includes("optics") && m.moduleId === "M10") ||
+        (normalizedModule.includes("modern") && m.moduleId === "M10") ||
         (normalizedModule.includes("oscillation") && m.moduleId === "M7") ||
         (normalizedModule === "dynamics" && m.moduleId === "M2") ||
         (normalizedModule.includes("kinematics") && m.moduleId === "M1")
@@ -65,6 +69,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "electromagnetic-induction" || canonicalTopic === "induction" || canonicalTopic.includes("induction") || canonicalTopic.includes("motional-emf") || canonicalTopic.includes("lenz")) && (slug.includes("induct") || t.topicId === "43")) return true;
     if ((canonicalTopic === "ac-circuits" || canonicalTopic === "alternating-current" || canonicalTopic === "rlc-resonance" || canonicalTopic.includes("ac-circuit") || canonicalTopic.includes("alternating") || canonicalTopic.includes("resonance")) && (slug.includes("ac-circuit") || slug.includes("alternating") || t.topicId === "44")) return true;
     if ((canonicalTopic === "transformers" || canonicalTopic === "transformer" || canonicalTopic.includes("transform")) && (slug.includes("transform") || t.topicId === "45")) return true;
+    if ((canonicalTopic === "ray-optics" || canonicalTopic === "optics" || canonicalTopic.includes("ray-optic") || canonicalTopic.includes("refraction") || canonicalTopic.includes("prism") || canonicalTopic.includes("tir")) && (slug.includes("ray") || slug.includes("optic") || t.topicId === "46")) return true;
     return false;
   });
 
@@ -130,6 +135,7 @@ export const getChallenge = cache(
     const isElectromagneticInduction = canonicalTopic === "electromagnetic-induction" || canonicalTopic === "induction" || canonicalTopic.includes("induction") || canonicalTopic.includes("motional-emf") || canonicalTopic.includes("lenz") || foundTopic?.topicId === "43";
     const isAcCircuits = canonicalTopic === "ac-circuits" || canonicalTopic === "alternating-current" || canonicalTopic === "rlc-resonance" || canonicalTopic.includes("ac-circuit") || canonicalTopic.includes("alternating") || canonicalTopic.includes("resonance") || foundTopic?.topicId === "44";
     const isTransformers = canonicalTopic === "transformers" || canonicalTopic === "transformer" || canonicalTopic.includes("transform") || foundTopic?.topicId === "45";
+    const isRayOptics = canonicalTopic === "ray-optics" || canonicalTopic === "optics" || canonicalTopic.includes("ray-optic") || canonicalTopic.includes("refraction") || canonicalTopic.includes("prism") || canonicalTopic.includes("tir") || foundTopic?.topicId === "46";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -354,6 +360,9 @@ export const getChallenge = cache(
     } else if (isTransformers && (difficulty === "medium" || difficulty === "easy" || difficulty === "advanced")) {
       sceneType = "transformers";
       parameters = { rounds: 3 };
+    } else if (isRayOptics && (difficulty === "medium" || difficulty === "easy" || difficulty === "advanced")) {
+      sceneType = "ray-optics";
+      parameters = { rounds: 3 };
     } else if (isSHM) {
       sceneType = "simple-harmonic-motion";
       parameters = {
@@ -363,7 +372,9 @@ export const getChallenge = cache(
 
     const title =
       challengeData?.title ||
-      (isTransformers
+      (isRayOptics
+        ? "Ray Optics: Total Internal Reflection & Prism Spectrometer Bench"
+        : isTransformers
         ? "Transformers: Mutual Induction, Turns Ratio & Power Transmission Bench"
         : isAcCircuits
         ? "Alternating Current: Series RLC Resonance & Oscilloscope Bench"
@@ -731,6 +742,8 @@ export function getTopicData(subject: string, moduleSlug: string, topicSlug: str
                                                       ? "faraday-shield"
                                                       : canonicalTopic === "capacitors" || canonicalTopic === "capacitance" || canonicalTopic.includes("capacit")
                                                         ? "dielectric-slider"
+                                                      : canonicalTopic === "ray-optics" || canonicalTopic === "optics" || canonicalTopic.includes("ray-optic")
+                                                        ? "ray-optics"
                                                       : canonicalTopic === "transformers" || canonicalTopic === "transformer" || canonicalTopic.includes("transform")
                                                         ? "transformers"
                                                       : canonicalTopic === "ac-circuits" || canonicalTopic === "alternating-current" || canonicalTopic === "rlc-resonance"

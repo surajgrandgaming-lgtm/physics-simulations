@@ -535,12 +535,31 @@ const EscapeArtistScene = dynamic(
   }
 );
 
+const RayOpticsScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/ray-optics/RayOpticsScene"
+    ).then((mod) => mod.RayOpticsScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 interface Props {
   config: any;
 }
 
 export default function CanvasClient({ config }: Props) {
   const sceneType = config?.sceneType;
+
+  if (sceneType === "ray-optics" || sceneType === "ray-optic") {
+    return (
+      <div className="w-full h-full">
+        <RayOpticsScene />
+      </div>
+    );
+  }
 
   if (sceneType === "transformers" || sceneType === "transformer") {
     return (
