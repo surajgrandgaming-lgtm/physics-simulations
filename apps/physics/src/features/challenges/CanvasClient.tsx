@@ -271,6 +271,17 @@ const AcCircuitsScene = dynamic(
   }
 );
 
+const TransformersScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/transformers/TransformersScene"
+    ).then((mod) => mod.TransformersScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 const MotionalEmfScene = dynamic(
   () =>
     import(
@@ -531,6 +542,13 @@ interface Props {
 export default function CanvasClient({ config }: Props) {
   const sceneType = config?.sceneType;
 
+  if (sceneType === "transformers" || sceneType === "transformer") {
+    return (
+      <div className="w-full h-full">
+        <TransformersScene />
+      </div>
+    );
+  }
   if (sceneType === "ac-circuits" || sceneType === "alternating-current" || sceneType === "rlc-resonance") {
     return (
       <div className="w-full h-full">

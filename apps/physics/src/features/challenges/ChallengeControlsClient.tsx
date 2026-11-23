@@ -20,6 +20,7 @@ import { MetrologyBenchControls } from "@/features/challenges/topics/physics/mea
 import { LorentzForceControls } from "@/features/challenges/topics/physics/lorentz-force/LorentzForceControls";
 import { MagneticFieldsControls } from "@/features/challenges/topics/physics/magnetic-fields/MagneticFieldsControls";
 import { AcCircuitsControls } from "@/features/challenges/topics/physics/ac-circuits/AcCircuitsControls";
+import { TransformersControls } from "@/features/challenges/topics/physics/transformers/TransformersControls";
 import { MotionalEmfControls } from "@/features/challenges/topics/physics/electromagnetic-induction/MotionalEmfControls";
 import { KeplerSecondLawControls } from "@/features/challenges/topics/physics/keplers-2nd-law/KeplerSecondLawControls";
 import { EscapeVelocityControls } from "@/features/challenges/topics/physics/escape-velocity/EscapeVelocityControls";
@@ -114,6 +115,9 @@ export function ChallengeControlsClient({ config }: ChallengeControlsClientProps
   }
   if (sceneType === "magnetic-bench" || sceneType === "magnetic-fields") {
     return <MagneticFieldsControls config={config} />;
+  }
+  if (sceneType === "transformers" || sceneType === "transformer") {
+    return <TransformersControls />;
   }
   if (sceneType === "ac-circuits" || sceneType === "alternating-current" || sceneType === "rlc-resonance") {
     return <AcCircuitsControls />;
