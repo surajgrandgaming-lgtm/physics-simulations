@@ -477,22 +477,22 @@ function PhotocellVacuumTube({
         ))}
       </group>
 
-      {/* Cathode Target Badge (Compact for Mobile, lower tier) */}
-      <Html position={[cathodeX, tubeY + 0.08, 0]} center distanceFactor={1.35}>
+      {/* Cathode Badge */}
+      <Html position={[cathodeX, tubeY + 0.10, 0]} center distanceFactor={1.35}>
         <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.5 rounded-sm font-mono text-[3.2px] font-bold shadow-xs whitespace-nowrap select-none pointer-events-none">
-          Cathode ({targetMetalSymbol}): Φ = {workFunctionEv.toFixed(2)} eV
+          Cathode
         </div>
       </Html>
 
-      {/* Collector Anode Badge (Staggered higher to prevent horizontal overlap) */}
-      <Html position={[anodeX, tubeY + 0.12, 0]} center distanceFactor={1.35}>
+      {/* Anode Badge */}
+      <Html position={[anodeX, tubeY + 0.10, 0]} center distanceFactor={1.35}>
         <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.5 rounded-sm font-mono text-[3.2px] font-bold shadow-xs whitespace-nowrap select-none pointer-events-none">
-          Collector Anode
+          Anode
         </div>
       </Html>
 
-      {/* Microammeter Live Current Badge (Beneath Tube, Completely Unobstructed) */}
-      <Html position={[0, tubeY - 0.095, 0]} center distanceFactor={1.35}>
+      {/* Microammeter Live Current Badge (Beneath Tube, moved downward for clean clearance) */}
+      <Html position={[0, tubeY - 0.125, 0]} center distanceFactor={1.35}>
         <div
           className={`px-1.5 py-0.5 rounded-sm text-[3.4px] font-mono font-black border shadow-xs whitespace-nowrap select-none pointer-events-none transition-colors ${
             photocurrentMicroAmps <= 0.001
