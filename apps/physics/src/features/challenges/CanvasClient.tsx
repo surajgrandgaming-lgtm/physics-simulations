@@ -568,6 +568,17 @@ const PhotoelectricScene = dynamic(
   }
 );
 
+const BohrModelScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/bohr-model/BohrModelScene"
+    ).then((mod) => mod.BohrModelScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 interface Props {
   config: any;
 }
@@ -595,6 +606,14 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <PhotoelectricScene />
+      </div>
+    );
+  }
+
+  if (sceneType === "bohr-model" || sceneType === "bohr" || sceneType.includes("bohr") || sceneType.includes("hydrogen-atom")) {
+    return (
+      <div className="w-full h-full">
+        <BohrModelScene />
       </div>
     );
   }

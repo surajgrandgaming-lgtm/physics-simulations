@@ -72,6 +72,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "ray-optics" || canonicalTopic === "optics" || canonicalTopic.includes("ray-optic") || canonicalTopic.includes("refraction") || canonicalTopic.includes("prism") || canonicalTopic.includes("tir")) && (slug.includes("ray") || slug.includes("optic") || t.topicId === "46")) return true;
     if ((canonicalTopic === "wave-optics" || canonicalTopic === "ydse" || canonicalTopic.includes("wave-optic") || canonicalTopic.includes("interference") || canonicalTopic.includes("double-slit") || canonicalTopic.includes("diffraction")) && (slug.includes("wave") || t.topicId === "47")) return true;
     if ((canonicalTopic === "photoelectric-effect" || canonicalTopic === "photoelectric" || canonicalTopic === "dual-nature" || canonicalTopic.includes("photoelectric") || canonicalTopic.includes("work-function") || canonicalTopic.includes("stopping-potential")) && (slug.includes("photoelectric") || t.topicId === "48")) return true;
+    if ((canonicalTopic === "bohr-model" || canonicalTopic === "bohr" || canonicalTopic.includes("bohr") || canonicalTopic.includes("hydrogen-atom") || canonicalTopic.includes("atomic-spectra")) && (slug.includes("bohr") || t.topicId === "49")) return true;
     return false;
   });
 
@@ -140,6 +141,7 @@ export const getChallenge = cache(
     const isRayOptics = canonicalTopic === "ray-optics" || canonicalTopic === "optics" || canonicalTopic.includes("ray-optic") || canonicalTopic.includes("refraction") || canonicalTopic.includes("prism") || canonicalTopic.includes("tir") || foundTopic?.topicId === "46";
     const isWaveOptics = canonicalTopic === "wave-optics" || canonicalTopic === "ydse" || canonicalTopic.includes("wave-optic") || canonicalTopic.includes("interference") || canonicalTopic.includes("double-slit") || foundTopic?.topicId === "47";
     const isPhotoelectric = canonicalTopic === "photoelectric-effect" || canonicalTopic === "photoelectric" || canonicalTopic === "dual-nature" || canonicalTopic.includes("photoelectric") || canonicalTopic.includes("work-function") || canonicalTopic.includes("stopping-potential") || foundTopic?.topicId === "48";
+    const isBohrModel = canonicalTopic === "bohr-model" || canonicalTopic === "bohr" || canonicalTopic.includes("bohr") || canonicalTopic.includes("hydrogen-atom") || canonicalTopic.includes("atomic-spectra") || foundTopic?.topicId === "49";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -373,6 +375,9 @@ export const getChallenge = cache(
     } else if (isPhotoelectric && (difficulty === "medium" || difficulty === "easy" || difficulty === "advanced")) {
       sceneType = "photoelectric-effect";
       parameters = { rounds: 3 };
+    } else if (isBohrModel && (difficulty === "medium" || difficulty === "easy" || difficulty === "advanced")) {
+      sceneType = "bohr-model";
+      parameters = { rounds: 3 };
     } else if (isSHM) {
       sceneType = "simple-harmonic-motion";
       parameters = {
@@ -382,7 +387,9 @@ export const getChallenge = cache(
 
     const title =
       challengeData?.title ||
-      (isPhotoelectric
+      (isBohrModel
+        ? "Bohr Model: Resonance Absorption, Emission Spectra & Ionization Cannon"
+        : isPhotoelectric
         ? "Photoelectric Effect: Millikan Photocell, Work Function & Stopping Potential"
         : isWaveOptics
         ? "Wave Optics: Young's Double Slit & Laser Interference Bench"
@@ -563,6 +570,8 @@ export function getModuleData(subject: string, moduleSlug: string) {
     else if (rawSlug.includes("hohmann") || rawSlug.includes("transfer") || t.topicId === "20") slug = "hohmann-transfers";
 
     const has3D =
+      slug === "bohr-model" ||
+      slug === "photoelectric-effect" ||
       slug === "1d-motion-deceleration" ||
       slug === "relative-motion" ||
       slug === "vectors-river-rain" ||
