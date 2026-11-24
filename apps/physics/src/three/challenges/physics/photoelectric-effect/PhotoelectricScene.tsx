@@ -134,11 +134,11 @@ function MonochromaticLightSource({
         <meshBasicMaterial color={colorHex} />
       </mesh>
 
-      {/* Light Source Label Badge (Compact for Mobile) */}
-      <Html position={[0, 0.23, 0]} center distanceFactor={1.9}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.5 rounded-sm font-mono text-[3.8px] font-bold shadow-xs whitespace-nowrap flex items-center gap-1 select-none pointer-events-none">
+      {/* Light Source Label Badge (Compact for Mobile Landscape) */}
+      <Html position={[0, 0.20, 0]} center distanceFactor={1.35}>
+        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.5 rounded-sm font-mono text-[3.2px] font-bold shadow-xs whitespace-nowrap flex items-center gap-1 select-none pointer-events-none">
           <span className="w-1.2 h-1.2 rounded-full inline-block shrink-0" style={{ backgroundColor: colorHex }} />
-          Light: λ = {wavelengthNm.toFixed(0)} nm ({photonEnergyEv.toFixed(2)} eV)
+          λ = {wavelengthNm.toFixed(0)} nm ({photonEnergyEv.toFixed(2)} eV)
         </div>
       </Html>
     </group>
@@ -477,24 +477,24 @@ function PhotocellVacuumTube({
         ))}
       </group>
 
-      {/* Cathode Target Badge (Elevated Cleanly) */}
-      <Html position={[cathodeX, tubeY + 0.11, 0]} center distanceFactor={1.9}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.5 rounded-sm font-mono text-[3.8px] font-bold shadow-xs whitespace-nowrap select-none pointer-events-none">
-          Cathode: {targetMetalName} ({targetMetalSymbol}, Φ = {workFunctionEv.toFixed(2)} eV)
+      {/* Cathode Target Badge (Compact for Mobile, lower tier) */}
+      <Html position={[cathodeX, tubeY + 0.08, 0]} center distanceFactor={1.35}>
+        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.5 rounded-sm font-mono text-[3.2px] font-bold shadow-xs whitespace-nowrap select-none pointer-events-none">
+          Cathode ({targetMetalSymbol}): Φ = {workFunctionEv.toFixed(2)} eV
         </div>
       </Html>
 
-      {/* Collector Anode Badge */}
-      <Html position={[anodeX, tubeY + 0.11, 0]} center distanceFactor={1.9}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.5 rounded-sm font-mono text-[3.8px] font-bold shadow-xs whitespace-nowrap select-none pointer-events-none">
+      {/* Collector Anode Badge (Staggered higher to prevent horizontal overlap) */}
+      <Html position={[anodeX, tubeY + 0.12, 0]} center distanceFactor={1.35}>
+        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.5 rounded-sm font-mono text-[3.2px] font-bold shadow-xs whitespace-nowrap select-none pointer-events-none">
           Collector Anode
         </div>
       </Html>
 
       {/* Microammeter Live Current Badge (Beneath Tube, Completely Unobstructed) */}
-      <Html position={[0, tubeY - 0.11, 0]} center distanceFactor={1.9}>
+      <Html position={[0, tubeY - 0.095, 0]} center distanceFactor={1.35}>
         <div
-          className={`px-1.5 py-0.5 rounded-sm text-[4.2px] font-mono font-black border shadow-xs whitespace-nowrap select-none pointer-events-none transition-colors ${
+          className={`px-1.5 py-0.5 rounded-sm text-[3.4px] font-mono font-black border shadow-xs whitespace-nowrap select-none pointer-events-none transition-colors ${
             photocurrentMicroAmps <= 0.001
               ? "bg-rose-50 border-rose-300 text-rose-700"
               : "bg-emerald-50 border-emerald-300 text-emerald-700"
@@ -598,12 +598,12 @@ function VoltageBiasUnit({
           <meshBasicMaterial color="#020617" />
         </mesh>
 
-        {/* Glowing Amber/Cyan LED Digital Voltmeter Readout */}
-        <Html position={[0, 0.018, 0.083]} center distanceFactor={1.9}>
-          <div className="font-mono text-[5.2px] font-black text-cyan-400 tracking-wider bg-black/90 px-1.5 py-0.5 rounded border border-cyan-800 shadow-[0_0_8px_rgba(6,182,212,0.4)] whitespace-nowrap select-none pointer-events-none flex flex-col items-center">
+        {/* Glowing Amber/Cyan LED Digital Voltmeter Readout (Scaled cleanly to fit window) */}
+        <Html position={[0, 0.018, 0.083]} center distanceFactor={1.15}>
+          <div className="font-mono text-[3.4px] font-black text-cyan-400 tracking-wider bg-black/95 px-1 py-0.5 rounded border border-cyan-800 shadow-[0_0_4px_rgba(6,182,212,0.3)] whitespace-nowrap select-none pointer-events-none flex flex-col items-center leading-none">
             <span>{voltageV.toFixed(2)} V</span>
             {isWavelengthMode && (
-              <span className="text-[2.8px] text-cyan-600 font-sans tracking-normal -mt-0.5 font-bold">
+              <span className="text-[2.0px] text-cyan-600 font-sans tracking-tight font-bold mt-0.5">
                 0V BIAS · STAGE 1
               </span>
             )}
@@ -639,23 +639,10 @@ function VoltageBiasUnit({
         </mesh>
       </group>
 
-      {/* Target Condition Badge (Elevated above instrument) */}
-      <Html position={[0, 0.24, 0]} center distanceFactor={1.9}>
-        <div
-          className={`px-1 py-0.5 rounded-sm text-[3.8px] font-mono font-bold border transition-all shadow-xs whitespace-nowrap select-none pointer-events-none ${
-            isAligned
-              ? "bg-emerald-50 border-emerald-400 text-emerald-700"
-              : "bg-white/95 border-emerald-500 text-emerald-800"
-          }`}
-        >
-          TARGET: {targetDisplay}
-        </div>
-      </Html>
-
-      {/* Retarding Bias Voltage Badge */}
-      <Html position={[0, -0.01, 0]} center distanceFactor={1.9}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.5 rounded-sm font-mono text-[3.8px] font-bold shadow-xs whitespace-nowrap select-none pointer-events-none">
-          {isWavelengthMode ? "Bias Supply: 0.00 V (0V Bias in Stage 1)" : `Retarding Bias: V = ${voltageV.toFixed(2)} V`}
+      {/* Retarding Bias Voltage Badge (Compact for Mobile Landscape) */}
+      <Html position={[0, -0.015, 0]} center distanceFactor={1.35}>
+        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.5 rounded-sm font-mono text-[3.0px] font-bold shadow-xs whitespace-nowrap select-none pointer-events-none">
+          {isWavelengthMode ? "DC Bias: 0.00 V (Zero Bias)" : `Retarding Bias: ${voltageV.toFixed(2)} V`}
         </div>
       </Html>
     </group>
@@ -721,9 +708,9 @@ function CameraRig() {
   const targetCamPos = useMemo(() => new THREE.Vector3(0.0, 0.20, 0.70), []);
   const targetCamLook = useMemo(() => new THREE.Vector3(0.0, 0.16, 0.0), []);
 
-  // Overview side-profile perspective matching our unified aesthetic
-  const overviewCamPos = useMemo(() => new THREE.Vector3(-0.25, 0.32, 1.25), []);
-  const overviewCamLook = useMemo(() => new THREE.Vector3(0.02, 0.16, 0.0), []);
+  // Overview side-profile perspective optimized for mobile landscape & desktop
+  const overviewCamPos = useMemo(() => new THREE.Vector3(-0.18, 0.28, 1.38), []);
+  const overviewCamLook = useMemo(() => new THREE.Vector3(0.0, 0.14, 0.0), []);
 
   const holdDuration = 0.8;
   const zoomDuration = 2.2;
@@ -775,7 +762,7 @@ function CameraRig() {
   return (
     <OrbitControls
       ref={controlsRef}
-      target={[0.02, 0.16, 0.0]}
+      target={[0.0, 0.14, 0.0]}
       minDistance={0.4}
       maxDistance={4.5}
       maxPolarAngle={Math.PI / 2 - 0.05}
@@ -806,7 +793,7 @@ export function PhotoelectricScene() {
     <div className="w-full h-full relative bg-slate-50 select-none">
       <Canvas
         shadows
-        camera={{ position: [-0.25, 0.32, 1.25], fov: 45 }}
+        camera={{ position: [-0.18, 0.28, 1.38], fov: 45 }}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       >
         <color attach="background" args={["#f8fafc"]} />
