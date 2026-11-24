@@ -71,7 +71,7 @@ export const BOHR_STAGES: Record<number, BohrStageConfig> = {
     sliderDefault: 9.00,
     stepSmall: 0.01,
     stepLarge: 0.10,
-    targetDisplay: "Quantum Leap (n = 1 → 2)",
+    targetDisplay: "n = 1 → 2",
     targetDescription: "Find the energy needed to excite Hydrogen from orbit n = 1 to n = 2.",
     mathDerivation: {
       title: "Resonance Absorption & Quantized Orbital Transitions",
@@ -175,7 +175,7 @@ export const BOHR_STAGES: Record<number, BohrStageConfig> = {
     sliderDefault: 550.0,
     stepSmall: 0.1,
     stepLarge: 1.0,
-    targetDisplay: "Balmer Hα Emission (n = 3 → 2)",
+    targetDisplay: "Balmer Hα (n = 3 → 2)",
     targetDescription: "Find the wavelength of light emitted when the electron drops from n = 3 to n = 2.",
     mathDerivation: {
       title: "The Balmer Series & Atomic Line Spectra",
@@ -273,7 +273,7 @@ export const BOHR_STAGES: Record<number, BohrStageConfig> = {
     sliderDefault: 11.50,
     stepSmall: 0.01,
     stepLarge: 0.10,
-    targetDisplay: "Atom Ionization (n = 1 → ∞)",
+    targetDisplay: "Ionization (n = 1 → ∞)",
     targetDescription: "Find the energy needed to knock the ground-state electron completely free.",
     mathDerivation: {
       title: "Atomic Ionization & Bound-to-Continuum Transitions",

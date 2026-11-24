@@ -250,22 +250,12 @@ export function BohrModelControls() {
           : undefined
       }
       topCenterHUD={
-        <div className="flex items-center gap-2 sm:gap-3 px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-300 shadow-xs font-mono text-[11px] sm:text-xs pointer-events-none select-none">
-          <div className="flex items-center gap-1 shrink-0">
-            <span className="text-slate-400 font-medium">STAGE</span>
-            <span className="font-bold text-slate-800">{currentStage}/3</span>
-          </div>
-          <span className="text-slate-300">|</span>
-          <div className="flex items-center gap-1 shrink-0 whitespace-nowrap">
-            <span className="text-slate-400 font-medium">TARGET:</span>
-            <span className="font-bold text-cyan-600">{stage.targetDisplay}</span>
-          </div>
-          <span className="text-slate-300">|</span>
-          <div className="flex items-center gap-1 shrink-0 whitespace-nowrap">
-            <span className="text-slate-400 font-medium">ATOM:</span>
-            <span className="font-bold text-slate-800">
-              {stage.targetAtomName} (Z = {stage.atomicNumberZ})
-            </span>
+        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-xs text-xs font-sans pointer-events-none select-none">
+          <span className="font-bold text-slate-700">Stage {currentStage}/3</span>
+          <span className="text-slate-300">•</span>
+          <div className="flex items-center gap-1">
+            <span className="text-slate-400 font-medium">Target:</span>
+            <span className="font-semibold text-cyan-600">{stage.targetDisplay}</span>
           </div>
         </div>
       }
