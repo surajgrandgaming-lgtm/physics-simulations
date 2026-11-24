@@ -130,9 +130,9 @@ function LaserEmitterUnit({
       </mesh>
 
       {/* Coherent Source Label Badge */}
-      <Html position={[0, 0.22, 0]} center distanceFactor={2.4}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1.5 py-0.5 rounded-sm font-mono text-[4.5px] font-bold shadow-xs whitespace-nowrap flex items-center gap-1 select-none pointer-events-none">
-          <span className="w-1.5 h-1.5 rounded-full inline-block shrink-0" style={{ backgroundColor: colorHex }} />
+      <Html position={[0, 0.22, 0]} center distanceFactor={1.9}>
+        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.5 rounded-sm font-mono text-[3.8px] font-bold shadow-xs whitespace-nowrap flex items-center gap-1 select-none pointer-events-none">
+          <span className="w-1.2 h-1.2 rounded-full inline-block shrink-0" style={{ backgroundColor: colorHex }} />
           Laser: λ = {wavelengthNm} nm
         </div>
       </Html>
@@ -187,8 +187,8 @@ function DoubleSlitAperture({
       </mesh>
 
       {/* Aperture Component Badge */}
-      <Html position={[0, 0.22, 0]} center distanceFactor={2.4}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1.5 py-0.5 rounded-sm font-mono text-[4.5px] font-bold shadow-xs whitespace-nowrap select-none pointer-events-none">
+      <Html position={[0, 0.22, 0]} center distanceFactor={1.9}>
+        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.5 rounded-sm font-mono text-[3.8px] font-bold shadow-xs whitespace-nowrap select-none pointer-events-none">
           Slits: d = {slitSeparationMm.toFixed(2)} mm
         </div>
       </Html>
@@ -362,10 +362,10 @@ function ObservationScreenWithFringes({
           <boxGeometry args={[0.001, screenHeight * 0.75, 0.0015]} />
           <meshBasicMaterial color="#10b981" />
         </mesh>
-        {/* Target Reticle Badge */}
-        <Html position={[0, screenHeight * 0.44, 0]} center distanceFactor={2.4}>
+        {/* Target Reticle Badge - elevated cleanly above the screen */}
+        <Html position={[0, screenHeight * 0.56, 0]} center distanceFactor={1.9}>
           <div
-            className={`px-1 py-0.5 rounded-sm text-[4.5px] font-mono font-bold border transition-all duration-300 shadow-xs whitespace-nowrap select-none pointer-events-none ${isAligned
+            className={`px-1 py-0.5 rounded-sm text-[3.8px] font-mono font-bold border transition-all duration-300 shadow-xs whitespace-nowrap select-none pointer-events-none ${isAligned
               ? "bg-emerald-50 border-emerald-400 text-emerald-700 shadow-emerald-200"
               : "bg-white/95 border-emerald-500 text-emerald-800"
               }`}
@@ -393,10 +393,10 @@ function ObservationScreenWithFringes({
           <meshBasicMaterial color="#ffffff" />
         </mesh>
 
-        {/* Live Traveling Sensor Readout Badge (Light Theme: Clear & Visible) */}
-        <Html position={[0, -screenHeight * 0.48, 0]} center distanceFactor={2.4}>
+        {/* Live Traveling Sensor Readout Badge - moved down clear of screen fringes */}
+        <Html position={[0, -screenHeight * 0.58, 0]} center distanceFactor={1.9}>
           <div
-            className={`px-1.5 py-0.5 rounded-sm text-[4.8px] font-mono font-black border shadow-sm whitespace-nowrap transition-colors select-none pointer-events-none ${isAligned
+            className={`px-1 py-0.5 rounded-sm text-[3.8px] font-mono font-black border shadow-xs whitespace-nowrap transition-colors select-none pointer-events-none ${isAligned
               ? "bg-emerald-50 border-emerald-400 text-emerald-700"
               : "bg-white/95 border-slate-300 text-slate-800"
               }`}
@@ -406,9 +406,9 @@ function ObservationScreenWithFringes({
         </Html>
       </group>
 
-      {/* Screen Distance Badge */}
-      <Html position={[0, 0.43, 0]} center distanceFactor={2.4}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1.5 py-0.5 rounded-sm font-mono text-[4.5px] font-bold shadow-xs whitespace-nowrap select-none pointer-events-none">
+      {/* Screen Distance Badge - moved higher up above target badge */}
+      <Html position={[0, 0.47, 0]} center distanceFactor={1.9}>
+        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.5 rounded-sm font-mono text-[3.8px] font-bold shadow-xs whitespace-nowrap select-none pointer-events-none">
           Screen: D = {screenDistanceM.toFixed(2)} m
         </div>
       </Html>
