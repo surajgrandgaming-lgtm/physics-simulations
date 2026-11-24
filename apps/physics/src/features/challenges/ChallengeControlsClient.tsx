@@ -22,6 +22,7 @@ import { MagneticFieldsControls } from "@/features/challenges/topics/physics/mag
 import { AcCircuitsControls } from "@/features/challenges/topics/physics/ac-circuits/AcCircuitsControls";
 import { TransformersControls } from "@/features/challenges/topics/physics/transformers/TransformersControls";
 import { RayOpticsControls } from "@/features/challenges/topics/physics/ray-optics/RayOpticsControls";
+import { WaveOpticsControls } from "@/features/challenges/topics/physics/wave-optics/WaveOpticsControls";
 import { MotionalEmfControls } from "@/features/challenges/topics/physics/electromagnetic-induction/MotionalEmfControls";
 import { KeplerSecondLawControls } from "@/features/challenges/topics/physics/keplers-2nd-law/KeplerSecondLawControls";
 import { EscapeVelocityControls } from "@/features/challenges/topics/physics/escape-velocity/EscapeVelocityControls";
@@ -122,6 +123,9 @@ export function ChallengeControlsClient({ config }: ChallengeControlsClientProps
   }
   if (sceneType === "ray-optics" || sceneType === "ray-optic") {
     return <RayOpticsControls />;
+  }
+  if (sceneType === "wave-optics" || sceneType === "wave-optic" || sceneType === "ydse") {
+    return <WaveOpticsControls />;
   }
   if (sceneType === "ac-circuits" || sceneType === "alternating-current" || sceneType === "rlc-resonance") {
     return <AcCircuitsControls />;

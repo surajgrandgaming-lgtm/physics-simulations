@@ -162,13 +162,15 @@ function SemiCircularBlock({
     <group position={[0, 0.034, 0]} rotation={[-Math.PI / 2, 0, 0]} renderOrder={1}>
       <mesh geometry={blockGeo} castShadow receiveShadow renderOrder={1}>
         <meshPhysicalMaterial
-          color="#e0f2fe"
+          color="#38bdf8"
+          emissive="#0284c7"
+          emissiveIntensity={0.08}
           transparent
-          opacity={0.32}
-          roughness={0.06}
-          metalness={0.05}
+          opacity={0.42}
+          roughness={0.04}
+          metalness={0.08}
           clearcoat={1.0}
-          clearcoatRoughness={0.05}
+          clearcoatRoughness={0.03}
           depthWrite={false}
         />
       </mesh>
@@ -176,7 +178,7 @@ function SemiCircularBlock({
       {/* Flat Interface Normal Indicator Line (Centered along Z-axis) */}
       <mesh position={[0, 0, 0.04]} rotation={[0, 0, 0]}>
         <boxGeometry args={[0.0015, 0.32, 0.0015]} />
-        <meshBasicMaterial color="#0284c7" transparent opacity={0.45} />
+        <meshBasicMaterial color="#0284c7" transparent opacity={0.6} />
       </mesh>
 
       {/* Component Badge */}
@@ -227,13 +229,15 @@ function EquilateralPrism({
     <group position={[0, 0.034, 0]} rotation={[-Math.PI / 2, 0, 0]} renderOrder={1}>
       <mesh geometry={prismGeo} castShadow receiveShadow renderOrder={1}>
         <meshPhysicalMaterial
-          color="#dbeafe"
+          color="#38bdf8"
+          emissive="#0284c7"
+          emissiveIntensity={0.08}
           transparent
-          opacity={0.32}
-          roughness={0.06}
-          metalness={0.05}
+          opacity={0.42}
+          roughness={0.04}
+          metalness={0.08}
           clearcoat={1.0}
-          clearcoatRoughness={0.05}
+          clearcoatRoughness={0.03}
           depthWrite={false}
         />
       </mesh>

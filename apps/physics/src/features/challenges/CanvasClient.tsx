@@ -546,6 +546,17 @@ const RayOpticsScene = dynamic(
   }
 );
 
+const WaveOpticsScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/wave-optics/WaveOpticsScene"
+    ).then((mod) => mod.WaveOpticsScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 interface Props {
   config: any;
 }
@@ -557,6 +568,14 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <RayOpticsScene />
+      </div>
+    );
+  }
+
+  if (sceneType === "wave-optics" || sceneType === "wave-optic" || sceneType === "ydse") {
+    return (
+      <div className="w-full h-full">
+        <WaveOpticsScene />
       </div>
     );
   }
