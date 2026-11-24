@@ -71,6 +71,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "transformers" || canonicalTopic === "transformer" || canonicalTopic.includes("transform")) && (slug.includes("transform") || t.topicId === "45")) return true;
     if ((canonicalTopic === "ray-optics" || canonicalTopic === "optics" || canonicalTopic.includes("ray-optic") || canonicalTopic.includes("refraction") || canonicalTopic.includes("prism") || canonicalTopic.includes("tir")) && (slug.includes("ray") || slug.includes("optic") || t.topicId === "46")) return true;
     if ((canonicalTopic === "wave-optics" || canonicalTopic === "ydse" || canonicalTopic.includes("wave-optic") || canonicalTopic.includes("interference") || canonicalTopic.includes("double-slit") || canonicalTopic.includes("diffraction")) && (slug.includes("wave") || t.topicId === "47")) return true;
+    if ((canonicalTopic === "photoelectric-effect" || canonicalTopic === "photoelectric" || canonicalTopic === "dual-nature" || canonicalTopic.includes("photoelectric") || canonicalTopic.includes("work-function") || canonicalTopic.includes("stopping-potential")) && (slug.includes("photoelectric") || t.topicId === "48")) return true;
     return false;
   });
 
@@ -138,6 +139,7 @@ export const getChallenge = cache(
     const isTransformers = canonicalTopic === "transformers" || canonicalTopic === "transformer" || canonicalTopic.includes("transform") || foundTopic?.topicId === "45";
     const isRayOptics = canonicalTopic === "ray-optics" || canonicalTopic === "optics" || canonicalTopic.includes("ray-optic") || canonicalTopic.includes("refraction") || canonicalTopic.includes("prism") || canonicalTopic.includes("tir") || foundTopic?.topicId === "46";
     const isWaveOptics = canonicalTopic === "wave-optics" || canonicalTopic === "ydse" || canonicalTopic.includes("wave-optic") || canonicalTopic.includes("interference") || canonicalTopic.includes("double-slit") || foundTopic?.topicId === "47";
+    const isPhotoelectric = canonicalTopic === "photoelectric-effect" || canonicalTopic === "photoelectric" || canonicalTopic === "dual-nature" || canonicalTopic.includes("photoelectric") || canonicalTopic.includes("work-function") || canonicalTopic.includes("stopping-potential") || foundTopic?.topicId === "48";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -368,6 +370,9 @@ export const getChallenge = cache(
     } else if (isWaveOptics && (difficulty === "medium" || difficulty === "easy" || difficulty === "advanced")) {
       sceneType = "wave-optics";
       parameters = { rounds: 3 };
+    } else if (isPhotoelectric && (difficulty === "medium" || difficulty === "easy" || difficulty === "advanced")) {
+      sceneType = "photoelectric-effect";
+      parameters = { rounds: 3 };
     } else if (isSHM) {
       sceneType = "simple-harmonic-motion";
       parameters = {
@@ -377,7 +382,9 @@ export const getChallenge = cache(
 
     const title =
       challengeData?.title ||
-      (isWaveOptics
+      (isPhotoelectric
+        ? "Photoelectric Effect: Millikan Photocell, Work Function & Stopping Potential"
+        : isWaveOptics
         ? "Wave Optics: Young's Double Slit & Laser Interference Bench"
         : isRayOptics
         ? "Ray Optics: Total Internal Reflection & Prism Spectrometer Bench"

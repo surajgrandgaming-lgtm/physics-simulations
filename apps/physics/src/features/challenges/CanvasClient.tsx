@@ -557,6 +557,17 @@ const WaveOpticsScene = dynamic(
   }
 );
 
+const PhotoelectricScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/photoelectric-effect/PhotoelectricScene"
+    ).then((mod) => mod.PhotoelectricScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 interface Props {
   config: any;
 }
@@ -576,6 +587,14 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <WaveOpticsScene />
+      </div>
+    );
+  }
+
+  if (sceneType === "photoelectric-effect" || sceneType === "photoelectric" || sceneType === "dual-nature") {
+    return (
+      <div className="w-full h-full">
+        <PhotoelectricScene />
       </div>
     );
   }
