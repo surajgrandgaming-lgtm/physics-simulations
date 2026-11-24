@@ -116,11 +116,11 @@ function PhotonExcitationGun({
         <meshBasicMaterial color={colorHex} />
       </mesh>
 
-      {/* Label Badge */}
-      <Html position={[0, 0.21, 0]} center distanceFactor={1.35}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.5 rounded-sm font-mono text-[3.2px] font-bold shadow-xs whitespace-nowrap flex items-center gap-1 select-none pointer-events-none">
+      {/* Carrier Mount Base Label */}
+      <Html position={[0, -0.015, 0]} center distanceFactor={1.35}>
+        <div className="bg-white/90 backdrop-blur-xs border border-slate-200/80 text-slate-700 px-2 py-0.5 rounded-full font-sans text-[2.6px] font-semibold shadow-xs whitespace-nowrap flex items-center gap-1 select-none pointer-events-none">
           <span className="w-1.2 h-1.2 rounded-full inline-block shrink-0" style={{ backgroundColor: colorHex }} />
-          Photon Gun: E = {photonEnergyEv.toFixed(2)} eV
+          Photon Gun
         </div>
       </Html>
     </group>
@@ -197,16 +197,16 @@ function QuantumAtomicChamber({
           transitionProgressRef.current = 0.0;
           targetRadiusRef.current = orbitRadii[1]; // n=2 (0.095)
           setActiveOrbitN(2);
-          setDynamicStatus("Spontaneous De-excitation: n = 3 → 2 (Emitting λ = 656.3 nm)");
+          setDynamicStatus("✨ De-excitation: n = 3 → 2 (Emitted λ = 656.3 nm)");
         } else {
-          setDynamicStatus("Emission Occurred — Spectrometer Misaligned!");
+          setDynamicStatus("⚠ Emission (Spectrometer Misaligned)");
         }
       } else {
         // In absorption / ionization: electron waits until photon arrives at atom (t ≈ 0.65s)
         isTransitioningRef.current = false;
         transitionProgressRef.current = 1.0;
         targetRadiusRef.current = orbitRadii[stage.initialOrbitN - 1] || 0.045;
-        setDynamicStatus("Photon In-Flight (E = " + dialedValue.toFixed(2) + " eV)...");
+        setDynamicStatus("Photon In-Flight...");
       }
     }
   }, [simulationTrigger, isAligned, stage.mode, stage.initialOrbitN, orbitRadii, dialedValue]);
@@ -229,11 +229,11 @@ function QuantumAtomicChamber({
         transitionProgressRef.current = 0.0;
         targetRadiusRef.current = orbitRadii[1]; // n=2 (0.095)
         setActiveOrbitN(2);
-        setDynamicStatus("✨ ΔE = 10.20 eV Absorbed! Quantum Leap: n = 1 → 2");
+        setDynamicStatus("✨ Resonant Absorption! Quantum Leap: n = 1 → 2");
       } else {
         // Off-resonance mismatch: photon transmits through without absorption
         setQuantumFlash(0.35);
-        setDynamicStatus("⚠ Off-Resonance (ΔE ≠ hν) — Photon Transmitted (No Absorption)");
+        setDynamicStatus("⚠ Off-Resonance — Photon Transmitted");
       }
     }
 
@@ -244,10 +244,10 @@ function QuantumAtomicChamber({
         setIsIonized(true);
         freePosRef.current.set(currentRadiusRef.current, 0, 0);
         freeVelRef.current.set(0.65, 0.38, 0.15);
-        setDynamicStatus("⚡ Coulomb Barrier Broken! E_ion = 13.61 eV — Electron Escaped");
+        setDynamicStatus("⚡ Ionized! Electron Freed (E > 0)");
       } else {
         setQuantumFlash(0.35);
-        setDynamicStatus("⚠ Energy Insufficient for Ionization (< 13.61 eV)");
+        setDynamicStatus("⚠ Energy Insufficient (< 13.61 eV)");
       }
     }
 
@@ -349,7 +349,6 @@ function QuantumAtomicChamber({
       {orbitRadii.map((r, idx) => {
         const n = idx + 1;
         const isCurrentOrbit = activeOrbitN === n && !isIonized;
-        const energyLabels = ["-13.60 eV", "-3.40 eV", "-1.51 eV", "-0.85 eV"];
         return (
           <group key={n} position={[0, chamberY, 0]}>
             {/* 3D Cylindrical Torus Ring (Fully visible from any camera angle) */}
@@ -363,18 +362,6 @@ function QuantumAtomicChamber({
                 metalness={0.6}
               />
             </mesh>
-            {/* Discrete Orbit Energy Level Marker */}
-            <Html position={[r * 0.707, 0, r * 0.707]} center distanceFactor={1.35}>
-              <div
-                className={`px-1 py-0.2 rounded-xs font-mono text-[2.6px] whitespace-nowrap select-none pointer-events-none transition-all ${
-                  isCurrentOrbit
-                    ? "bg-cyan-500 text-white font-bold shadow-sm shadow-cyan-500/50 scale-105"
-                    : "bg-slate-800/80 text-slate-200 border border-slate-600/60 font-semibold"
-                }`}
-              >
-                n={n} ({energyLabels[idx]})
-              </div>
-            </Html>
           </group>
         );
       })}
@@ -406,26 +393,19 @@ function QuantumAtomicChamber({
         </mesh>
       )}
 
-      {/* Real-time Dynamic Event Status Banner */}
+      {/* Real-time Dynamic Event Status Banner (Appears only during action) */}
       {dynamicStatus && (
         <Html position={[0, chamberY + 0.17, 0]} center distanceFactor={1.35}>
-          <div className="bg-slate-900/95 border border-cyan-400 text-cyan-200 px-2 py-0.8 rounded-md font-mono text-[3.2px] font-bold shadow-md shadow-cyan-500/20 whitespace-nowrap animate-pulse select-none pointer-events-none">
+          <div className="bg-slate-900/95 border border-cyan-400 text-cyan-200 px-2.5 py-0.8 rounded-full font-sans text-[2.8px] font-bold shadow-md shadow-cyan-500/20 whitespace-nowrap animate-pulse select-none pointer-events-none">
             {dynamicStatus}
           </div>
         </Html>
       )}
 
-      {/* Nucleus Badge */}
-      <Html position={[0, chamberY + 0.05, 0]} center distanceFactor={1.35}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.5 rounded-sm font-mono text-[3.0px] font-bold shadow-xs whitespace-nowrap select-none pointer-events-none">
-          Nucleus (p⁺)
-        </div>
-      </Html>
-
-      {/* Electron Badge */}
-      <Html position={[0, chamberY - 0.06, 0]} center distanceFactor={1.35}>
-        <div className="bg-white/95 border border-cyan-400 text-cyan-900 px-1 py-0.5 rounded-sm font-mono text-[3.0px] font-bold shadow-xs whitespace-nowrap select-none pointer-events-none">
-          {isIonized ? "Electron: Free Continuum (E > 0)" : `Electron (Orbit n = ${activeOrbitN})`}
+      {/* Carrier Mount Base Label */}
+      <Html position={[0, -0.015, 0]} center distanceFactor={1.35}>
+        <div className="bg-white/90 backdrop-blur-xs border border-slate-200/80 text-slate-700 px-2 py-0.5 rounded-full font-sans text-[2.6px] font-semibold shadow-xs whitespace-nowrap select-none pointer-events-none">
+          Hydrogen Atom
         </div>
       </Html>
     </group>
@@ -494,14 +474,10 @@ function OpticalSpectrograph({
         <meshBasicMaterial color="#6366f1" />
       </mesh>
 
-      {/* Spectrometer Label Badge */}
+      {/* Carrier Mount Base Label */}
       <Html position={[0, -0.015, 0]} center distanceFactor={1.35}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.5 rounded-sm font-mono text-[3.0px] font-bold shadow-xs whitespace-nowrap select-none pointer-events-none">
-          {isEmissionStage
-            ? isAligned
-              ? `Spectrometer: Hα (656.3 nm) Line Detected!`
-              : `Spectrometer: λ = ${dialedWavelengthNm.toFixed(1)} nm`
-            : "Optical Spectrograph"}
+        <div className="bg-white/90 backdrop-blur-xs border border-slate-200/80 text-slate-700 px-2 py-0.5 rounded-full font-sans text-[2.6px] font-semibold shadow-xs whitespace-nowrap select-none pointer-events-none">
+          Spectrometer
         </div>
       </Html>
     </group>
