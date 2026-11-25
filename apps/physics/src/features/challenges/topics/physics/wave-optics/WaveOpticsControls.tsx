@@ -175,23 +175,42 @@ export function WaveOpticsControls() {
           : undefined
       }
       topCenterHUD={
-        <div className="flex items-center gap-2 sm:gap-3 px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-300 shadow-xs font-mono text-[11px] sm:text-xs pointer-events-none select-none">
-          <div className="flex items-center gap-1 shrink-0">
-            <span className="text-slate-400 font-medium">STAGE</span>
-            <span className="font-bold text-slate-800">{currentStage}/3</span>
-          </div>
+        <div className="flex flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5 sm:gap-x-2 px-2.5 sm:px-3.5 py-1 rounded-2xl sm:rounded-full bg-white/95 backdrop-blur-md border border-slate-300 shadow-xs font-mono text-[10px] sm:text-[11px] select-none pointer-events-none max-w-[calc(100vw-360px)] lg:max-w-none">
+          <span className="font-bold text-slate-800 shrink-0">Stage {currentStage}/3</span>
           <span className="text-slate-300">|</span>
-          <div className="flex items-center gap-1 shrink-0 whitespace-nowrap">
-            <span className="text-slate-400 font-medium">TARGET:</span>
-            <span className="font-bold text-cyan-600">{stage.targetDisplay}</span>
-          </div>
-          <span className="text-slate-300">|</span>
-          <div className="flex items-center gap-1 shrink-0 whitespace-nowrap">
-            <span className="text-slate-400 font-medium">LASER:</span>
-            <span className="font-bold" style={{ color: stage.laserHex }}>
-              {stage.laserColorName} ({stage.laserWavelengthNm} nm)
-            </span>
-          </div>
+          {currentStage === 1 && (
+            <div className="flex flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5">
+              <span className="text-slate-500 font-medium">Target: <strong className="text-cyan-600 font-bold">β</strong></span>
+              <span className="text-slate-300">•</span>
+              <span className="text-slate-700">λ = <strong className="text-slate-900 font-bold">532nm</strong></span>
+              <span className="text-slate-300">•</span>
+              <span className="text-slate-700">d = <strong className="text-slate-900 font-bold">0.25mm</strong></span>
+              <span className="text-slate-300">•</span>
+              <span className="text-slate-700">D = <strong className="text-slate-900 font-bold">1.20m</strong></span>
+            </div>
+          )}
+          {currentStage === 2 && (
+            <div className="flex flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5">
+              <span className="text-slate-500 font-medium">Target: <strong className="text-cyan-600 font-bold">d</strong></span>
+              <span className="text-slate-300">•</span>
+              <span className="text-slate-700">λ = <strong className="text-slate-900 font-bold">633nm</strong></span>
+              <span className="text-slate-300">•</span>
+              <span className="text-slate-700">D = <strong className="text-slate-900 font-bold">1.50m</strong></span>
+              <span className="text-slate-300">•</span>
+              <span className="text-slate-700">β = <strong className="text-slate-900 font-bold">3.80mm</strong></span>
+            </div>
+          )}
+          {currentStage === 3 && (
+            <div className="flex flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5">
+              <span className="text-slate-500 font-medium">Target: <strong className="text-cyan-600 font-bold">λ</strong></span>
+              <span className="text-slate-300">•</span>
+              <span className="text-slate-700">d = <strong className="text-slate-900 font-bold">0.20mm</strong></span>
+              <span className="text-slate-300">•</span>
+              <span className="text-slate-700">D = <strong className="text-slate-900 font-bold">1.00m</strong></span>
+              <span className="text-slate-300">•</span>
+              <span className="text-slate-700">y₃ = <strong className="text-slate-900 font-bold">6.75mm</strong></span>
+            </div>
+          )}
         </div>
       }
       bottomDock={

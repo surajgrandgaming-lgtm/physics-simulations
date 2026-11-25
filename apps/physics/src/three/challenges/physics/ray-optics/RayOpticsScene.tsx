@@ -182,8 +182,8 @@ function SemiCircularBlock({
       </mesh>
 
       {/* Component Badge */}
-      <Html position={[0, -0.19, 0.04]} center distanceFactor={4.8}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.2 rounded font-mono text-[5.5px] font-bold shadow-xs whitespace-nowrap">
+      <Html position={[0, -0.19, 0.04]} center distanceFactor={1.35}>
+        <div className="bg-white/90 backdrop-blur-xs border border-slate-200/80 text-slate-700 px-2 py-0.5 rounded-full font-sans text-[2.6px] font-semibold shadow-xs whitespace-nowrap select-none pointer-events-none">
           Glass D-Block: n = {refractiveIndex.toFixed(2)}
         </div>
       </Html>
@@ -243,9 +243,9 @@ function EquilateralPrism({
       </mesh>
 
       {/* Component Badge */}
-      <Html position={[0, -0.16, 0.04]} center distanceFactor={4.8}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.2 rounded font-mono text-[5.5px] font-bold shadow-xs whitespace-nowrap">
-          Prism: A = 60° | n = {refractiveIndex.toFixed(3)}
+      <Html position={[0, -0.16, 0.04]} center distanceFactor={1.35}>
+        <div className="bg-white/90 backdrop-blur-xs border border-slate-200/80 text-slate-700 px-2 py-0.5 rounded-full font-sans text-[2.6px] font-semibold shadow-xs whitespace-nowrap select-none pointer-events-none">
+          Prism: A = 60° • n = {refractiveIndex.toFixed(3)}
         </div>
       </Html>
     </group>
@@ -310,8 +310,8 @@ function LaserEmitterArm({
       </mesh>
 
       {/* Goniometer Indicator Line & Angle Badge */}
-      <Html position={[0, 0.06, 0]} center distanceFactor={4.8}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.2 rounded font-mono text-[5.5px] font-bold shadow-xs whitespace-nowrap">
+      <Html position={[0, 0.06, 0]} center distanceFactor={1.35}>
+        <div className="bg-white/90 backdrop-blur-xs border border-slate-200/80 text-slate-700 px-2 py-0.5 rounded-full font-sans text-[2.6px] font-semibold shadow-xs whitespace-nowrap select-none pointer-events-none">
           Laser: i = {angleDeg.toFixed(1)}°
         </div>
       </Html>
@@ -400,8 +400,8 @@ function RadialDetectorScreen({
       </mesh>
 
       {/* ── Light Theme TARGET Badge (Directly Above Target Screen) ── */}
-      <Html position={[0, 0.14, 0]} center distanceFactor={4.8}>
-        <div className="bg-white/95 border border-cyan-500 text-cyan-900 px-1.5 py-0.2 rounded font-mono text-[6px] font-black tracking-wide shadow-xs flex items-center gap-1 select-none whitespace-nowrap">
+      <Html position={[0, 0.14, 0]} center distanceFactor={1.35}>
+        <div className="bg-cyan-50 border border-cyan-400 text-cyan-800 px-2 py-0.5 rounded-full font-mono text-[2.6px] font-bold shadow-xs flex items-center gap-1 select-none whitespace-nowrap pointer-events-none">
           <span className="text-cyan-600">TARGET:</span>
           <span>{targetDisplay}</span>
         </div>

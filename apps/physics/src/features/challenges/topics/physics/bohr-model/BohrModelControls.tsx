@@ -250,13 +250,36 @@ export function BohrModelControls() {
           : undefined
       }
       topCenterHUD={
-        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-xs text-xs font-sans pointer-events-none select-none">
-          <span className="font-bold text-slate-700">Stage {currentStage}/3</span>
-          <span className="text-slate-300">•</span>
-          <div className="flex items-center gap-1">
-            <span className="text-slate-400 font-medium">Target:</span>
-            <span className="font-semibold text-cyan-600">{stage.targetDisplay}</span>
-          </div>
+        <div className="flex flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5 sm:gap-x-2 px-2.5 sm:px-3.5 py-1 rounded-2xl sm:rounded-full bg-white/95 backdrop-blur-md border border-slate-300 shadow-xs font-mono text-[10px] sm:text-[11px] select-none pointer-events-none max-w-[calc(100vw-360px)] lg:max-w-none">
+          <span className="font-bold text-slate-800 shrink-0">Stage {currentStage}/3</span>
+          <span className="text-slate-300">|</span>
+          {currentStage === 1 && (
+            <div className="flex flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5">
+              <span className="text-slate-500 font-medium">Target: <strong className="text-cyan-600 font-bold">n = 1 → 2</strong></span>
+              <span className="text-slate-300">•</span>
+              <span className="text-slate-700">E₁ = <strong className="text-slate-900 font-bold">-13.60 eV</strong></span>
+              <span className="text-slate-300">•</span>
+              <span className="text-slate-700">E₂ = <strong className="text-slate-900 font-bold">-3.40 eV</strong></span>
+            </div>
+          )}
+          {currentStage === 2 && (
+            <div className="flex flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5">
+              <span className="text-slate-500 font-medium">Target: <strong className="text-cyan-600 font-bold">Balmer Hα</strong></span>
+              <span className="text-slate-300">•</span>
+              <span className="text-slate-700">n = <strong className="text-slate-900 font-bold">3 → 2</strong></span>
+              <span className="text-slate-300">•</span>
+              <span className="text-slate-700">R_H = <strong className="text-slate-900 font-bold">1.097×10⁷ m⁻¹</strong></span>
+            </div>
+          )}
+          {currentStage === 3 && (
+            <div className="flex flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5">
+              <span className="text-slate-500 font-medium">Target: <strong className="text-cyan-600 font-bold">Ionization</strong></span>
+              <span className="text-slate-300">•</span>
+              <span className="text-slate-700">n = <strong className="text-slate-900 font-bold">1 → ∞</strong></span>
+              <span className="text-slate-300">•</span>
+              <span className="text-slate-700">E₁ = <strong className="text-slate-900 font-bold">-13.60 eV</strong></span>
+            </div>
+          )}
         </div>
       }
       bottomDock={

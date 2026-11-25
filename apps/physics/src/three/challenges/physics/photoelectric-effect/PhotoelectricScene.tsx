@@ -136,7 +136,7 @@ function MonochromaticLightSource({
 
       {/* Light Source Label Badge (Compact for Mobile Landscape) */}
       <Html position={[0, 0.20, 0]} center distanceFactor={1.35}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.5 rounded-sm font-mono text-[3.2px] font-bold shadow-xs whitespace-nowrap flex items-center gap-1 select-none pointer-events-none">
+        <div className="bg-white/90 backdrop-blur-xs border border-slate-200/80 text-slate-700 px-2 py-0.5 rounded-full font-sans text-[2.6px] font-semibold shadow-xs whitespace-nowrap flex items-center gap-1 select-none pointer-events-none">
           <span className="w-1.2 h-1.2 rounded-full inline-block shrink-0" style={{ backgroundColor: colorHex }} />
           λ = {wavelengthNm.toFixed(0)} nm ({photonEnergyEv.toFixed(2)} eV)
         </div>
@@ -479,14 +479,14 @@ function PhotocellVacuumTube({
 
       {/* Cathode Badge */}
       <Html position={[cathodeX, tubeY + 0.10, 0]} center distanceFactor={1.35}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.5 rounded-sm font-mono text-[3.2px] font-bold shadow-xs whitespace-nowrap select-none pointer-events-none">
+        <div className="bg-white/90 backdrop-blur-xs border border-slate-200/80 text-slate-700 px-2 py-0.5 rounded-full font-sans text-[2.6px] font-semibold shadow-xs whitespace-nowrap select-none pointer-events-none">
           Cathode
         </div>
       </Html>
 
       {/* Anode Badge */}
       <Html position={[anodeX, tubeY + 0.10, 0]} center distanceFactor={1.35}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.5 rounded-sm font-mono text-[3.2px] font-bold shadow-xs whitespace-nowrap select-none pointer-events-none">
+        <div className="bg-white/90 backdrop-blur-xs border border-slate-200/80 text-slate-700 px-2 py-0.5 rounded-full font-sans text-[2.6px] font-semibold shadow-xs whitespace-nowrap select-none pointer-events-none">
           Anode
         </div>
       </Html>
@@ -494,7 +494,7 @@ function PhotocellVacuumTube({
       {/* Microammeter Live Current Badge (Beneath Tube, moved downward for clean clearance) */}
       <Html position={[0, tubeY - 0.125, 0]} center distanceFactor={1.35}>
         <div
-          className={`px-1.5 py-0.5 rounded-sm text-[3.4px] font-mono font-black border shadow-xs whitespace-nowrap select-none pointer-events-none transition-colors ${
+          className={`px-2 py-0.5 rounded-full text-[2.6px] font-mono font-bold border shadow-xs whitespace-nowrap select-none pointer-events-none transition-colors ${
             photocurrentMicroAmps <= 0.001
               ? "bg-rose-50 border-rose-300 text-rose-700"
               : "bg-emerald-50 border-emerald-300 text-emerald-700"
@@ -599,11 +599,11 @@ function VoltageBiasUnit({
         </mesh>
 
         {/* Glowing Amber/Cyan LED Digital Voltmeter Readout (Scaled cleanly to fit window) */}
-        <Html position={[0, 0.018, 0.083]} center distanceFactor={1.15}>
-          <div className="font-mono text-[3.4px] font-black text-cyan-400 tracking-wider bg-black/95 px-1 py-0.5 rounded border border-cyan-800 shadow-[0_0_4px_rgba(6,182,212,0.3)] whitespace-nowrap select-none pointer-events-none flex flex-col items-center leading-none">
+        <Html position={[0, 0.018, 0.083]} center distanceFactor={1.35}>
+          <div className="font-mono text-[2.8px] font-black text-cyan-400 tracking-wider bg-black/95 px-1 py-0.5 rounded border border-cyan-800 shadow-[0_0_4px_rgba(6,182,212,0.3)] whitespace-nowrap select-none pointer-events-none flex flex-col items-center leading-none">
             <span>{voltageV.toFixed(2)} V</span>
             {isWavelengthMode && (
-              <span className="text-[2.0px] text-cyan-600 font-sans tracking-tight font-bold mt-0.5">
+              <span className="text-[1.8px] text-cyan-600 font-sans tracking-tight font-bold mt-0.5">
                 0V BIAS · STAGE 1
               </span>
             )}
@@ -641,7 +641,7 @@ function VoltageBiasUnit({
 
       {/* Retarding Bias Voltage Badge (Compact for Mobile Landscape) */}
       <Html position={[0, -0.015, 0]} center distanceFactor={1.35}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.5 rounded-sm font-mono text-[3.0px] font-bold shadow-xs whitespace-nowrap select-none pointer-events-none">
+        <div className="bg-white/90 backdrop-blur-xs border border-slate-200/80 text-slate-700 px-2 py-0.5 rounded-full font-sans text-[2.6px] font-semibold shadow-xs whitespace-nowrap select-none pointer-events-none">
           {isWavelengthMode ? "DC Bias: 0.00 V (Zero Bias)" : `Retarding Bias: ${voltageV.toFixed(2)} V`}
         </div>
       </Html>
