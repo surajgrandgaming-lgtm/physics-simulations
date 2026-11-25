@@ -279,12 +279,12 @@ export function NuclearPhysicsControls() {
           : undefined
       }
       topCenterHUD={
-        <div className="flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-300 shadow-xs font-mono text-[11px] sm:text-xs select-none pointer-events-none whitespace-nowrap">
+        <div className="flex flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5 sm:gap-x-2 px-2.5 sm:px-3.5 py-1 rounded-2xl sm:rounded-full bg-white/95 backdrop-blur-md border border-slate-300 shadow-xs font-mono text-[10px] sm:text-[11px] select-none pointer-events-none max-w-[calc(100vw-360px)] lg:max-w-none">
           <span className="font-bold text-slate-800 shrink-0">Stage {currentStage}/3</span>
           <span className="text-slate-300">|</span>
           {currentStage === 1 && (
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <span className="text-slate-500 font-medium">Target: <strong className="text-cyan-600 font-bold">T₁/₂</strong></span>
+            <div className="flex flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5">
+              <strong className="text-cyan-600 font-bold">T₁/₂</strong>
               <span className="text-slate-300">•</span>
               <span className="text-slate-700">A₀ = <strong className="text-slate-900 font-bold">1600 Bq</strong></span>
               <span className="text-slate-300">•</span>
@@ -294,8 +294,8 @@ export function NuclearPhysicsControls() {
             </div>
           )}
           {currentStage === 2 && (
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <span className="text-slate-500 font-medium">Target: <strong className="text-cyan-600 font-bold">% γ</strong></span>
+            <div className="flex flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5">
+              <strong className="text-cyan-600 font-bold">% γ</strong>
               <span className="text-slate-300">•</span>
               <span className="text-slate-700">Total = <strong className="text-slate-900 font-bold">2400 CPS</strong></span>
               <span className="text-slate-300">•</span>
@@ -305,10 +305,10 @@ export function NuclearPhysicsControls() {
             </div>
           )}
           {currentStage === 3 && (
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <span className="text-slate-500 font-medium">Target: <strong className="text-cyan-600 font-bold">Lead x</strong></span>
+            <div className="flex flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5">
+              <strong className="text-cyan-600 font-bold">Lead x</strong>
               <span className="text-slate-300">•</span>
-              <span className="text-slate-700">Dose = <strong className="text-slate-900 font-bold">128 mSv/h</strong></span>
+              <span className="text-slate-700">I₀ = <strong className="text-slate-900 font-bold">128 mSv/h</strong></span>
               <span className="text-slate-300">•</span>
               <span className="text-slate-700">Safe ≤ <strong className="text-slate-900 font-bold">2 mSv/h</strong></span>
               <span className="text-slate-300">•</span>
