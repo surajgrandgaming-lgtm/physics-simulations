@@ -579,6 +579,17 @@ const BohrModelScene = dynamic(
   }
 );
 
+const NuclearPhysicsScene = dynamic(
+  () =>
+    import(
+      "@/three/challenges/physics/nuclear-physics/NuclearPhysicsScene"
+    ).then((mod) => mod.NuclearPhysicsScene),
+  {
+    ssr: false,
+    loading: LoadingFallback,
+  }
+);
+
 interface Props {
   config: any;
 }
@@ -614,6 +625,14 @@ export default function CanvasClient({ config }: Props) {
     return (
       <div className="w-full h-full">
         <BohrModelScene />
+      </div>
+    );
+  }
+
+  if (sceneType === "nuclear-physics" || sceneType === "nuclear" || sceneType.includes("nuclear") || sceneType.includes("radioactivity") || sceneType.includes("decay")) {
+    return (
+      <div className="w-full h-full">
+        <NuclearPhysicsScene />
       </div>
     );
   }

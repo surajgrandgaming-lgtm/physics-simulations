@@ -73,6 +73,7 @@ export function findTopic(subject: string, moduleSlug: string, topicSlug: string
     if ((canonicalTopic === "wave-optics" || canonicalTopic === "ydse" || canonicalTopic.includes("wave-optic") || canonicalTopic.includes("interference") || canonicalTopic.includes("double-slit") || canonicalTopic.includes("diffraction")) && (slug.includes("wave") || t.topicId === "47")) return true;
     if ((canonicalTopic === "photoelectric-effect" || canonicalTopic === "photoelectric" || canonicalTopic === "dual-nature" || canonicalTopic.includes("photoelectric") || canonicalTopic.includes("work-function") || canonicalTopic.includes("stopping-potential")) && (slug.includes("photoelectric") || t.topicId === "48")) return true;
     if ((canonicalTopic === "bohr-model" || canonicalTopic === "bohr" || canonicalTopic.includes("bohr") || canonicalTopic.includes("hydrogen-atom") || canonicalTopic.includes("atomic-spectra")) && (slug.includes("bohr") || t.topicId === "49")) return true;
+    if ((canonicalTopic === "nuclear-physics" || canonicalTopic === "nuclear" || canonicalTopic === "radioactivity" || canonicalTopic.includes("nuclear") || canonicalTopic.includes("decay") || canonicalTopic.includes("half-life")) && (slug.includes("nuclear") || t.topicId === "50")) return true;
     return false;
   });
 
@@ -142,6 +143,7 @@ export const getChallenge = cache(
     const isWaveOptics = canonicalTopic === "wave-optics" || canonicalTopic === "ydse" || canonicalTopic.includes("wave-optic") || canonicalTopic.includes("interference") || canonicalTopic.includes("double-slit") || foundTopic?.topicId === "47";
     const isPhotoelectric = canonicalTopic === "photoelectric-effect" || canonicalTopic === "photoelectric" || canonicalTopic === "dual-nature" || canonicalTopic.includes("photoelectric") || canonicalTopic.includes("work-function") || canonicalTopic.includes("stopping-potential") || foundTopic?.topicId === "48";
     const isBohrModel = canonicalTopic === "bohr-model" || canonicalTopic === "bohr" || canonicalTopic.includes("bohr") || canonicalTopic.includes("hydrogen-atom") || canonicalTopic.includes("atomic-spectra") || foundTopic?.topicId === "49";
+    const isNuclearPhysics = canonicalTopic === "nuclear-physics" || canonicalTopic === "nuclear" || canonicalTopic === "radioactivity" || canonicalTopic.includes("nuclear") || canonicalTopic.includes("decay") || canonicalTopic.includes("half-life") || foundTopic?.topicId === "50";
 
     let sceneType = "physics-simulation";
     let parameters: Record<string, any> = { difficulty };
@@ -378,6 +380,9 @@ export const getChallenge = cache(
     } else if (isBohrModel && (difficulty === "medium" || difficulty === "easy" || difficulty === "advanced")) {
       sceneType = "bohr-model";
       parameters = { rounds: 3 };
+    } else if (isNuclearPhysics && (difficulty === "medium" || difficulty === "easy" || difficulty === "advanced")) {
+      sceneType = "nuclear-physics";
+      parameters = { rounds: 3 };
     } else if (isSHM) {
       sceneType = "simple-harmonic-motion";
       parameters = {
@@ -387,7 +392,9 @@ export const getChallenge = cache(
 
     const title =
       challengeData?.title ||
-      (isBohrModel
+      (isNuclearPhysics
+        ? "Nuclear Physics: Geiger-Müller Counter, Half-Life Kinetics & Radiation Shielding"
+        : isBohrModel
         ? "Bohr Model: Resonance Absorption, Emission Spectra & Ionization Cannon"
         : isPhotoelectric
         ? "Photoelectric Effect: Millikan Photocell, Work Function & Stopping Potential"

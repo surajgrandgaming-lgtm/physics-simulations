@@ -25,6 +25,7 @@ import { RayOpticsControls } from "@/features/challenges/topics/physics/ray-opti
 import { WaveOpticsControls } from "@/features/challenges/topics/physics/wave-optics/WaveOpticsControls";
 import { PhotoelectricControls } from "@/features/challenges/topics/physics/photoelectric-effect/PhotoelectricControls";
 import { BohrModelControls } from "@/features/challenges/topics/physics/bohr-model/BohrModelControls";
+import { NuclearPhysicsControls } from "@/features/challenges/topics/physics/nuclear-physics/NuclearPhysicsControls";
 import { MotionalEmfControls } from "@/features/challenges/topics/physics/electromagnetic-induction/MotionalEmfControls";
 import { KeplerSecondLawControls } from "@/features/challenges/topics/physics/keplers-2nd-law/KeplerSecondLawControls";
 import { EscapeVelocityControls } from "@/features/challenges/topics/physics/escape-velocity/EscapeVelocityControls";
@@ -134,6 +135,9 @@ export function ChallengeControlsClient({ config }: ChallengeControlsClientProps
   }
   if (sceneType === "bohr-model" || sceneType === "bohr" || sceneType.includes("bohr") || sceneType.includes("hydrogen-atom")) {
     return <BohrModelControls />;
+  }
+  if (sceneType === "nuclear-physics" || sceneType === "nuclear" || sceneType.includes("nuclear") || sceneType.includes("radioactivity") || sceneType.includes("decay")) {
+    return <NuclearPhysicsControls />;
   }
   if (sceneType === "ac-circuits" || sceneType === "alternating-current" || sceneType === "rlc-resonance") {
     return <AcCircuitsControls />;
