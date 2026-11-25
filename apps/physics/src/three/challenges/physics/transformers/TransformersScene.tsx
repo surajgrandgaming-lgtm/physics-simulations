@@ -122,11 +122,11 @@ function TransformerOscilloscope({
       </mesh>
 
       {/* Legend Badge */}
-      <Html position={[0, 0.38, 0.05]} center distanceFactor={4.8}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.2 rounded font-mono text-[5.5px] font-black shadow-xs flex items-center gap-1 select-none whitespace-nowrap">
-          <span className="text-yellow-600">V_p(t)</span>
+      <Html position={[0, 0.38, 0.05]} center distanceFactor={1.35}>
+        <div className="bg-white/90 backdrop-blur-xs border border-slate-200/80 text-slate-700 px-2 py-0.5 rounded-full font-sans text-[2.6px] font-semibold shadow-xs flex items-center gap-1 select-none whitespace-nowrap">
+          <span className="text-amber-600 font-bold">V_p(t)</span>
           <span className="text-slate-300">|</span>
-          <span className="text-cyan-600">V_s(t)</span>
+          <span className="text-cyan-600 font-bold">V_s(t)</span>
         </div>
       </Html>
     </group>
@@ -301,8 +301,8 @@ function PrimaryCoil({
       </mesh>
 
       {/* Primary Label Badge (Positioned high above coil in open air) */}
-      <Html position={[0.1, 0.22, 0.05]} center distanceFactor={4.8}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.2 rounded font-mono text-[5.5px] font-bold shadow-xs whitespace-nowrap">
+      <Html position={[0.1, 0.22, 0.05]} center distanceFactor={1.35}>
+        <div className="bg-white/90 backdrop-blur-xs border border-slate-200/80 text-slate-700 px-2 py-0.5 rounded-full font-sans text-[2.6px] font-semibold shadow-xs whitespace-nowrap">
           N_p: {nPrimary} turns
         </div>
       </Html>
@@ -368,8 +368,8 @@ function SecondaryCoil({
       </mesh>
 
       {/* Live Measurement Badge (Below Secondary Coil) */}
-      <Html position={[0, -0.22, 0.08]} center distanceFactor={4.8}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.2 rounded font-mono text-[5.5px] font-bold shadow-xs whitespace-nowrap">
+      <Html position={[0, -0.22, 0.08]} center distanceFactor={1.35}>
+        <div className="bg-white/90 backdrop-blur-xs border border-slate-200/80 text-slate-700 px-2 py-0.5 rounded-full font-sans text-[2.6px] font-semibold shadow-xs whitespace-nowrap">
           N_s: {turns} turns
         </div>
       </Html>
@@ -400,8 +400,8 @@ function LoadResistor({
         <boxGeometry args={[0.008, 0.036, 0.036]} />
         <meshStandardMaterial color="#94a3b8" metalness={0.8} />
       </mesh>
-      <Html position={[0, 0.13, 0]} center distanceFactor={4.8}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.2 rounded font-mono text-[5.5px] font-bold shadow-xs whitespace-nowrap">
+      <Html position={[0, 0.13, 0]} center distanceFactor={1.35}>
+        <div className="bg-white/90 backdrop-blur-xs border border-slate-200/80 text-slate-700 px-2 py-0.5 rounded-full font-sans text-[2.6px] font-semibold shadow-xs whitespace-nowrap">
           R: {loadResistance.toFixed(0)} Ω
         </div>
       </Html>
@@ -474,8 +474,8 @@ function LoadLamp({
         distance={1.8}
         decay={2}
       />
-      <Html position={[0, 0.2, 0]} center distanceFactor={4.8}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.2 rounded font-mono text-[5.5px] font-bold shadow-xs whitespace-nowrap">
+      <Html position={[0, 0.2, 0]} center distanceFactor={1.35}>
+        <div className="bg-white/90 backdrop-blur-xs border border-slate-200/80 text-slate-700 px-2 py-0.5 rounded-full font-sans text-[2.6px] font-semibold shadow-xs whitespace-nowrap">
           I_s: {iSecondary.toFixed(2)} A
         </div>
       </Html>
@@ -514,8 +514,8 @@ function InputSupplyUnit({
         <cylinderGeometry args={[0.02, 0.02, 0.015, 20]} />
         <meshStandardMaterial color="#94a3b8" metalness={0.9} />
       </mesh>
-      <Html position={[0, 0.15, 0]} center distanceFactor={4.8}>
-        <div className="bg-white/95 border border-slate-300 text-slate-800 px-1 py-0.2 rounded font-mono text-[5.5px] font-bold shadow-xs whitespace-nowrap">
+      <Html position={[0, 0.15, 0]} center distanceFactor={1.35}>
+        <div className="bg-white/90 backdrop-blur-xs border border-slate-200/80 text-slate-700 px-2 py-0.5 rounded-full font-sans text-[2.6px] font-semibold shadow-xs whitespace-nowrap">
           V_p: {vPrimary.toFixed(0)} V
         </div>
       </Html>
