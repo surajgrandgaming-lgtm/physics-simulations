@@ -83,7 +83,7 @@ export function WaveOpticsControls() {
       calculation={calculationDerivation}
       briefing={{
         target: stage.targetDescription,
-        targetImageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/target.png",
+        targetImageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%202/medium/target.png",
         storyObjective:
           currentStage === 1
             ? "Calculate the position of the 1st Dark Fringe and align the sensor."
@@ -95,19 +95,19 @@ export function WaveOpticsControls() {
             step: 1,
             title: "Calculate Target Position",
             description: "Use the fringe formula with λ, D, and d to find the target position y.",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/1.png",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%202/medium/1.png",
           },
           {
             step: 2,
             title: "Move the Sensor",
             description: "Drag the slider or click the pencil icon to enter your calculated value.",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/2.png",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%202/medium/2.png",
           },
           {
             step: 3,
             title: "Click Start",
             description: "Press START to verify if your sensor position matches the target fringe.",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/3.png",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%202/medium/3.png",
           },
         ],
         formulas: stage.mathDerivation.formulas,
@@ -118,17 +118,17 @@ export function WaveOpticsControls() {
           {
             title: "1. Calculate Position (y)",
             description: "Calculate the fringe coordinate y.",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/1.png",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%202/medium/1.png",
           },
           {
             title: "2. Set the Sensor",
             description: "Use the slider to set the sensor coordinate in mm.",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/2.png",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%202/medium/2.png",
           },
           {
             title: "3. Check Alignment",
             description: "Click START to check your alignment and complete the stage.",
-            imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/3.png",
+            imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%202/medium/3.png",
           },
         ],
         tip: "Fringe width β = λD/d. Dark fringes are at (m + 1/2)β, bright fringes are at m·β.",

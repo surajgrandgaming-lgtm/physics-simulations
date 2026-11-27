@@ -97,7 +97,7 @@ export function BohrModelControls() {
       calculation={calculationDerivation}
       briefing={{
         target: stage.targetDescription,
-        targetImageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/target.png",
+        targetImageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%204/medium/target.png",
         storyObjective:
           currentStage === 1
             ? "Tune the photon gun to make the electron leap from orbit 1 to orbit 2."
@@ -111,19 +111,19 @@ export function BohrModelControls() {
                   step: 1,
                   title: "Calculate Energy",
                   description: "Calculate the energy for the jump.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/1.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%204/medium/1.png",
                 },
                 {
                   step: 2,
                   title: "Tune Gun",
                   description: "Set the slider to the calculated energy.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/2.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%204/medium/2.png",
                 },
                 {
                   step: 3,
                   title: "Trigger Leap",
                   description: "Click START to absorb the photon.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/3.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%204/medium/3.png",
                 },
               ]
             : currentStage === 2
@@ -132,19 +132,19 @@ export function BohrModelControls() {
                   step: 1,
                   title: "Calculate Wavelength",
                   description: "Calculate the emitted wavelength.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/1.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%204/medium/1.png",
                 },
                 {
                   step: 2,
                   title: "Tune Spectrometer",
                   description: "Set the slider to the calculated wavelength.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/2.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%204/medium/2.png",
                 },
                 {
                   step: 3,
                   title: "Detect Line",
                   description: "Click START to catch the red spectral line.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/3.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%204/medium/3.png",
                 },
               ]
             : [
@@ -152,19 +152,19 @@ export function BohrModelControls() {
                   step: 1,
                   title: "Calculate Energy",
                   description: "Calculate the ionization energy.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/1.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%204/medium/1.png",
                 },
                 {
                   step: 2,
                   title: "Set Beam",
                   description: "Set the slider to the calculated energy.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/2.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%204/medium/2.png",
                 },
                 {
                   step: 3,
                   title: "Free Electron",
                   description: "Click START to ionize the atom.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/3.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%204/medium/3.png",
                 },
               ],
       }}
@@ -176,17 +176,17 @@ export function BohrModelControls() {
                 {
                   title: "1. Calculate Energy",
                   description: "Calculate the energy for the jump.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/1.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%204/medium/1.png",
                 },
                 {
                   title: "2. Tune Slider",
                   description: "Set the slider to the calculated energy.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/2.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%204/medium/2.png",
                 },
                 {
                   title: "3. Verify",
                   description: "Click START to watch the orbital leap.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/3.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%204/medium/3.png",
                 },
               ]
             : currentStage === 2
@@ -194,34 +194,34 @@ export function BohrModelControls() {
                 {
                   title: "1. Calculate Wavelength",
                   description: "Calculate the emitted wavelength.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/1.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%204/medium/1.png",
                 },
                 {
                   title: "2. Tune Slider",
                   description: "Set the slider to the calculated wavelength.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/2.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%204/medium/2.png",
                 },
                 {
                   title: "3. Verify",
                   description: "Click START to detect the red spectral line.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/3.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%204/medium/3.png",
                 },
               ]
             : [
                 {
                   title: "1. Calculate Energy",
                   description: "Calculate the ionization energy.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/1.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%204/medium/1.png",
                 },
                 {
                   title: "2. Tune Slider",
                   description: "Set the slider to the calculated energy.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/2.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%204/medium/2.png",
                 },
                 {
                   title: "3. Verify",
                   description: "Click START to liberate the electron.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/3.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%204/medium/3.png",
                 },
               ],
         tip:

@@ -94,7 +94,7 @@ export function PhotoelectricControls() {
       calculation={calculationDerivation}
       briefing={{
         target: stage.targetDescription,
-        targetImageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/target.png",
+        targetImageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%203/New%20folder/target.png",
         storyObjective:
           currentStage === 1
             ? "Tune the light wavelength to the threshold cutoff (λ₀) to start photoemission from the Cesium cathode."
@@ -108,19 +108,19 @@ export function PhotoelectricControls() {
                 step: 1,
                 title: "Calculate λ₀",
                 description: "Use λ₀ = hc / Φ = 1240 / 2.14 ≈ 579 nm.",
-                imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/1.png",
+                imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%203/New%20folder/1.png",
               },
               {
                 step: 2,
                 title: "Tune Wavelength",
                 description: "Set the bottom slider to 579 nm.",
-                imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/2.png",
+                imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%203/New%20folder/2.png",
               },
               {
                 step: 3,
                 title: "Verify Current",
                 description: "Click START to confirm photoemission begins.",
-                imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/3.png",
+                imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%203/New%20folder/3.png",
               },
             ]
             : currentStage === 2
@@ -129,19 +129,19 @@ export function PhotoelectricControls() {
                   step: 1,
                   title: "Calculate V₀",
                   description: "E = 4.00 eV, Φ = 2.75 eV ⟹ V₀ = 1.25 V.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/1.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%203/New%20folder/1.png",
                 },
                 {
                   step: 2,
                   title: "Dial Retarding Voltage",
                   description: "Set the DC bias voltage slider to 1.25 V.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/2.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%203/New%20folder/2.png",
                 },
                 {
                   step: 3,
                   title: "Verify Cutoff",
                   description: "Click START to check that current drops to 0 μA.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/3.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%203/New%20folder/3.png",
                 },
               ]
               : [
@@ -149,19 +149,19 @@ export function PhotoelectricControls() {
                   step: 1,
                   title: "Calculate V₀",
                   description: "E = 6.20 eV, Φ = 4.31 eV ⟹ V₀ = 1.89 V.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/1.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%203/New%20folder/1.png",
                 },
                 {
                   step: 2,
                   title: "Dial Stopping Voltage",
                   description: "Set the DC bias voltage slider to 1.89 V.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/2.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%203/New%20folder/2.png",
                 },
                 {
                   step: 3,
                   title: "Verify Extinction",
                   description: "Click START to confirm photocurrent reaches 0 μA.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/3.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%203/New%20folder/3.png",
                 },
               ],
         formulas: stage.mathDerivation.formulas,
@@ -174,17 +174,17 @@ export function PhotoelectricControls() {
               {
                 title: "1. Find Threshold λ₀",
                 description: "Calculate the correct threshold λ₀ .",
-                imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/1.png",
+                imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%203/New%20folder/1.png",
               },
               {
                 title: "2. Tune Slider",
                 description: "Move the wavelength slider to 579 nm.",
-                imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/2.png",
+                imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%203/New%20folder/2.png",
               },
               {
                 title: "3. Verify",
                 description: "Click START to check photocurrent initiation.",
-                imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/3.png",
+                imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%203/New%20folder/3.png",
               },
             ]
             : currentStage === 2
@@ -192,34 +192,34 @@ export function PhotoelectricControls() {
                 {
                   title: "1. Calculate V₀",
                   description: "V₀ = (E - Φ) / e = 4.00 - 2.75 = 1.25 V.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/1.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%203/New%20folder/1.png",
                 },
                 {
                   title: "2. Dial Bias Voltage",
                   description: "Set the retarding voltage slider to 1.25 V.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/2.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%203/New%20folder/2.png",
                 },
                 {
                   title: "3. Verify Cutoff",
                   description: "Click START to verify current drops to 0.00 μA.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/3.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%203/New%20folder/3.png",
                 },
               ]
               : [
                 {
                   title: "1. Calculate V₀",
                   description: "V₀ = (E - Φ) / e = 6.20 - 4.31 = 1.89 V.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/1.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%203/New%20folder/1.png",
                 },
                 {
                   title: "2. Set Bias Voltage",
                   description: "Dial the retarding voltage slider to 1.89 V.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/2.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%203/New%20folder/2.png",
                 },
                 {
                   title: "3. Verify Cutoff",
                   description: "Click START to confirm current reaches 0.00 μA.",
-                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/3.png",
+                  imageUrl: "https://topcoaching.b-cdn.net/Module%2010/Topic%203/New%20folder/3.png",
                 },
               ],
         tip: "hc ≈ 1240 eV·nm. Threshold: λ₀ = hc / Φ. Stopping Potential: V₀ = (E - Φ) / e.",

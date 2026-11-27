@@ -103,7 +103,7 @@ export function NuclearPhysicsControls() {
       briefing={{
         target: stage.targetDescription,
         targetImageUrl:
-          "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/target.png",
+          "https://topcoaching.b-cdn.net/Module%2010/Topic%205/medium/target.png",
         storyObjective:
           currentStage === 1
             ? "A sample decays from A₀ = 1600 Bq to A = 200 Bq in 24.0 seconds. Calculate its half-life."
@@ -118,21 +118,21 @@ export function NuclearPhysicsControls() {
                   title: "Given Data",
                   description: "A₀ = 1600 Bq decays to 200 Bq in 24.0 s. Calculate T₁/₂.",
                   imageUrl:
-                    "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/1.png",
+                    "https://topcoaching.b-cdn.net/Module%2010/Topic%205/medium/1.png",
                 },
                 {
                   step: 2,
                   title: "Set Slider",
                   description: "Set the bottom slider to your calculated half-life.",
                   imageUrl:
-                    "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/2.png",
+                    "https://topcoaching.b-cdn.net/Module%2010/Topic%205/medium/2.png",
                 },
                 {
                   step: 3,
                   title: "Measure Activity",
                   description: "Click START to verify the decay curve.",
                   imageUrl:
-                    "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/3.png",
+                    "https://topcoaching.b-cdn.net/Module%2010/Topic%205/medium/3.png",
                 },
               ]
             : currentStage === 2
@@ -142,21 +142,21 @@ export function NuclearPhysicsControls() {
                   title: "Given Data",
                   description: "Total 2400 CPS, paper transmits 1500 CPS, Al transmits 300 CPS. Calculate % γ.",
                   imageUrl:
-                    "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/1.png",
+                    "https://topcoaching.b-cdn.net/Module%2010/Topic%205/medium/1.png",
                 },
                 {
                   step: 2,
                   title: "Set Slider",
                   description: "Set the slider to the calculated gamma fraction.",
                   imageUrl:
-                    "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/2.png",
+                    "https://topcoaching.b-cdn.net/Module%2010/Topic%205/medium/2.png",
                 },
                 {
                   step: 3,
                   title: "Verify Counts",
                   description: "Click START to catch the transmitted gamma beam.",
                   imageUrl:
-                    "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/3.png",
+                    "https://topcoaching.b-cdn.net/Module%2010/Topic%205/medium/3.png",
                 },
               ]
             : [
@@ -165,21 +165,21 @@ export function NuclearPhysicsControls() {
                   title: "Given Data",
                   description: "Dose 128 mSv/h, limit ≤ 2.0 mSv/h, HVL = 11.0 mm. Calculate thickness.",
                   imageUrl:
-                    "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/1.png",
+                    "https://topcoaching.b-cdn.net/Module%2010/Topic%205/medium/1.png",
                 },
                 {
                   step: 2,
                   title: "Set Shield",
                   description: "Set the slider to the calculated lead thickness.",
                   imageUrl:
-                    "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/2.png",
+                    "https://topcoaching.b-cdn.net/Module%2010/Topic%205/medium/2.png",
                 },
                 {
                   step: 3,
                   title: "Verify Safety",
                   description: "Click START to test radiation safety.",
                   imageUrl:
-                    "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/3.png",
+                    "https://topcoaching.b-cdn.net/Module%2010/Topic%205/medium/3.png",
                 },
               ],
       }}
@@ -192,19 +192,19 @@ export function NuclearPhysicsControls() {
                   title: "1. Given Data",
                   description: "A₀ = 1600 Bq drops to 200 Bq in 24.0 s. Calculate T₁/₂.",
                   imageUrl:
-                    "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/1.png",
+                    "https://topcoaching.b-cdn.net/Module%2010/Topic%205/medium/1.png",
                 },
                 {
                   title: "2. Tune Slider",
                   description: "Set the slider to the calculated half-life.",
                   imageUrl:
-                    "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/2.png",
+                    "https://topcoaching.b-cdn.net/Module%2010/Topic%205/medium/2.png",
                 },
                 {
                   title: "3. Verify",
                   description: "Click START to verify the decay rate.",
                   imageUrl:
-                    "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/3.png",
+                    "https://topcoaching.b-cdn.net/Module%2010/Topic%205/medium/3.png",
                 },
               ]
             : currentStage === 2
@@ -213,19 +213,19 @@ export function NuclearPhysicsControls() {
                   title: "1. Given Data",
                   description: "Total 2400 CPS; Paper leaves 1500 CPS; Al leaves 300 CPS. Calculate % γ.",
                   imageUrl:
-                    "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/1.png",
+                    "https://topcoaching.b-cdn.net/Module%2010/Topic%205/medium/1.png",
                 },
                 {
                   title: "2. Tune Slider",
                   description: "Set the slider to the calculated fraction.",
                   imageUrl:
-                    "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/2.png",
+                    "https://topcoaching.b-cdn.net/Module%2010/Topic%205/medium/2.png",
                 },
                 {
                   title: "3. Verify",
                   description: "Click START to catch the transmitted gamma beam.",
                   imageUrl:
-                    "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/3.png",
+                    "https://topcoaching.b-cdn.net/Module%2010/Topic%205/medium/3.png",
                 },
               ]
             : [
@@ -233,19 +233,19 @@ export function NuclearPhysicsControls() {
                   title: "1. Given Data",
                   description: "Dose 128 mSv/h must drop to ≤ 2.0 mSv/h with HVL = 11.0 mm. Calculate thickness.",
                   imageUrl:
-                    "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/1.png",
+                    "https://topcoaching.b-cdn.net/Module%2010/Topic%205/medium/1.png",
                 },
                 {
                   title: "2. Tune Slider",
                   description: "Set the slider to the calculated thickness.",
                   imageUrl:
-                    "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/2.png",
+                    "https://topcoaching.b-cdn.net/Module%2010/Topic%205/medium/2.png",
                 },
                 {
                   title: "3. Verify",
                   description: "Click START to test radiation safety.",
                   imageUrl:
-                    "https://topcoaching.b-cdn.net/Module%2010/Topic%201/medium/3.png",
+                    "https://topcoaching.b-cdn.net/Module%2010/Topic%205/medium/3.png",
                 },
               ],
         tip:
